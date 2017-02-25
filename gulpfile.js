@@ -10,7 +10,10 @@ var vfs = require('vinyl-fs');
 
 var jsCompileFn = function(src) {
 	var babelOpts = {
-		presets: ['env', "react"]
+		presets: ['env', "react"],
+		"plugins": [
+			["transform-es2015-modules-systemjs"]
+		]
 	}
 
 	return function() {
@@ -47,6 +50,11 @@ gulp.task("js", jsCompileFn("src/**/*.js"));
 
 gulp.task("jsx", jsCompileFn("src/**/*.jsx"));
 
+gulp.task("link_jspm", function() {
+	return vfs.src(['config.js', 'jspm_packages'], {followSymlinks: false})
+	.pipe(vfs.symlink('dist'));
+});
+
 gulp.task("connect", function() {
 	return connect.server({
 		root: ["dist/"],
@@ -54,4 +62,4 @@ gulp.task("connect", function() {
 	});
 });
 
-gulp.task("default", ["html", "less", "js", "jsx", "connect"]);
+gulp.task("default", ["html", "less", "link_jspm", "js", "jsx", "connect"]);

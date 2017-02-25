@@ -3,7 +3,8 @@
 	<head>
 		<title>ShortPitch Prototype</title>
 		<link rel="stylesheet" href="css/app.css" />
-		<script src="js/main.js"></script>
+		<script src="jspm_packages/system.js"></script>
+		<script src="config.js"></script>
 	</head>
 	<body>
 
@@ -14,4 +15,7 @@
 		<button class="btn btn-primary margin-10px" onclick="stopPubStream()">Stop Publish</button>
 		<div id="subscribe_url" class="alert alert-success" role="alert">...</div> -->
 	</body>
+	<script>
+		System.import('/js/main.js');
+	</script>
 </html>
