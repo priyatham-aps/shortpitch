@@ -8,6 +8,9 @@ let trasportStreamUrl = ""
 let socket
 let AudioCtx = window.AudioContext
 let context = new AudioCtx();
+let input
+let recorder
+
 
 function createStream() {
 	let request = new XMLHttpRequest();
@@ -18,12 +21,15 @@ function createStream() {
 			pubStreamUrl = API_WS_SERVER_URL + "stream/publish/" + resp.data.id + "/"
 			subStreamUrl = resp.data.subscribe_url
 			trasportStreamUrl = resp.data.transport_url
-			document.getElementById("subscribe_url").innerHTML = subStreamUrl
+			document.getElementById("subscribe_url").innerHTML = subStreamUrl;
+			pubStream()
 		}
 	}
 	request.send();
 }
-
+function startRecording(){
+	createStream()
+}
 function pubStream(e) {
 	if (pubStreamUrl == "") {
 		alert("Create stream first!");
@@ -37,17 +43,19 @@ function pubStream(e) {
 		video: false
 	};
 
-	navigator.getUserMedia(session, initializeRecorder, onError);
+	navigator.mediaDevices.getUserMedia(session, onError).then(initializeRecorder).catch(onError);
 }
 
 function initializeRecorder(stream) {
-	let input = context.createMediaStreamSource(stream);
-	let recorder = context.createScriptProcessor(1024,1,1);
+	input = context.createMediaStreamSource(stream);
+	recorder = context.createScriptProcessor(1024,1,1);
 
-	 recorder.onaudioprocess = recorderProcess;
+	recorder.onaudioprocess = recorderProcess;
 
 	input.connect(recorder);
 	recorder.connect(context.destination);
+	document.getElementById("startPublish").style.display = "none";
+	document.getElementById("stopPublish").style.display = "initial";
 }
 
 function onError(err) {
@@ -64,21 +72,17 @@ function convertFloat32ToInt16(buffer) {
 
 function recorderProcess(e) {
 	  var left = e.inputBuffer.getChannelData(0);
-	  //var source = context.createBufferSource();
-	  // set the buffer in the AudioBufferSourceNode
-	  //source.buffer = e.inputBuffer;
-	  // connect the AudioBufferSourceNode to the
-	  // destination so we can hear the sound
-	  //source.connect(context.destination);
-	  // start the source playing
-	 // source.start();
+	  debugger;
 	  socket.send(convertFloat32ToInt16(left))
 }
 
 function stopPubStream(e) {
+	recorder.disconnect()
+	input.mediaStream.getTracks()[0].stop();
+	document.getElementById("stopPublish").style.display = "none";
+	document.getElementById("startPublish").style.display = "initial";
 	if (socket !== null && socket !== undefined) {
 		socket.close()
-		socket = null
 	}
 
 
