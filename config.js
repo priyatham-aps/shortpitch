@@ -8,6 +8,7 @@ System.config({
   },
 
   map: {
+    "bootstrap": "github:twbs/bootstrap@3.3.7",
     "react": "npm:react@15.4.2",
     "react-dom": "npm:react-dom@15.4.2",
     "github:jspm/nodelibs-assert@0.1.0": {
@@ -56,6 +57,9 @@ System.config({
     },
     "github:jspm/nodelibs-zlib@0.1.0": {
       "browserify-zlib": "npm:browserify-zlib@0.1.4"
+    },
+    "github:twbs/bootstrap@3.3.7": {
+      "jquery": "npm:jquery@3.1.1"
     },
     "npm:asap@2.0.5": {
       "domain": "github:jspm/nodelibs-domain@0.1.0",

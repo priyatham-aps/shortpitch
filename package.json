@@ -25,13 +25,11 @@
     "vinyl-fs": "^2.4.4"
   },
   "dependencies": {
-    "bootstrap": "^3.3.7",
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2",
     "requirejs": "^2.3.3"
   },
   "jspm": {
     "dependencies": {
+      "bootstrap": "github:twbs/bootstrap@^3.3.7",
       "react": "npm:react@^15.4.2",
       "react-dom": "npm:react-dom@^15.4.2"
     },

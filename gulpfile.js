@@ -39,7 +39,8 @@ gulp.task("less", function() {
 	.pipe(sourcemaps.init())
 	.pipe(less({
 		paths: [
-			"node_modules"
+			"jspm_packages/npm",
+			"jspm_packages/github"
 		]
 	}))
 	.pipe(sourcemaps.write("."))
