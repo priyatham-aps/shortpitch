@@ -11,6 +11,7 @@ System.config({
     "bootstrap": "github:twbs/bootstrap@3.3.7",
     "react": "npm:react@15.4.2",
     "react-dom": "npm:react-dom@15.4.2",
+    "redux": "npm:redux@3.6.0",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.4.1"
     },
@@ -207,6 +208,13 @@ System.config({
       "process-nextick-args": "npm:process-nextick-args@1.0.7",
       "string_decoder": "npm:string_decoder@0.10.31",
       "util-deprecate": "npm:util-deprecate@1.0.2"
+    },
+    "npm:redux@3.6.0": {
+      "lodash": "npm:lodash@4.17.4",
+      "lodash-es": "npm:lodash-es@4.17.4",
+      "loose-envify": "npm:loose-envify@1.3.1",
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "symbol-observable": "npm:symbol-observable@1.0.4"
     },
     "npm:setimmediate@1.0.5": {
       "process": "github:jspm/nodelibs-process@0.1.2"

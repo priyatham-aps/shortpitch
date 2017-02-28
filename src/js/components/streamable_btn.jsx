@@ -1,36 +1,58 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import {CreateStream} from "../api/api"
+import {removeStreamId} from "../actions/actions"
+import store from "../store/store"
+import Streamer from "../audio/streamer";
 
 export default class StreamableBtn extends React.Component {
 	constructor() {
-		super()
-		this.state={
-			buttonText:"Start Pitching",
+		super();
+
+		this.streamer = new Streamer();
+		this.state = {
 			isStreamRunning:false
-		}
-	}
-	render() {
-		return <button className="btn btn-primary margin-10px" onClick={()=>this.toggleStreamStatus()}>{this.state.buttonText}</button>;
+		};
 	}
 
-	toggleStreamStatus() {
-		
-		this.setState({
-			isStreamRunning : !this.state.isStreamRunning,
-			buttonText : this.state.isStreamRunning?  "Start Pitching":"Stop Pitching"
-		})
-		if(this.state.isStreamRunning){
-			this.stopStream()
+	componentWillUpdate(nextProps, nextState) {
+		if (this.props.streamId !== nextProps.streamId) {
+			if (nextProps.streamId) {
+				this.streamer.start(nextProps.streamId);
+			} else {
+				this.streamer.stop();
+			}
 		}
-		else{
-			this.startStream()
-		}
-		
 	}
+
+	render() {
+		console.log(this.props.streamId);
+		if (this.props.streamId) {
+			return <button className="btn btn-primary margin-10px" onClick={()=>this.stopStream()}>Stop pitching!</button>;
+		} else {
+			return <button className="btn btn-primary margin-10px" onClick={()=>this.startStream()}>Start pitching!</button>;
+		}
+	}
+
+	// toggleStreamStatus() {
+	// 	if(this.state.isStreamRunning){
+	// 		this.stopStream()
+	// 	}
+	// 	else{
+	// 		this.startStream()
+	// 	}
+	// 	this.setState({
+	// 		isStreamRunning : !this.state.isStreamRunning
+	// 	})
+	// }
+
 	stopStream(){
 		console.log("stopping stream")
+		store.dispatch(removeStreamId());
 	}
+
 	startStream(){
 		console.log("starting stream")
+		CreateStream();
 	}
 }
