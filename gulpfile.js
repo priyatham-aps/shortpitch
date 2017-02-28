@@ -32,6 +32,11 @@ gulp.task("html", function() {
 	.pipe(watch("src/index.html"))
 	.pipe(gulp.dest("dist"));
 });
+gulp.task("img", function() {
+	return gulp.src("src/assets/**")
+	.pipe(watch("assets"))
+	.pipe(gulp.dest("dist/assets"));
+});
 
 gulp.task("less", function() {
 	return gulp.src("src/less/app.less")
@@ -63,4 +68,4 @@ gulp.task("connect", function() {
 	});
 });
 
-gulp.task("default", ["html", "less", "link_jspm", "js", "jsx", "connect"]);
+gulp.task("default", ["html","img", "less", "link_jspm", "js", "jsx", "connect"]);

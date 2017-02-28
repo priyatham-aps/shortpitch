@@ -3,3 +3,30 @@
 .margin-10px {
 	margin: 10px;
 }
+@media (max-width: 575px) { 
+	body{
+		background:url("/assets/img/mobile_bg.png");
+		background-size:cover;
+	}
+}
+@media (min-width: 768px) { 
+	body{
+		background:url("/assets/img/web_bg.png");
+		background-size:cover;
+	}
+}
+.container {
+	.wrapper{
+		padding:10px;
+		.jumbotron{
+			background-color:transparent
+		}
+		.sp-flex-box{
+			display:flex;
+			flex-direction: column;
+			align-items:center;
+			justify-content: center;
+		}
+
+	}
+}

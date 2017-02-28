@@ -7,13 +7,22 @@
 		<script src="config.js"></script>
 	</head>
 	<body>
-
-		<div id="main"></div>
-
-		<!-- <button class="btn btn-primary margin-10px" onclick="createStream()">Create Stream</button>
-		<button class="btn btn-primary margin-10px" onclick="pubStream()">Publish Stream</button>
-		<button class="btn btn-primary margin-10px" onclick="stopPubStream()">Stop Publish</button>
-		<div id="subscribe_url" class="alert alert-success" role="alert">...</div> -->
+		<div class="container">
+			<div class="wrapper">
+					<div class="hidden-xs col-md-2"></div>
+					<div class="sp-flex-box col-xs-12 col-md-8">
+						<div class="jumbotron">
+							<h1> Match meta info</h1>
+						</div>
+						<div id="main"></div>
+						<div id="subscribe_url" class="alert alert-success" role="alert">...</div>
+					</div>
+					<!--div class="clearfix visible-xs-block"></div-->
+					<div class="hidden-xs col-md-2">
+				
+			</div>
+				
+	 	</div>
 	</body>
 	<script>
 		System.import('/js/main.js');
