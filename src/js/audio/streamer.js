@@ -64,7 +64,10 @@ export default class Streamer {
 				this.recorder.disconnect();
 				this.recorder = null;
 			}
-			this.stream.getTracks()[0].stop();
+			if (this.stream){
+				this.stream.getTracks()[0].stop();
+			} 
+
 			console.log('Disconnected from server');
 		};
 	}
