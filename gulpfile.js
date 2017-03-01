@@ -6,6 +6,7 @@ var concat = require("gulp-concat");
 var watch = require("gulp-watch");
 var rename = require("gulp-rename");
 var connect = require("gulp-connect");
+var proxy = require("http-proxy-middleware");
 var vfs = require('vinyl-fs');
 
 var jsCompileFn = function(src) {
@@ -64,7 +65,17 @@ gulp.task("link_jspm", function() {
 gulp.task("connect", function() {
 	return connect.server({
 		root: ["dist/"],
-		port: 9001
+		port: 9001,
+		livereload:true,
+		middleware: function (connect, opt) {
+	      return[
+	      	proxy('/api', {
+                    target: 'http://localhost:8000',
+                    changeOrigin:true
+                })
+	      ]
+	    }
+
 	});
 });
 

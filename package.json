@@ -21,6 +21,7 @@
     "gulp-rename": "^1.2.2",
     "gulp-sourcemaps": "^2.4.1",
     "gulp-watch": "^4.3.11",
+    "http-proxy-middleware": "^0.17.3",
     "jspm": "^0.16.52",
     "vinyl-fs": "^2.4.4"
   },
