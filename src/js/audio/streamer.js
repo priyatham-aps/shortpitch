@@ -1,5 +1,3 @@
-import {getStreamerSocket} from "../api/socket"
-
 const defaultConfig = {
 	codec: {
 		sampleRate: 24000,
@@ -28,8 +26,15 @@ export default class Streamer {
 
 	start(streamId, onError) {
 		streamId = streamId || this.streamId;
+		let socketUrl
 
-		this.socket = getStreamerSocket(streamId);
+		if(location.protocol=="http:"){
+			socketUrl = "ws://"+location.host+"/stream/ws/publish/"+streamId
+		}
+		else if(location.protocol=="https:"){
+			socketUrl = "wss://"+location.host+"/stream/ws/publish/"+streamId
+		}
+		this.socket = new WebSocket(socketUrl)
 
 		this.socket.binaryType = 'arraybuffer';
 
