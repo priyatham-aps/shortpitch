@@ -1,5 +1,6 @@
 import React from "react";
 import StreamableBtn from "./streamable_btn";
+import PlayableCrd from "./playable_crd";
 
 export default class App extends React.Component {
 	render() {
@@ -7,6 +8,7 @@ export default class App extends React.Component {
 
 		return <div>
 			<StreamableBtn streamId={streamId}></StreamableBtn>
+			<PlayableCrd streamId={streamId}></PlayableCrd>
 		</div>
 	}
 }
