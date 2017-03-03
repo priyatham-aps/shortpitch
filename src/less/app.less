@@ -1,8 +1,16 @@
 @import (inline) "twbs/bootstrap@3.3.7/css/bootstrap.css";
 
+/* Variables */
+
+@font-color: #000;
+@slat-background-color: white;
+
+
+/*************/
 .margin-10px {
 	margin: 10px;
 }
+
 @media (max-width: 575px) { 
 	body{
 		background:url("/assets/img/mobile_bg.png");
@@ -29,4 +37,41 @@
 		}
 
 	}
+}
+
+.sp-slat{
+  min-height:120px;
+  height:120px;
+  border-radius:6px;
+  background-color:@slat-background-color;
+  margin-bottom:10px;
+  color:@font-color;
+  line-height: 1.42857;
+  .sp-play-pause{
+  	border-right: solid 1px #ddd;
+  	height:100%;
+  	width:110px;
+  	padding:10px;
+  	float:left;
+  	button{
+  		position: relative;
+	    top: 50%;
+	    transform: translateY(-50%);
+	    display: block;
+	    margin: 0 auto;
+  	}  	
+  }
+  .sp-meta-container{
+  	height:100%;
+  	padding:20px 30px;
+  	.sp-img-container{
+  		  background-repeat: no-repeat;
+		  background-position: center center;
+		  background-size: cover;
+		  display: inline-block;
+		  border-radius: 50%;
+		  width:80px;
+		  height:80px;
+  	}
+  }
 }

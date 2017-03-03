@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import store from "../store/store"
 import {GetStreams} from "../api/api"
+import PlayableCrd from "./playable_crd"
 
 export default class StreamLst extends React.Component {
 	constructor() {
@@ -19,12 +20,15 @@ export default class StreamLst extends React.Component {
 	}
 
 	render() {
-		console.log(this.props.streamId);
-		if (this.state.isStreamPlaying) {
-			return <button className="btn btn-primary margin-10px" onClick={()=>this.killStream()}>Stop</button>;
-		} else {
-			return <button className="btn btn-primary margin-10px" onClick={()=>this.playStream()}>Play</button>;
-		}
+		return(
+			<div>
+				<PlayableCrd/>
+				<PlayableCrd/>
+				<PlayableCrd/>
+				<PlayableCrd/>
+				<PlayableCrd/>
+			</div>
+		)
 	}
 
 	killStream(){
