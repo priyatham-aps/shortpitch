@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import store from "../store/store"
 import Player from "../audio/player";
 
-export default class PlayableCrd extends React.Component {
+export default class PlayableCard extends React.Component {
 	constructor() {
 		super();
 		this.state = {
@@ -28,20 +28,20 @@ export default class PlayableCrd extends React.Component {
 			<div className="sp-slat">
 					 <div className="sp-play-pause">
 					 	{button}
-					 </div>	
+					 </div>
 					 <div className="col-md-10 sp-meta-container">
 					 	<div className="col-md-3 sp-img-container" style={{backgroundImage:"url('http://www.opindia.com/wp-content/uploads/2016/04/harsha.jpg')"}}>
 					 	</div>
 					 	<div className="col-md-6">
-					 		
+
 					 	</div>
 					 	<div className="col-md-2">
-					 		
+
 					 	</div>
 					 	<div className="col-md-1">
-					 		
+
 					 	</div>
-					 	
+
 					 </div>
 					 <div>
 					 	<audio controls> 

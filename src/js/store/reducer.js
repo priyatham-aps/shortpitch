@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import {SET_PITCHER, REMOVE_PITCHER, SET_STREAMS} from "../actions/types"
+import {SET_PITCHER, REMOVE_PITCHER, RECEIVE_STREAMS} from "../actions/types"
 
 const pitcher = (state = "", action) => {
 	switch(action.type) {
@@ -12,18 +12,18 @@ const pitcher = (state = "", action) => {
 	}
 }
 
-const streams = (state, action) => {
+const streams = (state=[], action) => {
 	switch (action.type) {
-		case SET_STREAMS:
-
-			break;
+		case RECEIVE_STREAMS:
+			return action.streams;
 		default:
-
+			return state;
 	}
 }
 
 const reducer = combineReducers({
-	pitcher
+	pitcher,
+	streams
 });
 
 export default reducer;

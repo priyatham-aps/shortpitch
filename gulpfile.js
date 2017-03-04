@@ -67,19 +67,18 @@ gulp.task("connect", function() {
 		root: ["dist/"],
 		port: 9001,
 		middleware: function (connect, opt) {
-	      return[
-	      	proxy('/api', {
-                    target: 'http://localhost:8000',
-                    changeOrigin:true
-                }),
-	      	proxy('/stream', {
-                    target: 'http://localhost:8000',
-                    changeOrigin:true,
-                    ws:true
-                })
-	      ]
-	    }
-
+			return[
+				proxy('/api', {
+						target: 'http://localhost:8000',
+						changeOrigin:true
+					}),
+				proxy('/stream', {
+						target: 'http://localhost:8000',
+						changeOrigin:true,
+						ws:true
+					})
+			]
+		}
 	});
 });
 

@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import {createStream, removeStreamId} from "../actions/actions"
+import {createStream, removePitcher} from "../actions/actions"
 import store from "../store/store"
 import Streamer from "../audio/streamer";
 
@@ -24,6 +24,11 @@ export default class StreamableBtn extends React.Component {
 		}
 	}
 
+	componentWillUnmount() {
+		console.log("Unmount");
+		this.streamer.stop();
+	}
+
 	render() {
 		if (this.props.streamId) {
 			return <button className="btn btn-primary margin-10px" onClick={()=>this.stopStream()}>Stop pitching!</button>;
@@ -34,7 +39,7 @@ export default class StreamableBtn extends React.Component {
 
 	stopStream(){
 		console.log("stopping stream")
-		store.dispatch(removeStreamId());
+		store.dispatch(removePitcher());
 	}
 
 	startStream(){

@@ -1,22 +1,22 @@
 import * as api from "../api/api"
-import {SET_PITCHER, REMOVE_PITCHER, SET_STREAMS} from "./types"
+import {SET_PITCHER, REMOVE_PITCHER, RECEIVE_STREAMS} from "./types"
 
-export const setStreamId = (id) => {
+export const setPitcher = (id) => {
 	return {
-		type: "SET_PITCHER",
+		type: SET_PITCHER,
 		id: id
 	}
 }
 
-export const removeStreamId = () => {
+export const removePitcher = () => {
 	return {
-		type: "REMOVE_PITCHER"
+		type: REMOVE_PITCHER
 	}
 }
 
 export const receiveStreams = (streams) => {
 	return {
-		type: "SET_STREAMS",
+		type: RECEIVE_STREAMS,
 		streams: streams
 	}
 }
@@ -24,13 +24,13 @@ export const receiveStreams = (streams) => {
 export const createStream = () => {
 	return dispatch => {
 		return api.createStream()
-		.then(json => dispatch(setStreamId(json.id)))
+		.then(json => dispatch(setPitcher(json.id)))
 	}
 }
 
 export const getStreams = () => {
 	return dispatch => {
 		return api.fetchStreams()
-		.then(json => dispatch(receiveStreams(json)))
+		.then(json => dispatch(receiveStreams(json.data)))
 	}
 }
