@@ -5,7 +5,7 @@ import StreamLst from "./stream_lst";
 
 export default class App extends React.Component {
 	render() {
-		let streamId = this.props.data;
+		let streamId = this.props.data.pitcher;
 
 		return <div>
 			<StreamableBtn streamId={streamId}></StreamableBtn>

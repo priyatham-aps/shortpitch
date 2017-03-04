@@ -12,6 +12,8 @@ System.config({
     "react": "npm:react@15.4.2",
     "react-dom": "npm:react-dom@15.4.2",
     "redux": "npm:redux@3.6.0",
+    "redux-actions": "npm:redux-actions@1.2.2",
+    "redux-thunk": "npm:redux-thunk@2.2.0",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.4.1"
     },
@@ -130,6 +132,10 @@ System.config({
     "npm:inherits@2.0.1": {
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
+    "npm:invariant@2.2.2": {
+      "loose-envify": "npm:loose-envify@1.3.1",
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
     "npm:isomorphic-fetch@2.2.1": {
       "node-fetch": "npm:node-fetch@1.6.3",
       "whatwg-fetch": "npm:whatwg-fetch@2.0.2"
@@ -208,6 +214,13 @@ System.config({
       "process-nextick-args": "npm:process-nextick-args@1.0.7",
       "string_decoder": "npm:string_decoder@0.10.31",
       "util-deprecate": "npm:util-deprecate@1.0.2"
+    },
+    "npm:redux-actions@1.2.2": {
+      "buffer": "github:jspm/nodelibs-buffer@0.1.0",
+      "invariant": "npm:invariant@2.2.2",
+      "lodash": "npm:lodash@4.17.4",
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "reduce-reducers": "npm:reduce-reducers@0.1.2"
     },
     "npm:redux@3.6.0": {
       "lodash": "npm:lodash@4.17.4",

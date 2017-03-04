@@ -1,6 +1,9 @@
 import store from "../store/store"
 import {setStreamId} from "../actions/actions"
 
+const POST = "POST";
+const GET = "GET";
+
 export const CreateStream = () => {
 	let url = "/api/stream/"
 	let request = new XMLHttpRequest();
@@ -13,6 +16,7 @@ export const CreateStream = () => {
 	}
 	request.send();
 }
+
 export const GetStreams = () => {
 	let url = "/api/stream/"
 	let request = new XMLHttpRequest();
@@ -24,4 +28,21 @@ export const GetStreams = () => {
 		}
 	}
 	request.send();
+}
+
+export const createStream = () => {
+	const url = "/api/stream/"
+	const init = {
+		method: POST,
+		credentials: "same-origin"
+	}
+
+	return fetch(url, init)
+	.then(response => response.json())
+}
+
+export const fetchStreams = () => {
+	let url = "/api/stream/"
+	return fetch(url)
+	.then(response => response.json());
 }
