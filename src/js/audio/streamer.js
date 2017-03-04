@@ -1,5 +1,6 @@
 import {defaultConfig} from '../globals'
 import Resampler from './resampler'
+import {OpusEncoder} from './opus'
 
 const audioContext = new(window.AudioContext || window.webkitAudioContext)();
 
@@ -14,7 +15,7 @@ export default class Streamer {
 		this.config.codec = this.config.codec || defaultConfig.codec;
 		this.streamId = streamId;
 		this.sampler = new Resampler(audioContext.sampleRate, this.config.codec.sampleRate, 1, this.config.codec.bufferSize);
-		// this.encoder = new OpusEncoder(this.config.codec.sampleRate, this.config.codec.channels, this.config.codec.app, this.config.codec.frameDuration);
+		this.encoder = new OpusEncoder(this.config.codec.sampleRate, this.config.codec.channels, this.config.codec.app, this.config.codec.frameDuration);
 	}
 
 	start(streamId, onError) {
@@ -110,13 +111,13 @@ export default class Streamer {
 			this.recorder = audioContext.createScriptProcessor(this.config.codec.bufferSize, 1, 1);
 			this.recorder.onaudioprocess = (e) => {
 				var left = e.inputBuffer.getChannelData(0);
-
-				// var packets = this.encoder.encode_float(resampled);
-				// for (var i = 0; i < packets.length; i++) {
-				// 	if (this.socket.readyState == 1) this.socket.send(packets[i]);
-				// }
-				var resampled = this.sampler.resampler(left);
-				this.socket.send(this._convertFloat32ToInt16(resampled))
+				 var resampled = this.sampler.resampler(e.inputBuffer.getChannelData(0));
+				 var packets = this.encoder.encode_float(resampled);
+				 for (var i = 0; i < packets.length; i++) {
+				 	if (this.socket.readyState == 1) this.socket.send(packets[i]);
+				 }
+				//var resampled = this.sampler.resampler(left);
+				//this.socket.send(this._convertFloat32ToInt16(resampled))
 			};
 			this.audioInput.connect(this.gainNode);
 			this.gainNode.connect(this.recorder);

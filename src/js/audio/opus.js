@@ -1,4 +1,140 @@
-export default class OpusDecoder {
+var Opus = (function () {
+    function Opus() {
+    }
+    Opus.getVersion = function () {
+        var ptr = _opus_get_version_string();
+        return Pointer_stringify(ptr);
+    };
+    Opus.getMaxFrameSize = function (numberOfStreams) {
+        if (numberOfStreams === void 0) { numberOfStreams = 1; }
+        return (1275 * 3 + 7) * numberOfStreams;
+    };
+    Opus.getMinFrameDuration = function () {
+        return 2.5;
+    };
+    Opus.getMaxFrameDuration = function () {
+        return 60;
+    };
+    Opus.validFrameDuration = function (x) {
+        return [2.5, 5, 10, 20, 40, 60].some(function (element) {
+            return element == x;
+        });
+    };
+    Opus.getMaxSamplesPerChannel = function (sampling_rate) {
+        return sampling_rate / 1000 * Opus.getMaxFrameDuration();
+    };
+    return Opus;
+})();
+
+export class OpusEncoder {
+    constructor(sampling_rate, channels, app, frame_duration) {
+        if (frame_duration === void 0) { frame_duration = 20; }
+        this.handle = 0;
+        this.frame_size = 0;
+        this.in_ptr = 0;
+        this.in_off = 0;
+        this.out_ptr = 0;
+        if (!Opus.validFrameDuration(frame_duration))
+            throw 'invalid frame duration';
+        this.frame_size = sampling_rate * frame_duration / 1000;
+        var err_ptr = allocate(4, 'i32', ALLOC_STACK);
+        this.handle = _opus_encoder_create(sampling_rate, channels, app, err_ptr);
+        if (getValue(err_ptr, 'i32') != 0 /* OK */)
+            throw 'opus_encoder_create failed: ' + getValue(err_ptr, 'i32');
+        this.in_ptr = _malloc(this.frame_size * channels * 4);
+        this.in_len = this.frame_size * channels;
+        this.in_i16 = HEAP16.subarray(this.in_ptr >> 1, (this.in_ptr >> 1) + this.in_len);
+        this.in_f32 = HEAPF32.subarray(this.in_ptr >> 2, (this.in_ptr >> 2) + this.in_len);
+        this.out_bytes = Opus.getMaxFrameSize();
+        this.out_ptr = _malloc(this.out_bytes);
+        this.out_buf = HEAPU8.subarray(this.out_ptr, this.out_ptr + this.out_bytes);
+    }
+    encode(pcm) {
+        var output = [];
+        var pcm_off = 0;
+        while (pcm.length - pcm_off >= this.in_len - this.in_off) {
+            if (this.in_off > 0) {
+                this.in_i16.set(pcm.subarray(pcm_off, pcm_off + this.in_len - this.in_off), this.in_off);
+                pcm_off += this.in_len - this.in_off;
+                this.in_off = 0;
+            }
+            else {
+                this.in_i16.set(pcm.subarray(pcm_off, pcm_off + this.in_len));
+                pcm_off += this.in_len;
+            }
+            var ret = _opus_encode(this.handle, this.in_ptr, this.frame_size, this.out_ptr, this.out_bytes);
+            if (ret <= 0)
+                throw 'opus_encode failed: ' + ret;
+            var packet = new ArrayBuffer(ret);
+            new Uint8Array(packet).set(this.out_buf.subarray(0, ret));
+            output.push(packet);
+        }
+        if (pcm_off < pcm.length) {
+            this.in_i16.set(pcm.subarray(pcm_off));
+            this.in_off = pcm.length - pcm_off;
+        }
+        return output;
+    };
+    encode_float(pcm) {
+        var output = [];
+        var pcm_off = 0;
+        while (pcm.length - pcm_off >= this.in_len - this.in_off) {
+            if (this.in_off > 0) {
+                this.in_f32.set(pcm.subarray(pcm_off, pcm_off + this.in_len - this.in_off), this.in_off);
+                pcm_off += this.in_len - this.in_off;
+                this.in_off = 0;
+            }
+            else {
+                this.in_f32.set(pcm.subarray(pcm_off, pcm_off + this.in_len));
+                pcm_off += this.in_len;
+            }
+            var ret = _opus_encode_float(this.handle, this.in_ptr, this.frame_size, this.out_ptr, this.out_bytes);
+            if (ret <= 0)
+                throw 'opus_encode failed: ' + ret;
+            var packet = new ArrayBuffer(ret);
+            new Uint8Array(packet).set(this.out_buf.subarray(0, ret));
+            output.push(packet);
+        }
+        if (pcm_off < pcm.length) {
+            this.in_f32.set(pcm.subarray(pcm_off));
+            this.in_off = pcm.length - pcm_off;
+        }
+        return output;
+    };
+    encode_final() {
+        if (this.in_off == 0)
+            return new ArrayBuffer(0);
+        for (var i = this.in_off; i < this.in_len; ++i)
+            this.in_i16[i] = 0;
+        var ret = _opus_encode(this.handle, this.in_ptr, this.frame_size, this.out_ptr, this.out_bytes);
+        if (ret <= 0)
+            throw 'opus_encode failed: ' + ret;
+        var packet = new ArrayBuffer(ret);
+        new Uint8Array(packet).set(this.out_buf.subarray(0, ret));
+        return packet;
+    };
+    encode_float_final() {
+        if (this.in_off == 0)
+            return new ArrayBuffer(0);
+        for (var i = this.in_off; i < this.in_len; ++i)
+            this.in_f32[i] = 0;
+        var ret = _opus_encode_float(this.handle, this.in_ptr, this.frame_size, this.out_ptr, this.out_bytes);
+        if (ret <= 0)
+            throw 'opus_encode failed: ' + ret;
+        var packet = new ArrayBuffer(ret);
+        new Uint8Array(packet).set(this.out_buf.subarray(0, ret));
+        return packet;
+    };
+    destroy() {
+        if (!this.handle)
+            return;
+        _opus_encoder_destroy(this.handle);
+        _free(this.in_ptr);
+        this.handle = this.in_ptr = 0;
+    };
+    
+}
+export class OpusDecoder {
     constructor(sampling_rate, channels) {
         this.handle = 0;
         this.in_ptr = 0;

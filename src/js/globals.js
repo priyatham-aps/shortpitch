@@ -3,7 +3,7 @@ export const defaultConfig = {
 		sampleRate: 24000,
 		channels: 1,
 		app: 2048,
-		frameDuration: 60,
+		frameDuration: 20,
 		bufferSize: 1024
 	}
 };

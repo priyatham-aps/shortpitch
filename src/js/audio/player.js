@@ -1,6 +1,7 @@
 import {defaultConfig} from '../globals'
 import Resampler from './resampler'
-import OpusDecoder from './opus'
+import {OpusDecoder} from './opus'
+
 
 const audioContext = new(window.AudioContext || window.webkitAudioContext)();
 
@@ -12,9 +13,8 @@ export default class Player {
 		this.silence = new Float32Array(this.config.codec.bufferSize);
 		this.sampler = new Resampler(this.config.codec.sampleRate, audioContext.sampleRate, 1, this.config.codec.bufferSize);
 		// Opus Decoding
-		this.decoder = new OpusDecoder(this.config.codec.sampleRate, this.config.codec.channels);
-		
-		
+		this.decoder =  new OpusDecoder(this.config.codec.sampleRate, this.config.codec.channels);
+		this.scriptNode = audioContext.createScriptProcessor(this.config.codec.bufferSize, 1, 1);
 	}
 
 	start(streamId) {
@@ -34,7 +34,6 @@ export default class Player {
 
 			write: function(newAudio) {
 				var currentQLength = this.buffer.length;
-				//Opus Decoding
 				newAudio = _this.sampler.resampler(newAudio);
 				var newBuffer = new Float32Array(currentQLength + newAudio.length);
 				newBuffer.set(this.buffer, 0);
@@ -53,7 +52,6 @@ export default class Player {
 			}
 		};
 
-		this.scriptNode = audioContext.createScriptProcessor(this.config.codec.bufferSize, 1, 1);
 		this.scriptNode.onaudioprocess = function(e) {
 			if (_this.audioQueue.length()) {
 				e.outputBuffer.getChannelData(0).set(_this.audioQueue.read(_this.config.codec.bufferSize));
@@ -70,7 +68,6 @@ export default class Player {
 		} else {
 			this.socket = this.parentSocket;
 		}
-        
         var _onmessage = this.parentOnmessage = this.socket.onmessage;
         this.socket.onmessage = function(message) {
         	if (_onmessage) {
@@ -78,10 +75,9 @@ export default class Player {
         	}
         	if (message.data instanceof Blob) {
         		var reader = new FileReader();
-        		reader.onload = function() {
+        		reader.onload = function(event) {
         			//Opus Decoding
-        			//_this.audioQueue.write(_this.decoder.decode_float(reader.result));
-        			_this.audioQueue.write(reader.result);
+        			_this.audioQueue.write(_this.decoder.decode_float(reader.result));
         		};
         		reader.readAsArrayBuffer(message.data);
         	}

@@ -24,7 +24,7 @@ var jsCompileFn = function(src) {
 		.pipe(babel(babelOpts))
 		// .pipe(concat("all.js"))
 		.pipe(sourcemaps.write("."))
-		.pipe(gulp.dest("dist"));
+		.pipe(gulp.dest("dist/js"));
 	}
 }
 
@@ -53,9 +53,9 @@ gulp.task("less", function() {
 	.pipe(gulp.dest("dist/css"));
 });
 
-gulp.task("js", jsCompileFn("src/**/*.js"));
+gulp.task("js", jsCompileFn("src/js/**/*.js"));
 
-gulp.task("jsx", jsCompileFn("src/**/*.jsx"));
+gulp.task("jsx", jsCompileFn("src/js/**/*.jsx"));
 
 gulp.task("link_jspm", function() {
 	return vfs.src(['config.js', 'jspm_packages'], {followSymlinks: false})

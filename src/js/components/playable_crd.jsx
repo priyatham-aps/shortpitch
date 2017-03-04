@@ -18,9 +18,7 @@ export default class PlayableCrd extends React.Component {
 		let button
 		let randomPicRemoveLater = "http://www.livemint.com/rf/Image-621x414/LiveMint/Period1/2011/10/25/Photos/bdad2f99-acf4-4399-b603-73a77810042e.jpg"
 		console.log(this.props.streamId);
-		<div>
-		</div>
-
+		let sub_url = "http://localhost:8000/stream/http/subscribe/"+this.props.streamId 
 		if (this.state.isStreamPlaying) {
 			button = <button className="btn btn-primary margin-10px" onClick={()=>this.killStream()}>Stop</button>;
 		} else {
@@ -44,6 +42,11 @@ export default class PlayableCrd extends React.Component {
 					 		
 					 	</div>
 					 	
+					 </div>
+					 <div>
+					 	<audio controls> 
+					 		<source type="audio/ogg" src={sub_url}></source>
+					 	</audio>
 					 </div>
 
 			</div>
