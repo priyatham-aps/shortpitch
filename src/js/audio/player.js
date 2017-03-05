@@ -15,6 +15,7 @@ export default class Player {
 		// Opus Decoding
 		this.decoder =  new OpusDecoder(this.config.codec.sampleRate, this.config.codec.channels);
 		this.scriptNode = audioContext.createScriptProcessor(this.config.codec.bufferSize, 1, 1);
+		this.gainNode = audioContext.createGain();
 	}
 
 	start(streamId) {
@@ -59,7 +60,6 @@ export default class Player {
 				e.outputBuffer.getChannelData(0).set(_this.silence);
 			}
 		};
-		this.gainNode = audioContext.createGain();
 		this.scriptNode.connect(this.gainNode);
 		this.gainNode.connect(audioContext.destination);
 
@@ -91,11 +91,13 @@ export default class Player {
       	this.gainNode.disconnect();
       	this.gainNode = null;
 
-      	if (!this.parentSocket) {
-      		this.socket.close();
-      	} else {
-      		this.socket.onmessage = this.parentOnmessage;
-      	}
+      	if(this.socket){
+	      	 if (!this.parentSocket) {
+	      		this.socket.close();
+	      	} else {
+	      		this.socket.onmessage = this.parentOnmessage;
+	      	}
+	     }
 	}
 	
 }

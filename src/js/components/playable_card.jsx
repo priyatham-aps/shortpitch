@@ -4,21 +4,17 @@ import store from "../store/store"
 import Player from "../audio/player";
 
 export default class PlayableCard extends React.Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
+		this.player = new Player(this.props.streamId)
 		this.state = {
 			isStreamPlaying:false
 		};
 	}
-	componentWillUpdate(nextProps, nextState) {
-		this.player = new Player(nextProps.streamId);
-	}
+	
 
 	render() {
 		let button
-		let randomPicRemoveLater = "http://www.livemint.com/rf/Image-621x414/LiveMint/Period1/2011/10/25/Photos/bdad2f99-acf4-4399-b603-73a77810042e.jpg"
-		console.log(this.props.streamId);
-		let sub_url = "http://localhost:8000/stream/http/subscribe/"+this.props.streamId 
 		if (this.state.isStreamPlaying) {
 			button = <button className="btn btn-primary margin-10px" onClick={()=>this.killStream()}>Stop</button>;
 		} else {
@@ -43,12 +39,6 @@ export default class PlayableCard extends React.Component {
 					 	</div>
 
 					 </div>
-					 <div>
-					 	<audio controls> 
-					 		<source type="audio/ogg" src={sub_url}></source>
-					 	</audio>
-					 </div>
-
 			</div>
 		)
 	}
