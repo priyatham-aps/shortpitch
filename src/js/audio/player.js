@@ -87,13 +87,11 @@ export default class Player {
 	stop() {
 		this.audioQueue = null;
       	this.scriptNode.disconnect();
-      	this.scriptNode = null;
       	this.gainNode.disconnect();
-      	this.gainNode = null;
-
       	if(this.socket){
 	      	 if (!this.parentSocket) {
 	      		this.socket.close();
+	      		this.socket=null;
 	      	} else {
 	      		this.socket.onmessage = this.parentOnmessage;
 	      	}

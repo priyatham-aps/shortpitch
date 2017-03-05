@@ -44,13 +44,11 @@ export default class PlayableCard extends React.Component {
 	}
 
 	killStream(){
-		console.log("killing stream")
 		this.player.stop()
 		this.setState({isStreamPlaying : false})
 	}
 
 	playStream(){
-		console.log("starting stream")
 		this.player.start()
 		this.setState({isStreamPlaying : true})
 	}
