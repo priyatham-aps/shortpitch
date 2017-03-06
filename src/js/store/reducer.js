@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import {SET_PITCHER, REMOVE_PITCHER, RECEIVE_STREAMS} from "../actions/types"
+import {SET_PITCHER, REMOVE_PITCHER, RECEIVE_STREAMS, RECEIVE_STREAM_SERVER} from "../actions/types"
 
 const pitcher = (state = "", action) => {
 	switch(action.type) {

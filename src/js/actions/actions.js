@@ -1,10 +1,10 @@
 import * as api from "../api/api"
-import {SET_PITCHER, REMOVE_PITCHER, RECEIVE_STREAMS} from "./types"
+import {SET_PITCHER, REMOVE_PITCHER, RECEIVE_STREAMS, RECEIVE_STREAM_SERVER} from "./types"
 
 export const setPitcher = (id) => {
 	return {
 		type: SET_PITCHER,
-		id: id
+		id
 	}
 }
 
@@ -17,9 +17,13 @@ export const removePitcher = () => {
 export const receiveStreams = (streams) => {
 	return {
 		type: RECEIVE_STREAMS,
-		streams: streams
+		streams
 	}
 }
+
+/***************************/
+// Action Thunks
+/***************************/
 
 export const createStream = () => {
 	return dispatch => {
@@ -32,5 +36,12 @@ export const getStreams = () => {
 	return dispatch => {
 		return api.fetchStreams()
 		.then(json => dispatch(receiveStreams(json.data)))
+	}
+}
+
+export const createEvent = () => {
+	return dispatch => {
+		return api.createEvent()
+		.then(json => dispatch())
 	}
 }
