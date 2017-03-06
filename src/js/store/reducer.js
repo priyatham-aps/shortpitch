@@ -1,11 +1,11 @@
 import { combineReducers } from "redux";
-import {SET_PITCHER, REMOVE_PITCHER, RECEIVE_STREAMS, RECEIVE_STREAM_SERVER} from "../actions/types"
+import * as actiontypes from "../actions/types"
 
 const pitcher = (state = "", action) => {
 	switch(action.type) {
-		case SET_PITCHER:
+		case actiontypes.SET_PITCHER:
 			return action.id
-		case REMOVE_PITCHER:
+		case actiontypes.REMOVE_PITCHER:
 			return ""
 		default:
 			return state
@@ -14,8 +14,26 @@ const pitcher = (state = "", action) => {
 
 const streams = (state=[], action) => {
 	switch (action.type) {
-		case RECEIVE_STREAMS:
+		case actiontypes.RECEIVE_STREAMS:
 			return action.streams;
+		default:
+			return state;
+	}
+}
+
+const events = (state=[], action) => {
+	switch (action.type) {
+		case actiontypes.RECEIVE_EVENTS:
+			return action.events;
+		default:
+			return state;
+	}
+}
+
+const currentEvent = (state="", action) => {
+	switch (action.type) {
+		case actiontypes.SELECT_CURRENT_EVENT:
+			return action.eventId;
 		default:
 			return state;
 	}
@@ -23,7 +41,9 @@ const streams = (state=[], action) => {
 
 const reducer = combineReducers({
 	pitcher,
-	streams
+	streams,
+	events,
+	currentEvent
 });
 
 export default reducer;

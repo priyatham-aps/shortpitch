@@ -1,23 +1,37 @@
 import * as api from "../api/api"
-import {SET_PITCHER, REMOVE_PITCHER, RECEIVE_STREAMS, RECEIVE_STREAM_SERVER} from "./types"
+import * as actiontypes from "./types"
 
 export const setPitcher = (id) => {
 	return {
-		type: SET_PITCHER,
+		type: actiontypes.SET_PITCHER,
 		id
 	}
 }
 
 export const removePitcher = () => {
 	return {
-		type: REMOVE_PITCHER
+		type: actiontypes.REMOVE_PITCHER
 	}
 }
 
 export const receiveStreams = (streams) => {
 	return {
-		type: RECEIVE_STREAMS,
+		type: actiontypes.RECEIVE_STREAMS,
 		streams
+	}
+}
+
+export const receiveEvents = (events) => {
+	return {
+		type: actiontypes.RECEIVE_EVENTS,
+		events
+	}
+}
+
+export const selectCurrentEvent = (eventId) => {
+	return {
+		type: actiontypes.SELECT_CURRENT_EVENT,
+		eventId
 	}
 }
 
@@ -39,9 +53,9 @@ export const getStreams = () => {
 	}
 }
 
-export const createEvent = () => {
+export const fetchEvents = () => {
 	return dispatch => {
-		return api.createEvent()
-		.then(json => dispatch())
+		return api.fetchEvents()
+		.then(json => dispatch(receiveEvents(json.data)));
 	}
 }

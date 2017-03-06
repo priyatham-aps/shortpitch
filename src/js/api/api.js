@@ -26,17 +26,11 @@ export const fetchStreams = () => {
 	.then(response => response.json());
 }
 
-export const createEvent = () => {
+export const fetchEvents = () => {
 	const url = "/api/event/";
-	const body = {
-		name: "event 1",
-		description: "event 1",
-		running_now: 1
-	}
 	const init = {
-		method: POST,
-		credentials: "same-origin",
-		body
+		method: GET,
+		credentials: "same-origin"
 	}
 
 	return fetch(url, init)
