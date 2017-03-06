@@ -6,7 +6,7 @@ import Player from "../audio/player";
 export default class PlayableCard extends React.Component {
 	constructor(props) {
 		super(props);
-		this.player = new Player(this.props.streamId)
+		this.player = new Player(this.props.stream.id)
 		this.state = {
 			isStreamPlaying:false
 		};
@@ -32,7 +32,8 @@ export default class PlayableCard extends React.Component {
 
 					 	</div>
 					 	<div className="col-md-2">
-
+					 		{this.props.stream.subscriber_count}
+					 		<p>Listeners</p>
 					 	</div>
 					 	<div className="col-md-1">
 

@@ -11,7 +11,7 @@ export default class StreamsList extends React.Component {
 
 	render() {
 		const {streams} = this.props;
-		const players = streams.map((s, i) => <PlayableCard key={i} streamId={s.id}/>);
+		const players = streams.map((s, i) => <PlayableCard key={i} stream={s}/>);
 
 		return <div>
 			{players}
