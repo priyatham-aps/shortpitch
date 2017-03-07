@@ -57,6 +57,11 @@ gulp.task("js", jsCompileFn("src/js/**/*.js"));
 
 gulp.task("jsx", jsCompileFn("src/js/**/*.jsx"));
 
+gulp.task("asm", function() {
+	return gulp.src("src/asm/**/*")
+	.pipe(gulp.dest("dist/asm"));
+});
+
 gulp.task("link_jspm", function() {
 	return vfs.src(['config.js', 'jspm_packages'], {followSymlinks: false})
 	.pipe(vfs.symlink('dist'));
@@ -82,4 +87,4 @@ gulp.task("connect", function() {
 	});
 });
 
-gulp.task("default", ["html","img", "less", "link_jspm", "js", "jsx", "connect"]);
+gulp.task("default", ["html","img", "less", "link_jspm", "js", "jsx", "asm", "connect"]);
