@@ -4,8 +4,8 @@ import {setPitcher} from "../actions/actions"
 const POST = "POST";
 const GET = "GET";
 
-export const createStream = () => {
-	const url = "/api/stream/";
+export const createStream = (eId) => {
+	const url = `/api/event/${eId}/stream`;
 	const init = {
 		method: POST,
 		credentials: "same-origin"
@@ -15,11 +15,10 @@ export const createStream = () => {
 	.then(response => response.json());
 }
 
-export const fetchStreams = () => {
-	const url = "/api/stream/";
+export const fetchStreams = (eId) => {
+	const url = `/api/event/${eId}/stream`;
 	const init = {
-		method: GET,
-		credentials: "same-origin"
+		method: GET
 	};
 
 	return fetch(url, init)
@@ -29,8 +28,7 @@ export const fetchStreams = () => {
 export const fetchEvents = () => {
 	const url = "/api/event/";
 	const init = {
-		method: GET,
-		credentials: "same-origin"
+		method: GET
 	}
 
 	return fetch(url, init)

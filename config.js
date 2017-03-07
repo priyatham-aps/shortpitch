@@ -138,7 +138,7 @@ System.config({
     },
     "npm:isomorphic-fetch@2.2.1": {
       "node-fetch": "npm:node-fetch@1.6.3",
-      "whatwg-fetch": "npm:whatwg-fetch@2.0.2"
+      "whatwg-fetch": "npm:whatwg-fetch@2.0.3"
     },
     "npm:loose-envify@1.3.1": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",

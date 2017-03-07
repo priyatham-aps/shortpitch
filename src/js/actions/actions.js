@@ -8,7 +8,7 @@ export const setPitcher = (id) => {
 	}
 }
 
-export const removePitcher = () => {
+export const stopPitching = () => {
 	return {
 		type: actiontypes.REMOVE_PITCHER
 	}
@@ -39,16 +39,16 @@ export const selectCurrentEvent = (eventId) => {
 // Action Thunks
 /***************************/
 
-export const createStream = () => {
+export const startPitching = (eId) => {
 	return dispatch => {
-		return api.createStream()
+		return api.createStream(eId)
 		.then(json => dispatch(setPitcher(json.id)))
 	}
 }
 
-export const getStreams = () => {
+export const getStreams = (eId) => {
 	return dispatch => {
-		return api.fetchStreams()
+		return api.fetchStreams(eId)
 		.then(json => dispatch(receiveStreams(json.data)))
 	}
 }
@@ -56,6 +56,21 @@ export const getStreams = () => {
 export const fetchEvents = () => {
 	return dispatch => {
 		return api.fetchEvents()
-		.then(json => dispatch(receiveEvents(json.data)));
+		.then(json => {
+			dispatch(receiveEvents(json.data));
+			if (json.data && json.data[0]) {
+				dispatch(selectCurrentEvent(json.data[0].id));
+			}
+		});
+	}
+}
+
+export const fetchEventAndStreams = () => {
+	return (dispatch, getState) => {
+		return dispatch(fetchEvents()).then(() => {
+			if (getState().currentEvent) {
+				dispatch(getStreams(getState().currentEvent));
+			}
+		});
 	}
 }

@@ -1,23 +1,25 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import {createStream, removePitcher} from "../actions/actions"
+import {startPitching, stopPitching} from "../actions/actions"
 import store from "../store/store"
 import Streamer from "../audio/streamer";
 
 export default class StreamableBtn extends React.Component {
 	constructor() {
 		super();
-
 		this.streamer = new Streamer();
-		this.state = {
-			isStreamRunning:false
-		};
 	}
 
-	componentWillUpdate(nextProps, nextState) {
-		if (this.props.streamId !== nextProps.streamId) {
-			if (nextProps.streamId) {
-				this.streamer.start(nextProps.streamId);
+	componentDidMount() {
+		if (this.props.streamId) {
+			this.streamer.start(this.props.streamId);
+		}
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (this.props.streamId !== prevProps.streamId) {
+			if (this.props.streamId) {
+				this.streamer.start(this.props.streamId);
 			} else {
 				this.streamer.stop();
 			}
@@ -37,13 +39,23 @@ export default class StreamableBtn extends React.Component {
 		}
 	}
 
-	stopStream(){
+	stopStream() {
 		console.log("stopping stream")
-		store.dispatch(removePitcher());
+		store.dispatch(stopPitching());
 	}
 
-	startStream(){
+	startStream() {
 		console.log("starting stream");
-		store.dispatch(createStream());
+		store.dispatch(startPitching(this.props.eventId));
 	}
+}
+
+StreamableBtn.propTypes = {
+	streamId: React.PropTypes.string,
+	eventId: React.PropTypes.string
+}
+
+StreamableBtn.defaultProps = {
+	streamId: "",
+	eventId: ""
 }

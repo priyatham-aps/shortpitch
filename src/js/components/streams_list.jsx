@@ -1,21 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import store from "../store/store"
-import {getStreams} from "../actions/actions"
 import PlayableCard from "./playable_card"
 
 export default class StreamsList extends React.Component {
-	componentWillMount() {
-		store.dispatch(getStreams());
-	}
-
 	render() {
 		const {streams} = this.props;
 		let players
 		if(streams){
 			players =  streams.map((s, i) => <PlayableCard key={i} stream={s}/>);
 		}
-		
 
 		return <div>
 			{players}
@@ -35,8 +29,8 @@ export default class StreamsList extends React.Component {
 	}
 }
 
-StreamsList.PropTypes = {
-	streams: React.PropTypes.arrayOf(React.PropTypes.string)
+StreamsList.propTypes = {
+	streams: React.PropTypes.arrayOf(React.PropTypes.object)
 }
 
 StreamsList.defaultProps = {
