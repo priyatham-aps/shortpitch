@@ -15,6 +15,7 @@ export default class PlayableCard extends React.Component {
 
 	render() {
 		let button
+		var backgroundImageLoc = "url('//graph.facebook.com/"+this.props.stream.user.fbid+"/picture?type=large')"
 		if (this.state.isStreamPlaying) {
 			button = <button className="btn btn-primary margin-10px" onClick={()=>this.killStream()}>Stop</button>;
 		} else {
@@ -26,8 +27,11 @@ export default class PlayableCard extends React.Component {
 					 	{button}
 					 </div>
 					 <div className="col-md-10 sp-meta-container">
-					 	<div className="col-md-3 sp-img-container" style={{backgroundImage:"url('http://www.opindia.com/wp-content/uploads/2016/04/harsha.jpg')"}}>
+					 	<div className="col-md-3 sp-img-container" >
+					 		<div className="sp-user-profile " style={{backgroundImage:backgroundImageLoc}}></div>
+					 		<h6>{this.props.stream.user.nickname}</h6>
 					 	</div>
+					 	
 					 	<div className="col-md-6">
 
 					 	</div>
