@@ -68,6 +68,7 @@ gulp.task("fbs", function() {
 
 gulp.task("vendor", function() {
 	return gulp.src("_vendor/**/*")
+	.pipe(watch("_vendor/**/*"))
 	.pipe(gulp.dest("dist/vendor"));
 });
 
