@@ -13,7 +13,7 @@ export default class App extends React.Component {
 	render() {
 		const {pitcher, streams, events, currentEvent} = this.props.data;
 
-		const event = events && events.length && currentEvent ? events.find(e => e.id === currentEvent) : {};
+		const event = events && events.length && currentEvent ? events.find(e => e.id === currentEvent) : null;
 
 		if (event) {
 			return <div>
