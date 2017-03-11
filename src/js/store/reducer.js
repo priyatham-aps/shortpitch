@@ -32,8 +32,33 @@ const events = (state=[], action) => {
 
 const currentEvent = (state="", action) => {
 	switch (action.type) {
-		case actiontypes.SELECT_CURRENT_EVENT:
+		case actiontypes.SET_CURRENT_EVENT:
 			return action.eventId;
+		default:
+			return state;
+	}
+}
+
+const currentStream = (state="", action) => {
+	switch (action.type) {
+		case actiontypes.SET_CURRENT_STREAM:
+			return action.streamId;
+		case actiontypes.STOP_CURRENT_STREAM:
+			if (state === action.streamId) {
+				return "";
+			}
+			// TODO: Remove
+			console.info(`Trying to stop stream ${state}, but sent ${action.streamId}`);
+			return state;
+		default:
+			return state;
+	}
+}
+
+const currentView = (state="", action) => {
+	switch (action.type) {
+		case actiontypes.SET_CURRENT_VIEW:
+			return action.currentView;
 		default:
 			return state;
 	}
@@ -41,9 +66,11 @@ const currentEvent = (state="", action) => {
 
 const reducer = combineReducers({
 	pitcher,
-	streams,
 	events,
-	currentEvent
+	streams,
+	currentEvent,
+	currentStream,
+	currentView
 });
 
 export default reducer;

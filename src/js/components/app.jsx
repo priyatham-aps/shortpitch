@@ -1,9 +1,11 @@
 import React from "react";
-import StreamableBtn from "./streamable_btn";
-import StreamsList from "./streams_list";
-import EventInfo from "./event_info";
+import HomePage from "./homepage";
+import PublishView from "./publish_view";
+import SubscribeView from "./subscribe_view";
+import Login from "./login";
 import { fetchEventAndStreams } from "../actions/actions";
-import store from "../store/store"
+import store from "../store/store";
+import * as views from "./views";
 
 export default class App extends React.Component {
 	componentWillMount() {
@@ -11,18 +13,23 @@ export default class App extends React.Component {
 	}
 
 	render() {
-		const {pitcher, streams, events, currentEvent} = this.props.data;
+		const {pitcher, events, streams, currentEvent, currentStream, currentView} = this.props.data;
 
-		const event = events && events.length && currentEvent ? events.find(e => e.id === currentEvent) : null;
-
-		if (event) {
-			return <div>
-				<StreamableBtn streamId={pitcher} eventId={currentEvent}></StreamableBtn>
-				<EventInfo event={event}></EventInfo>
-				<StreamsList streams={streams}></StreamsList>
-			</div>;
-		} else {
-			return <div>No current events!</div>;
+		switch (currentView) {
+			case views.PUBLISH_VIEW:
+				return <PublishView streamId={pitcher} eventId={currentEvent}></PublishView>;
+				break;
+			case views.SUBSCRIBE_VIEW:
+				const event = events && events.length && currentEvent ? events.find(e => e.id === currentEvent) : {};
+				const stream = streams && streams.length && currentStream ? streams.find(s => s.id === currentStream) : {};
+				return <SubscribeView stream={stream} event={event} currentStream={currentStream}></SubscribeView>;
+				break;
+			case views.LOGIN_VIEW:
+				return <Login></Login>;
+				break;
+			default:
+				return <HomePage {...this.props.data}></HomePage>;
+				break;
 		}
 	}
 }

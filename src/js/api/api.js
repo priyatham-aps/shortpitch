@@ -28,7 +28,8 @@ export const fetchStreams = (eId) => {
 export const fetchEvents = () => {
 	const url = "/api/event/";
 	const init = {
-		method: GET
+		method: GET,
+		credentials: "same-origin"
 	}
 
 	return fetch(url, init)

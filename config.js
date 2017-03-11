@@ -9,6 +9,7 @@ System.config({
 
   map: {
     "bootstrap": "github:twbs/bootstrap@3.3.7",
+    "flatbuffers": "npm:flatbuffers@1.5.0",
     "react": "npm:react@15.4.2",
     "react-dom": "npm:react-dom@15.4.2",
     "redux": "npm:redux@3.6.0",

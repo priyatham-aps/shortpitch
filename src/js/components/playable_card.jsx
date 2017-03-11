@@ -1,6 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import store from "../store/store"
 import Player from "../audio/player";
 
 export default class PlayableCard extends React.Component {
@@ -12,12 +10,34 @@ export default class PlayableCard extends React.Component {
 		};
 	}
 
+	componentWillMount() {
+		if (this.props.isPlaying) {
+			this.player.start();
+		}
+	}
+
+	componentWillUpdate(nextProps) {
+		if (this.props.isPlaying !== nextProps.isPlaying) {
+			if (nextProps.isPlaying) {
+				this.player.start();
+			} else {
+				this.player.stop();
+			}
+		}
+	}
+
+	componentWillUnmount() {
+		if (this.props.isPlaying) {
+			this.player.stop();
+		}
+	}
+
 	render() {
 		let button
-		if (this.state.isStreamPlaying) {
-			button = <button className="btn btn-primary margin-10px" onClick={()=>this.killStream()}>Stop</button>;
+		if (this.props.isPlaying) {
+			button = <button className="btn btn-primary margin-10px" onClick={()=>this.props.stop()}>Stop</button>;
 		} else {
-			button =  <button className="btn btn-primary margin-10px" onClick={()=>this.playStream()}>Play</button>;
+			button =  <button className="btn btn-primary margin-10px" onClick={()=>this.props.play()}>Play</button>;
 		}
 
 		return (
@@ -25,47 +45,58 @@ export default class PlayableCard extends React.Component {
 					<div className="sp-play-pause">
 						{button}
 					</div>
-					<CardInfo {...this.props} onClick={this.onCardClick}></CardInfo>
+					<div className="col-md-10 sp-meta-container clickable" onClick={() => this.onCardClick()}>
+						<CardInfo stream={this.props.stream}></CardInfo>
+					</div>
 			</div>
 		)
 	}
 
-	killStream(){
-		this.player.stop()
-		this.setState({isStreamPlaying : false})
-	}
-
-	playStream(){
-		this.player.start()
-		this.setState({isStreamPlaying : true})
-	}
-
 	onCardClick() {
-		console.log("Card clicked!");
+		if (this.props.onPlayerClick) {
+			this.props.onPlayerClick();
+		}
 	}
+}
+
+PlayableCard.propTypes = {
+	stream: React.PropTypes.object.isRequired,
+	isPlaying: React.PropTypes.bool.isRequired,
+	play: React.PropTypes.func.isRequired,
+	stop: React.PropTypes.func.isRequired,
+	onPlayerClick: React.PropTypes.func
+}
+
+PlayableCard.defaultProps = {
+	stream: {},
+	isPlaying: false
 }
 
 class CardInfo extends React.Component {
 	render() {
-		const backgroundImageLoc = "url('//graph.facebook.com/"+this.props.stream.user.fbid+"/picture?type=large')"
+		const user = this.props.stream.user || {};
+		const subscriber_count = this.props.stream.subscriber_count || 0;
+		const backgroundImageLoc = "url('//graph.facebook.com/"+user.fbid+"/picture?type=large')"
 
-		return <div className="col-md-10 sp-meta-container">
+		return <div>
 			<div className="col-md-3 sp-img-container" >
 				<div className="sp-user-profile " style={{backgroundImage:backgroundImageLoc}}></div>
-				<h6>{this.props.stream.user.nickname}</h6>
+				<h6>{user.nickname}</h6>
 			</div>
-
-			<div className="col-md-6">
-
-			</div>
+			<div className="col-md-6"></div>
 			<div className="col-md-2">
-				{this.props.stream.subscriber_count}
+				{subscriber_count}
 				<p>Listeners</p>
 			</div>
-			<div className="col-md-1">
-
-			</div>
-
-		</div>
+			<div className="col-md-1"></div>
+		</div>;
 	}
+}
+
+CardInfo.propTypes = {
+	stream: React.PropTypes.object.isRequired
+}
+
+CardInfo.defaultProps = {
+	stream: {}
 }

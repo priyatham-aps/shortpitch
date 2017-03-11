@@ -2,13 +2,22 @@ import React from "react";
 import ReactDOM from "react-dom";
 import store from "../store/store"
 import PlayableCard from "./playable_card"
+import { setCurrentView, setCurrentStream, stopPlayingStream } from "../actions/actions";
+import { SUBSCRIBE_VIEW } from "./views";
 
 export default class StreamsList extends React.Component {
 	render() {
-		const {streams} = this.props;
+		const {streams, currentStream} = this.props;
 		let players
 		if(streams){
-			players =  streams.map((s, i) => <PlayableCard key={i} stream={s}/>);
+			players = streams.map((s, i) => <PlayableCard
+				key={i}
+				stream={s}
+				isPlaying={s.id === currentStream}
+				play={() => this.playStream(s.id)}
+				stop={() => this.stopStream(s.id)}
+				onPlayerClick={() => this.onPlayerClick(s.id)}>
+			</PlayableCard>);
 		}
 
 		return <div>
@@ -16,23 +25,26 @@ export default class StreamsList extends React.Component {
 		</div>;
 	}
 
-	killStream(){
-		console.log("killing stream")
-		this.player.stop()
-		this.state.isStreamPlaying = false
+	stopStream(id) {
+		store.dispatch(stopPlayingStream(id));
 	}
 
-	playStream(){
-		console.log("starting stream")
-		this.player.start()
-		this.state.isStreamPlaying = true
+	playStream(id) {
+		store.dispatch(setCurrentStream(id));
+	}
+
+	onPlayerClick(id) {
+		store.dispatch(setCurrentView(SUBSCRIBE_VIEW));
+		store.dispatch(setCurrentStream(id));
 	}
 }
 
 StreamsList.propTypes = {
-	streams: React.PropTypes.arrayOf(React.PropTypes.object)
+	streams: React.PropTypes.arrayOf(React.PropTypes.object),
+	currentStream: React.PropTypes.string
 }
 
 StreamsList.defaultProps = {
-	streams: []
+	streams: [],
+	currentStream: ""
 }

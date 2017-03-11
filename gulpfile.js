@@ -11,7 +11,7 @@ var vfs = require('vinyl-fs');
 
 var jsCompileFn = function(src) {
 	var babelOpts = {
-		presets: ['env', "react"],
+		presets: ['latest', "react", "stage-2"],
 		"plugins": [
 			["transform-es2015-modules-systemjs"]
 		]

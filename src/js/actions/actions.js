@@ -30,8 +30,29 @@ export const receiveEvents = (events) => {
 
 export const selectCurrentEvent = (eventId) => {
 	return {
-		type: actiontypes.SELECT_CURRENT_EVENT,
+		type: actiontypes.SET_CURRENT_EVENT,
 		eventId
+	}
+}
+
+export const setCurrentView = (currentView) => {
+	return {
+		type: actiontypes.SET_CURRENT_VIEW,
+		currentView
+	}
+}
+
+export const setCurrentStream = (streamId) => {
+	return {
+		type: actiontypes.SET_CURRENT_STREAM,
+		streamId
+	}
+}
+
+export const stopPlayingStream = (streamId) => {
+	return {
+		type: actiontypes.STOP_CURRENT_STREAM,
+		streamId
 	}
 }
 
