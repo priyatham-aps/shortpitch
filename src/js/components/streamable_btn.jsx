@@ -3,23 +3,25 @@ import ReactDOM from "react-dom";
 import {startPitching, stopPitching} from "../actions/actions"
 import store from "../store/store"
 import Streamer from "../audio/streamer";
+import {defaultConfig} from '../globals' 
 
 export default class StreamableBtn extends React.Component {
 	constructor() {
 		super();
-		this.streamer = new Streamer();
+		
 	}
 
 	componentDidMount() {
-		if (this.props.streamId) {
-			this.streamer.start(this.props.streamId);
-		}
+		//if (this.props.streamId) {
+		//	this.streamer.start(this.props.streamId,this.props.eventId);
+		//}
 	}
 
 	componentDidUpdate(prevProps, prevState) {
+		this.streamer = new Streamer(defaultConfig,this.props.streamId,this.props.eventId);
 		if (this.props.streamId !== prevProps.streamId) {
 			if (this.props.streamId) {
-				this.streamer.start(this.props.streamId);
+				this.streamer.start(this.props.streamId,this.props.eventId);
 			} else {
 				this.streamer.stop();
 			}

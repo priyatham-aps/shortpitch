@@ -10,6 +10,7 @@ System.config({
   map: {
     "bootstrap": "github:twbs/bootstrap@3.3.7",
     "flatbuffers": "npm:flatbuffers@1.5.0",
+    "long": "npm:long@3.2.0",
     "react": "npm:react@15.4.2",
     "react-dom": "npm:react-dom@15.4.2",
     "redux": "npm:redux@3.6.0",
@@ -140,6 +141,11 @@ System.config({
     "npm:isomorphic-fetch@2.2.1": {
       "node-fetch": "npm:node-fetch@1.6.3",
       "whatwg-fetch": "npm:whatwg-fetch@2.0.3"
+    },
+    "npm:long@3.2.0": {
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "path": "github:jspm/nodelibs-path@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:loose-envify@1.3.1": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",

@@ -91,6 +91,11 @@ gulp.task("connect", function() {
 						target: 'http://localhost:8000',
 						changeOrigin:true,
 						ws:true
+					}),
+				proxy('/control', {
+						target: 'http://localhost:8000',
+						changeOrigin:true,
+						ws:true
 					})
 			]
 		}
