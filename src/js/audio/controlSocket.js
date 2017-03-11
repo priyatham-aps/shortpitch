@@ -9,20 +9,17 @@ class ControlSocketClass {
 			socketUrl = "wss://"+location.host+"/control"
 		}
 		this.socketUrl = socketUrl
-		
+
 	}
 
 	connect() {
 		this.controlSocket = new WebSocket(this.socketUrl)
-		return this.controlSocket 
+		return this.controlSocket
 	}
 }
 
 const cs = new ControlSocketClass();
 
 export const ControlSocket = () => {
-	if(cs) { return cs;}
-
-	cs = new ControlSocketClass();
 	return cs;
 }

@@ -68,34 +68,34 @@ export default class Player {
 		} else {
 			this.socket = this.parentSocket;
 		}
-        var _onmessage = this.parentOnmessage = this.socket.onmessage;
-        this.socket.onmessage = function(message) {
-        	if (_onmessage) {
-        		_onmessage(message);
-        	}
-        	if (message.data instanceof Blob) {
-        		var reader = new FileReader();
-        		reader.onload = function(event) {
-        			//Opus Decoding
-        			_this.audioQueue.write(_this.decoder.decode_float(reader.result));
-        		};
-        		reader.readAsArrayBuffer(message.data);
-        	}
-        };
+		var _onmessage = this.parentOnmessage = this.socket.onmessage;
+		this.socket.onmessage = function(message) {
+			if (_onmessage) {
+				_onmessage(message);
+			}
+			if (message.data instanceof Blob) {
+				var reader = new FileReader();
+				reader.onload = function(event) {
+					//Opus Decoding
+					_this.audioQueue.write(_this.decoder.decode_float(reader.result));
+				};
+				reader.readAsArrayBuffer(message.data);
+			}
+		};
 	}
 
 	stop() {
 		this.audioQueue = null;
-      	this.scriptNode.disconnect();
-      	this.gainNode.disconnect();
-      	if(this.socket){
-	      	 if (!this.parentSocket) {
-	      		this.socket.close();
-	      		this.socket=null;
-	      	} else {
-	      		this.socket.onmessage = this.parentOnmessage;
-	      	}
-	     }
+		this.scriptNode.disconnect();
+		this.gainNode.disconnect();
+		if(this.socket){
+			if (!this.parentSocket) {
+				this.socket.close();
+				this.socket=null;
+			} else {
+				this.socket.onmessage = this.parentOnmessage;
+			}
+		}
 	}
-	
+
 }

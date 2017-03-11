@@ -1,4 +1,4 @@
-import {defaultConfig} from '../globals' 
+import {defaultConfig} from '../globals'
 import Resampler from './resampler'
 import {OpusEncoder} from './opus'
 import * as interpretor from './interpretor'
@@ -11,7 +11,7 @@ const builder = new flatbuffers.Builder(1024)
 
 
 export default class Streamer {
-	constructor(config, streamId,eventId) {
+	constructor(config, streamId, eventId) {
 		navigator.getUserMedia = (navigator.getUserMedia ||
 				navigator.webkitGetUserMedia ||
 				navigator.mozGetUserMedia ||
@@ -24,10 +24,9 @@ export default class Streamer {
 		this.sampler = new Resampler(audioContext.sampleRate, this.config.codec.sampleRate, 1, this.config.codec.bufferSize);
 		this.encoder = new OpusEncoder(this.config.codec.sampleRate, this.config.codec.channels, this.config.codec.app, this.config.codec.frameDuration);
 		this.controlSocket = ControlSocket()
-		
 	}
 
-	start(streamId,eventId, onError) {
+	start(streamId, eventId, onError) {
 		streamId = streamId || this.streamId;
 		eventId = eventId || this.eventId;
 		let socketUrl
@@ -50,20 +49,20 @@ export default class Streamer {
 					_onopen();
 				}
 				this.socket.send(interpretor.getStreamBroadCastMessage(builder,streamId,eventId));
-				
+
 			}
 		} else {
 			console.error('Socket is in CLOSED state');
 		}
 		this.socket.onmessage = (response) => {
-        	var bytes = response;
-        	console.log(response)
-        	var buf = new flatbuffers.ByteBuffer(bytes);
-        	var streamResponse = message.StreamResponse.getRootAsStreamResponse(buf);
-        	if(streamResponse.status()==message.Status.OK){
-        		this._makeStream(onError);
-        	}
-        };
+			var bytes = response;
+			console.log(response)
+			var buf = new flatbuffers.ByteBuffer(bytes);
+			var streamResponse = message.StreamResponse.getRootAsStreamResponse(buf);
+			if(streamResponse.status()==message.Status.OK){
+				this._makeStream(onError);
+			}
+		};
 
 		const _onclose = this.socket.onclose;
 		this.socket.onclose = () => {
@@ -84,7 +83,7 @@ export default class Streamer {
 			}
 			if (this.stream){
 				this.stream.getTracks()[0].stop();
-			} 
+			}
 
 			console.log('Disconnected from server');
 		};
@@ -137,8 +136,8 @@ export default class Streamer {
 				 var resampled = this.sampler.resampler(e.inputBuffer.getChannelData(0));
 				 var packets = this.encoder.encode_float(resampled);
 				 for (var i = 0; i < packets.length; i++) {
-				 	//if (this.socket.readyState == 1) this.socket.send(packets[i]);
-				 	var intArray = new Uint8Array(packets[i])
+					 //if (this.socket.readyState == 1) this.socket.send(packets[i]);
+					 var intArray = new Uint8Array(packets[i])
 					//if (this.socket.readyState == 1) this.socket.send(interpretor.getStreamFrameMessage(builder,intArray,this.streamId,this.eventId));
 				 }
 				//var resampled = this.sampler.resampler(left);

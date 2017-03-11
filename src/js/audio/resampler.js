@@ -9,7 +9,7 @@ export default class Resampler {
 	}
 	initialize() {
 		//Perform some checks:
-	if (this.fromSampleRate > 0 && this.toSampleRate > 0 && this.channels > 0) {
+		if (this.fromSampleRate > 0 && this.toSampleRate > 0 && this.channels > 0) {
 			if (this.fromSampleRate == this.toSampleRate) {
 				//Setup a resampler bypass:
 				this.resampler = this.bypassResampler;		//Resampler just returns what was passed through.
