@@ -13,7 +13,7 @@ var Opus = (function () {
 		return 2.5;
 	};
 	Opus.getMaxFrameDuration = function () {
-		return 5;
+		return 20;
 	};
 	Opus.validFrameDuration = function (x) {
 		return [2.5, 5, 10, 20, 40, 60].some(function (element) {

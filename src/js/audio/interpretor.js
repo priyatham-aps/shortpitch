@@ -40,14 +40,14 @@ export const getStreamFrameMessage = (b,input,streamId, eventId) => {
 	message.StreamFrame.addSampleRate(b, defaultConfig.codec.sampleRate)
 	message.StreamFrame.addChannels(b, defaultConfig.codec.channels)
 	message.StreamFrame.addFrame(b, frameOffset)
-	const streamFrameOffset = message.endStreamFrame(b)
+	const streamFrameOffset = message.StreamFrame.endStreamFrame(b)
 	message.StreamMessage.startStreamMessage(b)
 	message.StreamMessage.addEventId(b, eventIdOffset)
 	message.StreamMessage.addStreamId(b, streamIdOffset)
 	message.StreamMessage.addMessageType(b, message.Message.StreamFrame)
 	message.StreamMessage.addMessage(b, streamFrameOffset)
 	message.StreamMessage.addTimestamp(b,timestampFbLong)
-	const streamMessageOffset = message.endStreamFrame(b)
+	const streamMessageOffset = message.StreamMessage.endStreamMessage(b)
 	b.finish(streamMessageOffset)
 	return b.asUint8Array();
 }

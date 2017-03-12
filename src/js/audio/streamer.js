@@ -136,9 +136,10 @@ export default class Streamer {
 				 var resampled = this.sampler.resampler(e.inputBuffer.getChannelData(0));
 				 var packets = this.encoder.encode_float(resampled);
 				 for (var i = 0; i < packets.length; i++) {
+					 // uncomment this for without controlsocket
 					 //if (this.socket.readyState == 1) this.socket.send(packets[i]);
 					 var intArray = new Uint8Array(packets[i])
-					//if (this.socket.readyState == 1) this.socket.send(interpretor.getStreamFrameMessage(builder,intArray,this.streamId,this.eventId));
+					 if (this.socket.readyState == 1) this.socket.send(interpretor.getStreamFrameMessage(builder,intArray,this.streamId,this.eventId));
 				 }
 				//var resampled = this.sampler.resampler(left);
 				//this.socket.send(this._convertFloat32ToInt16(resampled))
