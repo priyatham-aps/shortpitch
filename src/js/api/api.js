@@ -1,5 +1,5 @@
 import store from "../store/store"
-import {setPitcher} from "../actions/actions"
+import {setPitcher,setCurrentView} from "../actions/actions"
 
 const POST = "POST";
 const GET = "GET";
@@ -12,7 +12,13 @@ export const createStream = (eId) => {
 	};
 
 	return fetch(url, init)
-	.then(response => response.json());
+	.then(response => {
+			var promise = new Promise((resolve,reject)=>{
+				if(response.status!=401) resolve(response.json())
+				else reject(response)
+			})
+			return promise
+		});
 }
 
 export const fetchStreams = (eId) => {

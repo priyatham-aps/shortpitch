@@ -27,15 +27,16 @@ export default class StreamableBtn extends React.Component {
 	}
 
 	componentWillUnmount() {
-		console.log("Unmount");
-		this.streamer.stop();
+		if (this.props.streamId) {
+			this.streamer.stop();
+		}
 	}
 
 	render() {
 		if (this.props.streamId) {
-			return <button className="btn btn-primary margin-10px" onClick={()=>this.stopStream()}>Stop pitching!</button>;
+			return <button className="btn btn-danger margin-10px" onClick={()=>this.stopStream()}>Stop pitching &nbsp;&nbsp;<span><i className="fa fa-microphone-slash"></i></span></button>;
 		} else {
-			return <button className="btn btn-primary margin-10px" onClick={()=>this.startStream()}>Start pitching!</button>;
+			return <button className="btn btn-warning margin-10px" onClick={()=>this.startStream()}>Start pitching &nbsp;&nbsp;<span><i className="fa fa-microphone"></i></span></button>;
 		}
 	}
 

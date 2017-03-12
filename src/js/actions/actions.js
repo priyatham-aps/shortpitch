@@ -1,5 +1,6 @@
 import * as api from "../api/api"
 import * as actiontypes from "./types"
+import {LOGIN_VIEW} from '../components/views'
 
 export const setPitcher = (id) => {
 	return {
@@ -64,6 +65,7 @@ export const startPitching = (eId) => {
 	return dispatch => {
 		return api.createStream(eId)
 		.then(json => dispatch(setPitcher(json.id)))
+		.catch(error => dispatch(setCurrentView(LOGIN_VIEW)))
 	}
 }
 
