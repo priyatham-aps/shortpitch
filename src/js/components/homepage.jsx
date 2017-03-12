@@ -16,6 +16,8 @@ export default class HomePage extends React.Component {
 			return <div>
 				<button className="btn btn-primary margin-10px" onClick={()=>this.startPitching()}>Start pitching!</button>
 				<EventInfo event={event}></EventInfo>
+				<hr style={{opacity:0.3}}></hr>
+				<Description></Description>
 				<StreamsList streams={streams} currentStream={currentStream}></StreamsList>
 			</div>;
 		} else {
@@ -25,5 +27,11 @@ export default class HomePage extends React.Component {
 
 	startPitching() {
 		store.dispatch(setCurrentView(PUBLISH_VIEW));
+	}
+}
+
+class Description extends React.Component {
+	render() {
+		return <div className="commentaryMessage">Live Cricket Commentary from people around you</div>;
 	}
 }

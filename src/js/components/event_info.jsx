@@ -3,7 +3,7 @@ import React from "react";
 export default class EventInfo extends React.Component {
 	render() {
 		const {event} = this.props;
-		return <div>{event.name}</div>;
+		return <div style={{height:200}}>{event.name}</div>;
 	}
 }
 

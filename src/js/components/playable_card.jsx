@@ -41,11 +41,11 @@ export default class PlayableCard extends React.Component {
 		}
 
 		return (
-			<div className="sp-slat">
-					<div className="sp-play-pause">
+			<div className="sp-slat col-md-3 col-xs-10">
+					<div className="sp-play-pause col-md-3">
 						{button}
 					</div>
-					<div className="col-md-10 sp-meta-container clickable" onClick={() => this.onCardClick()}>
+					<div className="col-md-9 sp-meta-container clickable" onClick={() => this.onCardClick()}>
 						<CardInfo stream={this.props.stream}></CardInfo>
 					</div>
 			</div>
@@ -83,12 +83,12 @@ class CardInfo extends React.Component {
 				<div className="sp-user-profile " style={{backgroundImage:backgroundImageLoc}}></div>
 				<h6>{user.nickname}</h6>
 			</div>
-			<div className="col-md-6"></div>
-			<div className="col-md-2">
+			<div className="col-md-3"></div>
+			<div className="col-md-3 subscriber_count">
 				{subscriber_count}
 				<p>Listeners</p>
 			</div>
-			<div className="col-md-1"></div>
+			<div className="col-md-3"></div>
 		</div>;
 	}
 }
