@@ -1,5 +1,6 @@
 import * as api from "../api/api"
-import * as actiontypes from "./types"
+import * as actiontypes from "./types";
+import { startStreaming, stopStreaming } from "./audio";
 import {LOGIN_VIEW} from '../components/views'
 
 export const setPitcher = (id) => {
@@ -9,7 +10,7 @@ export const setPitcher = (id) => {
 	}
 }
 
-export const stopPitching = () => {
+export const removePitcher = () => {
 	return {
 		type: actiontypes.REMOVE_PITCHER
 	}
@@ -64,8 +65,18 @@ export const stopPlayingStream = (streamId) => {
 export const startPitching = (eId) => {
 	return dispatch => {
 		return api.createStream(eId)
-		.then(json => dispatch(setPitcher(json.id)))
+		.then(json => {
+			dispatch(setPitcher(json.id));
+			startStreaming(json.id, eId);
+		})
 		.catch(error => dispatch(setCurrentView(LOGIN_VIEW)))
+	}
+}
+
+export const stopPitching = () => {
+	return dispatch => {
+		stopStreaming();
+		dispatch(removePitcher());
 	}
 }
 

@@ -1,6 +1,3 @@
-import store from "../store/store"
-import {setPitcher,setCurrentView} from "../actions/actions"
-
 const POST = "POST";
 const GET = "GET";
 

@@ -2,10 +2,10 @@ import * as message from ".././fbs/stream"
 import {defaultConfig} from "../globals"
 import Long from "long"
 import {flatbuffers} from "flatbuffers"
-//const b = fb.NewBuilder(1024)
 
+const b = new flatbuffers.Builder(1024)
 
-export const getStreamBroadCastMessage = (b,streamId, eventId) => {
+export const getStreamBroadCastMessage = (streamId, eventId) => {
 	let streamIdOffset
 	let eventIdOffset
 	let streamBroadCastOffset
@@ -72,11 +72,11 @@ export const getStreamCommentMessage = (b,input,streamId, eventId,username,comme
 
 	b.finish(streamMessageOffset)
 	return b.asUint8Array();
-	
+
 }
 export const getStreamStopMessage = (b,input,streamId, eventId) => {
-	
+
 }
 export const getStreamPauseMessage = (b,input,streamId, eventId) => {
-	
+
 }
