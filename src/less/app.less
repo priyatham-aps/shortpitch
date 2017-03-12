@@ -16,18 +16,16 @@
 .margin-10px {
 	margin: 10px;
 }
-
-@media (max-width: 575px) {
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
 	body{
 		background:url("/assets/img/mobile_bg.png");
 		background-size:cover;
 	}
 }
-@media (min-width: 768px) {
+@media (min-width: 1224px) {
 	body{
 		background:url("/assets/img/web_bg.png");
 		background-size:cover;
-		font-family:"KeepCalm",sans-serif;
 	}
 }
 .container {
@@ -59,17 +57,19 @@
   	border-right: solid 1px #ddd;
   	border-radius:6px 0 0 6px;
   	height:100%;
-  	padding:10px;
   	float:left;
   	background-color:rgba(154,211,34,1);
-  	button{
+  	.stream-toggle {
   		position: relative;
 	    top: 50%;
+	    text-align:center;
+	    cursor:pointer;
 	    transform: translateY(-50%);
 	    display: block;
 	    margin: 0 auto;
-	    color: black;
-    	background: white;
+	    color: white;
+    	background: none;
+    	border:none;
 
   	}
   }
@@ -77,6 +77,11 @@
   	height:100%;
   	padding:10px;
   	.sp-img-container{
+  		@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+  			.sp-user-profile{
+  				margin-left:10px;
+  			}
+  		}
   		.sp-user-profile{
   		  background-repeat: no-repeat;
 		  background-position: center center;
@@ -108,7 +113,8 @@
 	text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
     text-align:center;
     font-size:30px;
-    color:rgb(154,211,34)
+    color:rgb(154,211,34);
+    margin-bottom:20px;
 }
 //chat
 .chat-container{

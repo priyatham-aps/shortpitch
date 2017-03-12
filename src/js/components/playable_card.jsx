@@ -35,19 +35,22 @@ export default class PlayableCard extends React.Component {
 	render() {
 		let button
 		if (this.props.isPlaying) {
-			button = <button className="btn btn-primary margin-10px" onClick={()=>this.props.stop()}>Stop</button>;
+			button = <div className="stream-toggle margin-10px" onClick={()=>this.props.stop()}><i className="fa fa-2x fa-pause"></i></div>;
 		} else {
-			button =  <button className="btn btn-primary margin-10px" onClick={()=>this.props.play()}>Play</button>;
+			button =  <div className="stream-toggle  margin-10px" onClick={()=>this.props.play()}><i className="fa fa-2x fa-play"></i></div>;
 		}
 
 		return (
-			<div className="sp-slat col-md-3 col-xs-10">
-					<div className="sp-play-pause col-md-3">
-						{button}
-					</div>
-					<div className="col-md-9 sp-meta-container clickable" onClick={() => this.onCardClick()}>
-						<CardInfo stream={this.props.stream}></CardInfo>
-					</div>
+			<div className="col-md-4 col-xs-12">
+				<div className="sp-slat">
+							<div className="sp-play-pause col-md-2 col-xs-3">
+								{button}
+							</div>
+							<div className="col-md-9 sp-meta-container clickable" onClick={() => this.onCardClick()}>
+								<CardInfo stream={this.props.stream}></CardInfo>
+							</div>
+
+				</div>
 			</div>
 		)
 	}
