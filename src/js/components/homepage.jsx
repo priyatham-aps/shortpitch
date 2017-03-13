@@ -18,7 +18,7 @@ export default class HomePage extends React.Component {
 				<EventInfo event={event}></EventInfo>
 				<hr style={{opacity:0.3}}></hr>
 				<Description></Description>
-				<StreamsList streams={streams} currentStream={currentStream}></StreamsList>
+				<StreamsList streams={streams} currentStream={currentStream} eventId={currentEvent}></StreamsList>
 			</div>;
 		} else {
 			return <div>No current events!</div>;

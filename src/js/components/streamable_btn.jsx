@@ -10,12 +10,6 @@ export default class StreamableBtn extends React.Component {
 		super();
 	}
 
-	componentWillUnmount() {
-		if (this.props.streamId) {
-			this.streamer.stop();
-		}
-	}
-
 	render() {
 		if (this.props.streamId) {
 			return <button className="btn btn-danger margin-10px pitchbtn" onClick={()=>this.stopStream()}>Stop pitching &nbsp;&nbsp;<span><i className="fa fa-microphone-slash"></i></span></button>;

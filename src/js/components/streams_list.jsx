@@ -7,15 +7,15 @@ import { SUBSCRIBE_VIEW } from "./views";
 
 export default class StreamsList extends React.Component {
 	render() {
-		const {streams, currentStream} = this.props;
+		const {streams, currentStream, eventId} = this.props;
 		let players
 		if(streams){
 			players = streams.map((s, i) => <PlayableCard
 				key={i}
 				stream={s}
 				isPlaying={s.id === currentStream}
-				play={() => this.playStream(s.id)}
-				stop={() => this.stopStream(s.id)}
+				play={() => this.playStream(s.id, eventId)}
+				stop={() => this.stopStream(s.id, eventId)}
 				onPlayerClick={() => this.onPlayerClick(s.id)}>
 			</PlayableCard>);
 		}
@@ -25,12 +25,12 @@ export default class StreamsList extends React.Component {
 		</div>;
 	}
 
-	stopStream(id) {
-		store.dispatch(stopPlaying(id));
+	stopStream(sId, eId) {
+		store.dispatch(stopPlaying(sId, eId));
 	}
 
-	playStream(id) {
-		store.dispatch(startPlaying(id));
+	playStream(sId, eId) {
+		store.dispatch(startPlaying(sId, eId));
 	}
 
 	onPlayerClick(id) {
@@ -41,10 +41,12 @@ export default class StreamsList extends React.Component {
 
 StreamsList.propTypes = {
 	streams: React.PropTypes.arrayOf(React.PropTypes.object),
-	currentStream: React.PropTypes.string
+	currentStream: React.PropTypes.string,
+	eventId: React.PropTypes.string
 }
 
 StreamsList.defaultProps = {
 	streams: [],
-	currentStream: ""
+	currentStream: "",
+	eventId: ""
 }

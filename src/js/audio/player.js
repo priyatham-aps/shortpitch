@@ -33,8 +33,11 @@ class Player {
 		this.scriptNode.connect(this.gainNode);
 		this.gainNode.connect(AudioContext.destination);
 
-		ControlSocket.sendStreamSubscribeMsg(streamId, eventId)
-		.then((status) => console.log(status));
+		const audioCallback = (streamFrame) => {
+			this.audioQueue.write(this.decoder.decode_float(streamFrame.frameArray()));
+		}
+
+		ControlSocket.subscribe(streamId, eventId, audioCallback);
 
 		// ControlSocket.onListenStreamFrameMsg()
 		// .then((streamFrame) => {
@@ -62,18 +65,19 @@ class Player {
 		// };
 	}
 
-	stop() {
+	stop(streamId, eventId) {
 		this.audioQueue = null;
 		this.scriptNode.disconnect();
 		this.gainNode.disconnect();
-		if(this.socket){
-			if (!this.parentSocket) {
-				this.socket.close();
-				this.socket=null;
-			} else {
-				this.socket.onmessage = this.parentOnmessage;
-			}
-		}
+		ControlSocket.unsubscribe(streamId, eventId)
+		// if(this.socket){
+		// 	if (!this.parentSocket) {
+		// 		this.socket.close();
+		// 		this.socket=null;
+		// 	} else {
+		// 		this.socket.onmessage = this.parentOnmessage;
+		// 	}
+		// }
 	}
 }
 

@@ -80,7 +80,7 @@ export const getStreamSubscribeMessage = (streamId, eventId) => {
 	const b = new flatbuffers.Builder(1024)
 
 	const streamIdOffset = b.createString(streamId)
-	// const eventIdOffset = b.createString(eventId)
+	const eventIdOffset = b.createString(eventId)
 	const timestamp = Long.fromNumber(Date.now())
 	const timestampFbLong = flatbuffers.Long.create(timestamp.low, timestamp.high)
 
@@ -112,7 +112,7 @@ export const getStreamCommentMessage = (streamId, eventId, username, comment) =>
 	message.StreamComment.startStreamComment(b)
 	message.StreamComment.addUserName(b,userNameOffset)
 	message.StreamComment.addText(b,commentOffset)
-	const streamCommentOffset = message.StreamBroadCast.endStreamComment(b)
+	const streamCommentOffset = message.StreamComment.endStreamComment(b)
 
 	message.StreamMessage.startStreamMessage(b)
 	message.StreamMessage.addEventId(b, eventIdOffset)
@@ -128,4 +128,27 @@ export const getStreamCommentMessage = (streamId, eventId, username, comment) =>
 
 export const getStreamPauseMessage = (input, streamId, eventId) => {
 
+}
+
+export const getStreamUnsubscribeMessage = (streamId, eventId) => {
+	const b = new flatbuffers.Builder(1024)
+
+	const streamIdOffset = b.createString(streamId)
+	const eventIdOffset = b.createString(eventId)
+	const timestamp = Long.fromNumber(Date.now())
+	const timestampFbLong = flatbuffers.Long.create(timestamp.low, timestamp.high)
+
+	message.StreamUnSubscribe.startStreamUnSubscribe(b)
+	const streamUnSubscribeCastOffset = message.StreamUnSubscribe.endStreamUnSubscribe(b)
+
+	message.StreamMessage.startStreamMessage(b)
+	message.StreamMessage.addEventId(b, eventIdOffset)
+	message.StreamMessage.addStreamId(b, streamIdOffset)
+	message.StreamMessage.addMessageType(b, message.Message.StreamUnSubscribe)
+	message.StreamMessage.addMessage(b, streamUnSubscribeCastOffset)
+	message.StreamMessage.addTimestamp(b, timestampFbLong)
+	const streamMessageOffset = message.StreamMessage.endStreamMessage(b)
+
+	b.finish(streamMessageOffset)
+	return b.asUint8Array();
 }

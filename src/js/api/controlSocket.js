@@ -2,6 +2,7 @@ import * as Interpretor from "./interpretor";
 import {flatbuffers} from "flatbuffers";
 import * as message from ".././fbs/stream"
 import store from "../store/store";
+import { addComment } from "../actions/actions";
 
 class ControlSocket {
 	constructor() {
@@ -18,78 +19,158 @@ class ControlSocket {
 			this._initSocket();
 		}
 
+		if (this.socket.onmessage) {
+			this.socket.onmessage = null;
+		}
 
+		return this._sendStreamBroadcastMsg(sId, eId);
 	}
 
-	sendStreamBroadcastMsg(sId, eId) {
-		return new Promise((resolve, reject) => {
-			const msg = Interpretor.getStreamBroadCastMessage(sId, eId);
-			this._send(msg);
-			this.socket.onmessage = (e) => {
-				var buf = new flatbuffers.ByteBuffer(e.data);
-				var streamResponse = message.StreamResponse.getRootAsStreamResponse(buf);
-				console.log(streamResponse);
-				if(streamResponse.status() === message.Status.OK) {
-					resolve(streamResponse.status());
-				} else {
-					reject(streamResponse.status());
+	publish(arr, sId, eId) {
+		this._sendStreamFrameMsg(arr, sId, eId);
+	}
+
+	handlePublish(e) {
+		const buf = new flatbuffers.ByteBuffer(new Uint8Array(e.data));
+		const msg = message.StreamMessage.getRootAsStreamMessage(buf);
+		switch (msg.messageType()) {
+			case message.Message.StreamComment:
+				const streamComment = msg.message(new message.StreamComment());
+				const cmt = {
+					username: streamComment.userName(),
+					text: streamComment.text()
 				}
-			}
+				store.dispatch(addComment(cmt));
+				break;
+			default:
+				console.error(`Unhandled message type in publish: ${msg.messageType()}`);
+		}
+	}
+
+	stopPublishing(sId, eId) {
+		this._sendStreamStopMsg(sId, eId);
+	}
+
+	subscribe(sId, eId, audioCallback) {
+		if (!this.socket) {
+			this._initSocket();
+		}
+
+		if (this.socket.onmessage) {
+			this.socket.onmessage = null;
+		}
+
+		this._sendStreamSubscribeMsg(sId, eId)
+		.then(() => {
+			this.handleSubscribe(audioCallback);
 		});
 	}
 
-	sendStreamFrameMsg(arr, sId, eId) {
+	unsubscribe(sId, eId) {
+		this._sendStreamUnsubscribeMsg(sId, eId);
+		this.handleSubscribe(null);
+	}
+
+	handleSubscribe(audioCallback) {
+		this.socket.onmessage = (e) => {
+			const buf = new flatbuffers.ByteBuffer(new Uint8Array(e.data));
+			const msg = message.StreamMessage.getRootAsStreamMessage(buf);
+			switch (msg.messageType()) {
+				case message.Message.StreamFrame:
+					const streamFrame = msg.message(new message.StreamFrame());
+					if (audioCallback) {
+						audioCallback(streamFrame);
+					}
+					break;
+				case message.Message.StreamComment:
+					const streamComment = msg.message(new message.StreamComment());
+					const cmt = {
+						username: streamComment.userName(),
+						text: streamComment.text()
+					}
+					store.dispatch(addComment(cmt));
+					break;
+				default:
+					console.error(`Unhandled message type in subscribe: ${msg.messageType()}`);
+			}
+		}
+	}
+
+	sendComment(sId, eId, username, comment) {
+		this._sendStreamCommentMsg(sId, eId, username, comment);
+	}
+
+	_sendStreamBroadcastMsg(sId, eId) {
+		return new Promise((resolve, reject) => {
+			this.socket.onmessage = (e) => {
+				var buf = new flatbuffers.ByteBuffer(new Uint8Array(e.data));
+				const msg = message.StreamMessage.getRootAsStreamMessage(buf);
+
+				if (msg.messageType() === message.Message.StreamResponse) {
+					const streamResponse = msg.message(new message.StreamResponse());
+
+					if (streamResponse.status() === message.ResponseStatus.OK) {
+						resolve(streamResponse.status());
+						this.socket.onmessage = this.handlePublish;
+					} else {
+						reject(streamResponse.status());
+						this.socket.onmessage = null;
+					}
+				} else {
+					console.error(`Unhandled message type in StreamBroadCast response: ${msg.messageType()}`);
+					this.socket.onmessage = null;
+				}
+			}
+
+			const msg = Interpretor.getStreamBroadCastMessage(sId, eId);
+			this._send(msg);
+		});
+	}
+
+	_sendStreamFrameMsg(arr, sId, eId) {
 		const msg = Interpretor.getStreamFrameMessage(arr, sId, eId);
 		this._send(msg);
 	}
 
-	sendStreamStopMsg(sId, eId) {
+	_sendStreamStopMsg(sId, eId) {
 		const msg = Interpretor.getStreamStopMessage(sId, eId);
 		this._send(msg);
 	}
 
-	sendStreamSubscribeMsg(sId, eId) {
+	_sendStreamSubscribeMsg(sId, eId) {
 		return new Promise((resolve, reject) => {
+			this.socket.onmessage = (e) => {
+				var buf = new flatbuffers.ByteBuffer(new Uint8Array(e.data));
+				const msg = message.StreamMessage.getRootAsStreamMessage(buf);
+
+				if (msg.messageType() === message.Message.StreamResponse) {
+					const streamResponse = msg.message(new message.StreamResponse());
+
+					if (streamResponse.status() === message.ResponseStatus.OK) {
+						resolve(streamResponse.status());
+					} else {
+						reject(streamResponse.status());
+					}
+				} else {
+					console.error(`Unhandled message type in StreamSubscribe response: ${msg.messageType()}`);
+				}
+
+				this.socket.onmessage = null;
+			}
+
 			const msg = Interpretor.getStreamSubscribeMessage(sId, eId);
 			this._send(msg);
-			this.socket.onmessage = (e) => {
-				var buf = new flatbuffers.ByteBuffer(e.data);
-				var streamResponse = message.StreamResponse.getRootAsStreamResponse(buf);
-				console.log(streamResponse);
-				if(streamResponse.status() === message.Status.OK) {
-					resolve(streamResponse.status());
-					this.socket.onmessage = () => {};
-				} else {
-					reject(streamResponse.status());
-					this.socket.onmessage = () => {};
-				}
-			}
 		});
 	}
 
-	onListenStreamFrameMsg() {
-		return new Promise((resolve, reject) => {
-			this.socket.onmessage = (e) => {
-				var buf = new flatbuffers.ByteBuffer(e.data);
-				var msg = message.StreamMessage.getRootAsStreamMessage(buf);
-				resolve(msg);
-			}
-		});
+	_sendStreamUnsubscribeMsg(sId, eId) {
+		const msg = Interpretor.getStreamUnsubscribeMessage(sId, eId);
+		this._send(msg);
 	}
 
-	onPublish() {
-		this.socket.onmessage = (e) => {
-			var buf = new flatbuffers.ByteBuffer(e.data);
-			var msg = message.StreamMessage.getRootAsStreamMessage(buf);
-			switch (msg.messageType()) {
-				case message.Message.StreamComment:
-					const cmt = msg.message();
-					store.dispatch(addComment(cmt));
-					break;
-				default:
-					console.error(`Unhandled message type in publish: ${msg.messageType()}`);
-			}
-		}
+	_sendStreamCommentMsg(sId, eId, username, comment) {
+		const msg = Interpretor.getStreamCommentMessage(sId, eId, username, comment);
+		this._send(msg);
 	}
 
 	_initSocket() {

@@ -77,7 +77,10 @@ export const startPitching = (eId) => {
 			dispatch(setPitcher(json.id));
 			audio.startStreaming(json.id, eId);
 		})
-		.catch(error => dispatch(setCurrentView(LOGIN_VIEW)))
+		.catch(error => {
+			console.error(error);
+			dispatch(setCurrentView(LOGIN_VIEW))
+		})
 	}
 }
 
@@ -122,16 +125,16 @@ export const stopPitching = (sId, eId) => {
 	}
 }
 
-export const startPlaying = (sId) => {
+export const startPlaying = (sId, eId) => {
 	return dispatch => {
-		audio.startPlaying(sId);
+		audio.startPlaying(sId, eId);
 		dispatch(setCurrentStream(sId));
 	}
 }
 
-export const stopPlaying = (sId) => {
+export const stopPlaying = (sId, eId) => {
 	return dispatch => {
-		audio.stopPlaying(sId);
+		audio.stopPlaying(sId, eId);
 		dispatch(removeCurrentStream(sId));
 	}
 }

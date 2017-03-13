@@ -21,9 +21,8 @@ class Streamer {
 	}
 
 	start(streamId, eventId, onError) {
-		ControlSocket.sendStreamBroadcastMsg(streamId, eventId)
+		ControlSocket.initPublishing(streamId, eventId)
 		.then((status) => {
-			console.log(status);
 			this._makeStream(streamId, eventId, onError);
 		});
 
@@ -76,7 +75,7 @@ class Streamer {
 		if (this.stream) {
 			this.stream.getTracks()[0].stop()
 		}
-		ControlSocket.sendStreamStopMsg(streamId, eventId);
+		ControlSocket.stopPublishing(streamId, eventId);
 	}
 
 	mute() {
@@ -102,7 +101,7 @@ class Streamer {
 				var packets = this.encoder.encode_float(resampled);
 				for (var i = 0; i < packets.length; i++) {
 					var intArray = new Uint8Array(packets[i])
-					ControlSocket.sendStreamFrameMsg(intArray, streamId, eventId);
+					ControlSocket.publish(intArray, streamId, eventId);
 
 					// uncomment this for without controlsocket
 					// const msg = Interpretor.getStreamFrameMessage(intArray, streamId, eventId);
