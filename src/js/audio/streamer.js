@@ -1,12 +1,11 @@
-import {defaultConfig} from '../globals'
-import Resampler from './resampler'
-import {OpusEncoder} from './opus'
-import {flatbuffers} from "flatbuffers"
-import * as message from ".././fbs/stream"
+import AudioContext from "./audioContext"
+import {defaultConfig} from '../globals';
+import Resampler from './resampler';
+import {OpusEncoder} from './opus';
 import ControlSocket from "../api/controlSocket";
-
-const audioContext = new(window.AudioContext || window.webkitAudioContext)();
-const builder = new flatbuffers.Builder(1024)
+import * as Interpretor from "../api/interpretor";
+import {flatbuffers} from "flatbuffers";
+import * as message from ".././fbs/stream"
 
 class Streamer {
 	constructor(config) {
@@ -17,7 +16,7 @@ class Streamer {
 
 		this.config = {};
 		this.config.codec = this.config.codec || defaultConfig.codec;
-		this.sampler = new Resampler(audioContext.sampleRate, this.config.codec.sampleRate, 1, this.config.codec.bufferSize);
+		this.sampler = new Resampler(AudioContext.sampleRate, this.config.codec.sampleRate, 1, this.config.codec.bufferSize);
 		this.encoder = new OpusEncoder(this.config.codec.sampleRate, this.config.codec.channels, this.config.codec.app, this.config.codec.frameDuration);
 	}
 
@@ -25,49 +24,43 @@ class Streamer {
 		ControlSocket.sendStreamBroadcastMsg(streamId, eventId)
 		.then((status) => {
 			console.log(status);
-			this._makeStream(onError);
+			this._makeStream(streamId, eventId, onError);
 		});
 
-		// const _onmessage = ControlSocket.getOnMessage();
-		// ControlSocket.setOnMessage((response) => {
-		// 	if (_onmessage) {
-		// 		_onmessage();
-		// 	}
-		// 	var bytes = response;
-		// 	console.log(response)
-		// 	var buf = new flatbuffers.ByteBuffer(bytes);
-		// 	var streamResponse = message.StreamResponse.getRootAsStreamResponse(buf);
-		// 	if(streamResponse.status() === message.Status.OK) {
-		// 		this._makeStream(onError);
-		// 	}
-		// });
+		// const socketUrl = "ws://"+location.host+"/stream/ws/publish/"+streamId;
+		//
+		// this.socket = new WebSocket(socketUrl);
+		//
+		// this._makeStream(streamId, eventId, onError);
 
-		const _onclose = ControlSocket.getOnClose();
-		ControlSocket.setOnClose = () => {
-			if (_onclose) {
-				_onclose();
-			}
-			if (this.audioInput) {
-				this.audioInput.disconnect();
-				this.audioInput = null;
-			}
-			if (this.gainNode) {
-				this.gainNode.disconnect();
-				this.gainNode = null;
-			}
-			if (this.recorder) {
-				this.recorder.disconnect();
-				this.recorder = null;
-			}
-			if (this.stream){
-				this.stream.getTracks()[0].stop();
-			}
-
-			console.log('Disconnected from server');
-		};
+		// const _onclose = ControlSocket.getOnClose();
+		// const _onclose = this.socket.onclose;
+		// this.socket.onClose = () => {
+		// ControlSocket.setOnClose = () => {
+		// 	if (_onclose) {
+		// 		_onclose();
+		// 	}
+		// 	if (this.audioInput) {
+		// 		this.audioInput.disconnect();
+		// 		this.audioInput = null;
+		// 	}
+		// 	if (this.gainNode) {
+		// 		this.gainNode.disconnect();
+		// 		this.gainNode = null;
+		// 	}
+		// 	if (this.recorder) {
+		// 		this.recorder.disconnect();
+		// 		this.recorder = null;
+		// 	}
+		// 	if (this.stream){
+		// 		this.stream.getTracks()[0].stop();
+		// 	}
+		//
+		// 	console.log('Disconnected from server');
+		// };
 	}
 
-	stop() {
+	stop(streamId, eventId) {
 		if (this.audioInput) {
 			this.audioInput.disconnect();
 			this.audioInput = null;
@@ -80,9 +73,10 @@ class Streamer {
 			this.recorder.disconnect();
 			this.recorder = null;
 		}
-		if(this.stream){
+		if (this.stream) {
 			this.stream.getTracks()[0].stop()
 		}
+		ControlSocket.sendStreamStopMsg(streamId, eventId);
 	}
 
 	mute() {
@@ -95,33 +89,31 @@ class Streamer {
 		console.log('Mic unmuted');
 	}
 
-	sendBroadcast(){
-
-	}
-
-	_makeStream(onError) {
+	_makeStream(streamId, eventId, onError) {
 		const config = { audio: true }
 		navigator.getUserMedia(config, (stream) => {
 			this.stream = stream;
-			this.audioInput = audioContext.createMediaStreamSource(stream);
-			this.gainNode = audioContext.createGain();
-			this.recorder = audioContext.createScriptProcessor(this.config.codec.bufferSize, 1, 1);
+			this.audioInput = AudioContext.createMediaStreamSource(stream);
+			this.gainNode = AudioContext.createGain();
+			this.recorder = AudioContext.createScriptProcessor(this.config.codec.bufferSize, 1, 1);
 			this.recorder.onaudioprocess = (e) => {
 				var left = e.inputBuffer.getChannelData(0);
-				 var resampled = this.sampler.resampler(e.inputBuffer.getChannelData(0));
-				 var packets = this.encoder.encode_float(resampled);
-				 for (var i = 0; i < packets.length; i++) {
-					 // uncomment this for without controlsocket
-					 //if (this.socket.readyState == 1) this.socket.send(packets[i]);
-					 var intArray = new Uint8Array(packets[i])
-					 if (this.socket.readyState == 1) this.socket.send(interpretor.getStreamFrameMessage(builder,intArray,this.streamId,this.eventId));
-				 }
+				var resampled = this.sampler.resampler(e.inputBuffer.getChannelData(0));
+				var packets = this.encoder.encode_float(resampled);
+				for (var i = 0; i < packets.length; i++) {
+					var intArray = new Uint8Array(packets[i])
+					ControlSocket.sendStreamFrameMsg(intArray, streamId, eventId);
+
+					// uncomment this for without controlsocket
+					// const msg = Interpretor.getStreamFrameMessage(intArray, streamId, eventId);
+					// if (this.socket.readyState == 1) this.socket.send(msg);
+				}
 				//var resampled = this.sampler.resampler(left);
 				//this.socket.send(this._convertFloat32ToInt16(resampled))
 			};
 			this.audioInput.connect(this.gainNode);
 			this.gainNode.connect(this.recorder);
-			this.recorder.connect(audioContext.destination);
+			this.recorder.connect(AudioContext.destination);
 		}, onError || this._onError);
 	}
 

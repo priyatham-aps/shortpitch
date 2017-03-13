@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import store from "../store/store"
 import PlayableCard from "./playable_card"
-import { setCurrentView, setCurrentStream, stopPlayingStream } from "../actions/actions";
+import { setCurrentView, startPlaying, stopPlaying } from "../actions/actions";
 import { SUBSCRIBE_VIEW } from "./views";
 
 export default class StreamsList extends React.Component {
@@ -26,11 +26,11 @@ export default class StreamsList extends React.Component {
 	}
 
 	stopStream(id) {
-		store.dispatch(stopPlayingStream(id));
+		store.dispatch(stopPlaying(id));
 	}
 
 	playStream(id) {
-		store.dispatch(setCurrentStream(id));
+		store.dispatch(startPlaying(id));
 	}
 
 	onPlayerClick(id) {

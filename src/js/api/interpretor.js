@@ -1,11 +1,10 @@
 import * as message from ".././fbs/stream"
 import {defaultConfig} from "../globals"
 import Long from "long"
-import {flatbuffers} from "flatbuffers"
-
-const b = new flatbuffers.Builder(1024)
+import {flatbuffers} from "flatbuffers";
 
 export const getStreamBroadCastMessage = (streamId, eventId) => {
+	const b = new flatbuffers.Builder(1024)
 	let streamIdOffset
 	let eventIdOffset
 	let streamBroadCastOffset
@@ -28,7 +27,9 @@ export const getStreamBroadCastMessage = (streamId, eventId) => {
 	b.finish(streamMessageOffset)
 	return b.asUint8Array();
 }
-export const getStreamFrameMessage = (b,input,streamId, eventId) => {
+
+export const getStreamFrameMessage = (input, streamId, eventId) => {
+	const b = new flatbuffers.Builder(1024)
 	const streamIdOffset = b.createString(streamId)
 	const eventIdOffset = b.createString(eventId)
 	const frameOffset = message.StreamFrame.createFrameVector(b, input)
@@ -51,32 +52,80 @@ export const getStreamFrameMessage = (b,input,streamId, eventId) => {
 	b.finish(streamMessageOffset)
 	return b.asUint8Array();
 }
-export const getStreamCommentMessage = (b,input,streamId, eventId,username,comment) => {
+
+export const getStreamStopMessage = (streamId, eventId) => {
+	const b = new flatbuffers.Builder(1024)
+
+	const streamIdOffset = b.createString(streamId)
+	const eventIdOffset = b.createString(eventId)
+	const timestamp = Long.fromNumber(Date.now())
+	const timestampFbLong = flatbuffers.Long.create(timestamp.low, timestamp.high)
+
+	message.StreamStop.startStreamStop(b)
+	const streamStopCastOffset = message.StreamStop.endStreamStop(b)
+
+	message.StreamMessage.startStreamMessage(b)
+	message.StreamMessage.addEventId(b, eventIdOffset)
+	message.StreamMessage.addStreamId(b, streamIdOffset)
+	message.StreamMessage.addMessageType(b, message.Message.StreamStop)
+	message.StreamMessage.addMessage(b, streamStopCastOffset)
+	message.StreamMessage.addTimestamp(b, timestampFbLong)
+	const streamMessageOffset = message.StreamMessage.endStreamMessage(b)
+
+	b.finish(streamMessageOffset)
+	return b.asUint8Array();
+}
+
+export const getStreamSubscribeMessage = (streamId, eventId) => {
+	const b = new flatbuffers.Builder(1024)
+
+	const streamIdOffset = b.createString(streamId)
+	// const eventIdOffset = b.createString(eventId)
+	const timestamp = Long.fromNumber(Date.now())
+	const timestampFbLong = flatbuffers.Long.create(timestamp.low, timestamp.high)
+
+	message.StreamSubscribe.startStreamSubscribe(b)
+	const streamSubscribeCastOffset = message.StreamSubscribe.endStreamSubscribe(b)
+
+	message.StreamMessage.startStreamMessage(b)
+	// message.StreamMessage.addEventId(b, eventIdOffset)
+	message.StreamMessage.addStreamId(b, streamIdOffset)
+	message.StreamMessage.addMessageType(b, message.Message.StreamSubscribe)
+	message.StreamMessage.addMessage(b, streamSubscribeCastOffset)
+	message.StreamMessage.addTimestamp(b, timestampFbLong)
+	const streamMessageOffset = message.StreamMessage.endStreamMessage(b)
+
+	b.finish(streamMessageOffset)
+	return b.asUint8Array();
+}
+
+export const getStreamCommentMessage = (streamId, eventId, username, comment) => {
+	const b = new flatbuffers.Builder(1024)
+
 	const timestamp = Long.fromNumber(Date.now())
 	const timestampFbLong = flatbuffers.Long.create(timestamp.low, timestamp.high)
 	const streamIdOffset = b.createString(streamId)
 	const eventIdOffset = b.createString(eventId)
 	const userNameOffset = b.createString(username)
 	const commentOffset = b.createString(comment)
+
 	message.StreamComment.startStreamComment(b)
 	message.StreamComment.addUserName(b,userNameOffset)
 	message.StreamComment.addText(b,commentOffset)
-	streamCommentOffset = message.StreamBroadCast.endStreamComment(b)
+	const streamCommentOffset = message.StreamBroadCast.endStreamComment(b)
+
 	message.StreamMessage.startStreamMessage(b)
 	message.StreamMessage.addEventId(b, eventIdOffset)
 	message.StreamMessage.addStreamId(b, streamIdOffset)
 	message.StreamMessage.addMessageType(b, message.Message.StreamComment)
 	message.StreamMessage.addMessage(b, streamCommentOffset)
 	message.StreamMessage.addTimestamp(b,timestampFbLong)
-	streamMessageOffset = message.StreamMessage.endStreamMessage(b)
+	const streamMessageOffset = message.StreamMessage.endStreamMessage(b)
 
 	b.finish(streamMessageOffset)
 	return b.asUint8Array();
-
 }
-export const getStreamStopMessage = (b,input,streamId, eventId) => {
 
-}
-export const getStreamPauseMessage = (b,input,streamId, eventId) => {
+export const getStreamPauseMessage = (input, streamId, eventId) => {
 
 }

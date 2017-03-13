@@ -1,35 +1,34 @@
 import React from "react";
-import Player from "../audio/player";
 
 export default class PlayableCard extends React.Component {
 	constructor(props) {
 		super(props);
-		this.player = new Player(this.props.stream.id)
+		// this.player = new Player()
 		this.state = {
 			isStreamPlaying:false
 		};
 	}
 
 	componentWillMount() {
-		if (this.props.isPlaying) {
-			this.player.start();
-		}
+		// if (this.props.isPlaying) {
+		// 	this.player.start();
+		// }
 	}
 
 	componentWillUpdate(nextProps) {
-		if (this.props.isPlaying !== nextProps.isPlaying) {
-			if (nextProps.isPlaying) {
-				this.player.start();
-			} else {
-				this.player.stop();
-			}
-		}
+		// if (this.props.isPlaying !== nextProps.isPlaying) {
+		// 	if (nextProps.isPlaying) {
+		// 		this.player.start();
+		// 	} else {
+		// 		this.player.stop();
+		// 	}
+		// }
 	}
 
 	componentWillUnmount() {
-		if (this.props.isPlaying) {
-			this.player.stop();
-		}
+		// if (this.props.isPlaying) {
+		// 	this.player.stop();
+		// }
 	}
 
 	render() {

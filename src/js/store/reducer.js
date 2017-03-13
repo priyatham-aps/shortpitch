@@ -6,7 +6,12 @@ const pitcher = (state = "", action) => {
 		case actiontypes.SET_PITCHER:
 			return action.id
 		case actiontypes.REMOVE_PITCHER:
-			return ""
+			if (state === action.id) {
+				return "";
+			}
+			// TODO: Remove
+			console.error(`Trying to stop stream ${state}, but sent ${action.id}`);
+			return state;
 		default:
 			return state
 	}
@@ -48,7 +53,7 @@ const currentStream = (state="", action) => {
 				return "";
 			}
 			// TODO: Remove
-			console.info(`Trying to stop stream ${state}, but sent ${action.streamId}`);
+			console.error(`Trying to stop stream ${state}, but sent ${action.streamId}`);
 			return state;
 		default:
 			return state;
@@ -64,10 +69,23 @@ const currentView = (state="", action) => {
 	}
 }
 
+const comments = (state=[], action) => {
+	switch (action.type) {
+		case actiontypes.ADD_COMMENT:
+			return [
+				...state,
+				action.comment
+			];
+		default:
+			return state;
+	}
+}
+
 const reducer = combineReducers({
 	pitcher,
 	events,
 	streams,
+	comments,
 	currentEvent,
 	currentStream,
 	currentView

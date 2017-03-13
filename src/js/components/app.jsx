@@ -3,7 +3,7 @@ import HomePage from "./homepage";
 import PublishView from "./publish_view";
 import SubscribeView from "./subscribe_view";
 import Login from "./login";
-import { fetchEventAndStreams } from "../actions/actions";
+import { fetchEventAndStreams, startPlaying } from "../actions/actions";
 import store from "../store/store";
 import * as views from "./views";
 

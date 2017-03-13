@@ -1,87 +1,65 @@
-import {defaultConfig} from '../globals'
+import AudioContext from "./audioContext"
 import Resampler from './resampler'
 import {OpusDecoder} from './opus'
+import {defaultConfig} from '../globals'
+import ControlSocket from "../api/controlSocket";
 
-
-const audioContext = new(window.AudioContext || window.webkitAudioContext)();
-
-export default class Player {
-	constructor(streamId) {
-		this.config = {};
+class Player {
+	constructor(config) {
+		this.config = config || {};
 		this.config.codec = this.config.codec || defaultConfig.codec;
-		this.streamId = streamId;
 		this.silence = new Float32Array(this.config.codec.bufferSize);
-		this.sampler = new Resampler(this.config.codec.sampleRate, audioContext.sampleRate, 1, this.config.codec.bufferSize);
+		this.sampler = new Resampler(this.config.codec.sampleRate, AudioContext.sampleRate, 1, this.config.codec.bufferSize);
 		// Opus Decoding
 		this.decoder =  new OpusDecoder(this.config.codec.sampleRate, this.config.codec.channels);
-		this.scriptNode = audioContext.createScriptProcessor(this.config.codec.bufferSize, 1, 1);
-		this.gainNode = audioContext.createGain();
+		this.scriptNode = AudioContext.createScriptProcessor(this.config.codec.bufferSize, 1, 1);
+		this.gainNode = AudioContext.createGain();
 	}
 
-	start(streamId) {
-		streamId = streamId || this.streamId;
-		let socketUrl
+	start(streamId, eventId) {
+		// const socketUrl = "ws://"+location.host+"/stream/ws/subscribe/"+streamId;
+		// this.socket = new WebSocket(socketUrl);
 
-		if(location.protocol=="http:"){
-			socketUrl = "ws://"+location.host+"/stream/ws/subscribe/"+streamId
-		}
-		else if(location.protocol=="https:"){
-			socketUrl = "wss://"+location.host+"/stream/ws/subscribe/"+streamId
-		}
-		var _this = this;
+		this.audioQueue = new AudioQueue(this.sampler);
 
-		this.audioQueue = {
-			buffer: new Float32Array(0),
-
-			write: function(newAudio) {
-				var currentQLength = this.buffer.length;
-				newAudio = _this.sampler.resampler(newAudio);
-				var newBuffer = new Float32Array(currentQLength + newAudio.length);
-				newBuffer.set(this.buffer, 0);
-				newBuffer.set(newAudio, currentQLength);
-				this.buffer = newBuffer;
-			},
-
-			read: function(nSamples) {
-				var samplesToPlay = this.buffer.subarray(0, nSamples);
-				this.buffer = this.buffer.subarray(nSamples, this.buffer.length);
-				return samplesToPlay;
-			},
-
-			length: function() {
-				return this.buffer.length;
-			}
-		};
-
-		this.scriptNode.onaudioprocess = function(e) {
-			if (_this.audioQueue.length()) {
-				e.outputBuffer.getChannelData(0).set(_this.audioQueue.read(_this.config.codec.bufferSize));
+		this.scriptNode.onaudioprocess = (e) => {
+			if (this.audioQueue.length()) {
+				e.outputBuffer.getChannelData(0).set(this.audioQueue.read(this.config.codec.bufferSize));
 			} else {
-				e.outputBuffer.getChannelData(0).set(_this.silence);
+				e.outputBuffer.getChannelData(0).set(this.silence);
 			}
 		};
-		this.scriptNode.connect(this.gainNode);
-		this.gainNode.connect(audioContext.destination);
 
-		if (!this.parentSocket) {
-			this.socket = this.socket || new WebSocket(socketUrl)
-		} else {
-			this.socket = this.parentSocket;
-		}
-		var _onmessage = this.parentOnmessage = this.socket.onmessage;
-		this.socket.onmessage = function(message) {
-			if (_onmessage) {
-				_onmessage(message);
-			}
-			if (message.data instanceof Blob) {
-				var reader = new FileReader();
-				reader.onload = function(event) {
-					//Opus Decoding
-					_this.audioQueue.write(_this.decoder.decode_float(reader.result));
-				};
-				reader.readAsArrayBuffer(message.data);
-			}
-		};
+		this.scriptNode.connect(this.gainNode);
+		this.gainNode.connect(AudioContext.destination);
+
+		ControlSocket.sendStreamSubscribeMsg(streamId, eventId)
+		.then((status) => console.log(status));
+
+		// ControlSocket.onListenStreamFrameMsg()
+		// .then((streamFrame) => {
+		// 	this.audioQueue.write(this.decoder.decode_float(streamFrame));
+		// });
+		// var _onmessage = this.parentOnmessage = this.socket.onmessage;
+		// this.socket.onmessage = (message) => {
+		// 	if (_onmessage) {
+		// 		_onmessage(message);
+		// 	}
+		// 	if (message.data instanceof Blob) {
+		// 		console.log("Blob");
+		// 		var reader = new FileReader();
+		// 		reader.onload = (event) => {
+		// 			//Opus Decoding
+		// 			this.audioQueue.write(this.decoder.decode_float(reader.result));
+		// 		};
+		// 		reader.readAsArrayBuffer(message.data);
+		// 	} else {
+		// 		console.log("ArrayBuffer");
+		// 		var buf = new flatbuffers.ByteBuffer(e.data);
+		// 		var streamFrame = message.StreamFrame.getRootAsStreamFrame(buf);
+		// 		this.audioQueue.write(this.decoder.decode_float(streamFrame.frame()));
+		// 	}
+		// };
 	}
 
 	stop() {
@@ -97,5 +75,34 @@ export default class Player {
 			}
 		}
 	}
-
 }
+
+class AudioQueue {
+	constructor(sampler) {
+		this.buffer = new Float32Array(0);
+		this.sampler = sampler;
+	}
+
+	write(newAudio) {
+		const currentQLength = this.buffer.length;
+		newAudio = this.sampler.resampler(newAudio);
+		const newBuffer = new Float32Array(currentQLength + newAudio.length);
+		newBuffer.set(this.buffer, 0);
+		newBuffer.set(newAudio, currentQLength);
+		this.buffer = newBuffer;
+	}
+
+	read(nSamples) {
+		const samplesToPlay = this.buffer.subarray(0, nSamples);
+		this.buffer = this.buffer.subarray(nSamples, this.buffer.length);
+		return samplesToPlay;
+	}
+
+	length() {
+		return this.buffer.length;
+	}
+}
+
+const player = new Player(defaultConfig);
+
+export default player;

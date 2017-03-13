@@ -1,7 +1,7 @@
 import * as api from "../api/api"
 import * as actiontypes from "./types";
-import { startStreaming, stopStreaming } from "./audio";
 import {LOGIN_VIEW} from '../components/views'
+import * as audio from "./audio";
 
 export const setPitcher = (id) => {
 	return {
@@ -10,9 +10,10 @@ export const setPitcher = (id) => {
 	}
 }
 
-export const removePitcher = () => {
+export const removePitcher = (id) => {
 	return {
-		type: actiontypes.REMOVE_PITCHER
+		type: actiontypes.REMOVE_PITCHER,
+		id
 	}
 }
 
@@ -51,10 +52,17 @@ export const setCurrentStream = (streamId) => {
 	}
 }
 
-export const stopPlayingStream = (streamId) => {
+export const removeCurrentStream = (streamId) => {
 	return {
 		type: actiontypes.STOP_CURRENT_STREAM,
 		streamId
+	}
+}
+
+export const addComment = (comment) => {
+	return {
+		type: actiontypes.ADD_COMMENT,
+		comment
 	}
 }
 
@@ -67,16 +75,9 @@ export const startPitching = (eId) => {
 		return api.createStream(eId)
 		.then(json => {
 			dispatch(setPitcher(json.id));
-			startStreaming(json.id, eId);
+			audio.startStreaming(json.id, eId);
 		})
 		.catch(error => dispatch(setCurrentView(LOGIN_VIEW)))
-	}
-}
-
-export const stopPitching = () => {
-	return dispatch => {
-		stopStreaming();
-		dispatch(removePitcher());
 	}
 }
 
@@ -106,5 +107,31 @@ export const fetchEventAndStreams = () => {
 				dispatch(getStreams(getState().currentEvent));
 			}
 		});
+	}
+}
+
+/***************************/
+// Impure Actions
+/***************************/
+export const stopPitching = (sId, eId) => {
+	return dispatch => {
+		console.log(sId);
+		console.log(eId);
+		audio.stopStreaming(sId, eId);
+		dispatch(removePitcher(sId));
+	}
+}
+
+export const startPlaying = (sId) => {
+	return dispatch => {
+		audio.startPlaying(sId);
+		dispatch(setCurrentStream(sId));
+	}
+}
+
+export const stopPlaying = (sId) => {
+	return dispatch => {
+		audio.stopPlaying(sId);
+		dispatch(removeCurrentStream(sId));
 	}
 }
