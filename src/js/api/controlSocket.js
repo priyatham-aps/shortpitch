@@ -5,16 +5,20 @@ import store from "../store/store";
 
 class ControlSocket {
 	constructor() {
-		let url;
 		if(location.protocol=="http:") {
-			url = "ws://"+location.host+"/control";
+			this.url = "ws://"+location.host+"/control";
 		}
 		else if(location.protocol=="https:") {
-			url = "wss://"+location.host+"/control";
+			this.url = "wss://"+location.host+"/control";
+		}
+	}
+
+	initPublishing(sId, eId) {
+		if (!this.socket) {
+			this._initSocket();
 		}
 
-		this.socket = new WebSocket(url);
-		this.socket.binaryType = "arraybuffer";
+
 	}
 
 	sendStreamBroadcastMsg(sId, eId) {
@@ -86,6 +90,16 @@ class ControlSocket {
 					console.error(`Unhandled message type in publish: ${msg.messageType()}`);
 			}
 		}
+	}
+
+	_initSocket() {
+		this.socket = new WebSocket(this.url);
+		this.socket.binaryType = "arraybuffer";
+	}
+
+	_closeSocket() {
+		this.socket.close();
+		this.socket = null;
 	}
 
 	_send(packet) {
