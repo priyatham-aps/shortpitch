@@ -14,7 +14,7 @@ export default class HomePage extends React.Component {
 
 		if (event) {
 			return <div>
-				<button className="btn btn-success margin-10px" onClick={()=>this.startPitching()}>Start pitching!</button>
+				<button className="btn btn-success margin-10px pitchbtn" onClick={()=>this.startPitching()}>Start pitching!</button>
 				<EventInfo event={event}></EventInfo>
 				<hr style={{opacity:0.3}}></hr>
 				<Description></Description>
