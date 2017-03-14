@@ -104,7 +104,7 @@ class Streamer {
 					ControlSocket.publish(intArray, streamId, eventId);
 
 					// uncomment this for without controlsocket
-					// const msg = Interpretor.getStreamFrameMessage(intArray, streamId, eventId);
+					// const msg = Interpretor.getFrameMessage(intArray, streamId, eventId);
 					// if (this.socket.readyState == 1) this.socket.send(msg);
 				}
 				//var resampled = this.sampler.resampler(left);

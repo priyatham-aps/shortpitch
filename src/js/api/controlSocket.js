@@ -34,11 +34,11 @@ class ControlSocket {
 		const buf = new flatbuffers.ByteBuffer(new Uint8Array(e.data));
 		const msg = message.StreamMessage.getRootAsStreamMessage(buf);
 		switch (msg.messageType()) {
-			case message.Message.StreamComment:
-				const streamComment = msg.message(new message.StreamComment());
+			case message.Message.Comment:
+				const commentMsg = msg.message(new message.Comment());
 				const cmt = {
-					username: streamComment.userName(),
-					text: streamComment.text()
+					username: commentMsg.userName(),
+					text: commentMsg.text()
 				}
 				store.dispatch(addComment(cmt));
 				break;
@@ -76,17 +76,17 @@ class ControlSocket {
 			const buf = new flatbuffers.ByteBuffer(new Uint8Array(e.data));
 			const msg = message.StreamMessage.getRootAsStreamMessage(buf);
 			switch (msg.messageType()) {
-				case message.Message.StreamFrame:
-					const streamFrame = msg.message(new message.StreamFrame());
+				case message.Message.Frame:
+					const frame = msg.message(new message.Frame());
 					if (audioCallback) {
-						audioCallback(streamFrame);
+						audioCallback(frame);
 					}
 					break;
-				case message.Message.StreamComment:
-					const streamComment = msg.message(new message.StreamComment());
+				case message.Message.Comment:
+					const commentMsg = msg.message(new message.Comment());
 					const cmt = {
-						username: streamComment.userName(),
-						text: streamComment.text()
+						username: commentMsg.userName(),
+						text: commentMsg.text()
 					}
 					store.dispatch(addComment(cmt));
 					break;
@@ -106,14 +106,14 @@ class ControlSocket {
 				var buf = new flatbuffers.ByteBuffer(new Uint8Array(e.data));
 				const msg = message.StreamMessage.getRootAsStreamMessage(buf);
 
-				if (msg.messageType() === message.Message.StreamResponse) {
-					const streamResponse = msg.message(new message.StreamResponse());
+				if (msg.messageType() === message.Message.Response) {
+					const response = msg.message(new message.Response());
 
-					if (streamResponse.status() === message.ResponseStatus.OK) {
-						resolve(streamResponse.status());
+					if (response.status() === message.ResponseStatus.OK) {
+						resolve(response.status());
 						this.socket.onmessage = this.handlePublish;
 					} else {
-						reject(streamResponse.status());
+						reject(response.status());
 						this.socket.onmessage = null;
 					}
 				} else {
@@ -122,18 +122,18 @@ class ControlSocket {
 				}
 			}
 
-			const msg = Interpretor.getStreamBroadCastMessage(sId, eId);
+			const msg = Interpretor.getBroadCastMessage(sId, eId);
 			this._send(msg);
 		});
 	}
 
 	_sendStreamFrameMsg(arr, sId, eId) {
-		const msg = Interpretor.getStreamFrameMessage(arr, sId, eId);
+		const msg = Interpretor.getFrameMessage(arr, sId, eId);
 		this._send(msg);
 	}
 
 	_sendStreamStopMsg(sId, eId) {
-		const msg = Interpretor.getStreamStopMessage(sId, eId);
+		const msg = Interpretor.getStopMessage(sId, eId);
 		this._send(msg);
 	}
 
@@ -143,13 +143,13 @@ class ControlSocket {
 				var buf = new flatbuffers.ByteBuffer(new Uint8Array(e.data));
 				const msg = message.StreamMessage.getRootAsStreamMessage(buf);
 
-				if (msg.messageType() === message.Message.StreamResponse) {
-					const streamResponse = msg.message(new message.StreamResponse());
+				if (msg.messageType() === message.Message.Response) {
+					const response = msg.message(new message.Response());
 
-					if (streamResponse.status() === message.ResponseStatus.OK) {
-						resolve(streamResponse.status());
+					if (response.status() === message.ResponseStatus.OK) {
+						resolve(response.status());
 					} else {
-						reject(streamResponse.status());
+						reject(response.status());
 					}
 				} else {
 					console.error(`Unhandled message type in StreamSubscribe response: ${msg.messageType()}`);
@@ -158,18 +158,18 @@ class ControlSocket {
 				this.socket.onmessage = null;
 			}
 
-			const msg = Interpretor.getStreamSubscribeMessage(sId, eId);
+			const msg = Interpretor.getSubscribeMessage(sId, eId);
 			this._send(msg);
 		});
 	}
 
 	_sendStreamUnsubscribeMsg(sId, eId) {
-		const msg = Interpretor.getStreamUnsubscribeMessage(sId, eId);
+		const msg = Interpretor.getUnsubscribeMessage(sId, eId);
 		this._send(msg);
 	}
 
 	_sendStreamCommentMsg(sId, eId, username, comment) {
-		const msg = Interpretor.getStreamCommentMessage(sId, eId, username, comment);
+		const msg = Interpretor.getCommentMessage(sId, eId, username, comment);
 		this._send(msg);
 	}
 

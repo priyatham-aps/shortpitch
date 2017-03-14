@@ -1,9 +1,10 @@
 import React from "react";
-import PlayableCard from "./playable_card";
+import SubscribeCard from "./subscribe_card";
 import ChatView from "./chat_view";
 import EventInfo from "./event_info";
 import store from "../store/store";
 import {sendComment} from "../actions/socket";
+import { startPlaying, stopPlaying } from "../actions/actions";
 
 export default class SubscribeView extends React.Component {
 	constructor() {
@@ -15,35 +16,42 @@ export default class SubscribeView extends React.Component {
 		this.sendComment = this.sendComment.bind(this);
 	}
 
+	componentDidMount() {
+		this.playStream();
+	}
+
 	render() {
-		const {stream, event, currentStream, comments} = this.props;
+		const {stream, event, comments} = this.props;
 		return <div>
 			<ChatView comments={comments} sendComment={this.sendComment}></ChatView>
 			<EventInfo event={event}></EventInfo>
-			<PlayableCard
+			<SubscribeCard
 				stream={stream}
 				isPlaying={this.state.isPlaying}
 				play={() => this.playStream()}
 				stop={() => this.stopStream()}>
-			</PlayableCard>
+			</SubscribeCard>
 		</div>
 	}
 
 	stopStream() {
+		store.dispatch(stopPlaying(this.props.stream.id, this.props.event.id));
+
 		this.setState({
 			isPlaying: false
 		});
 	}
 
 	playStream() {
+		store.dispatch(startPlaying(this.props.stream.id, this.props.event.id));
+
 		this.setState({
 			isPlaying: true
 		});
 	}
 
 	sendComment(cmt) {
-		const {streamId, eventId} = this.props;
-		sendComment(streamId, eventId, "anon", cmt);
+		sendComment(this.props.stream.id, this.props.event.id, "anon", cmt);
 	}
 }
 

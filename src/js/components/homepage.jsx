@@ -3,10 +3,14 @@ import StreamableBtn from "./streamable_btn";
 import StreamsList from "./streams_list";
 import EventInfo from "./event_info";
 import store from "../store/store";
-import { setCurrentView } from "../actions/actions";
+import { setCurrentView, fetchEventAndStreams } from "../actions/actions";
 import {PUBLISH_VIEW} from "./views";
 
 export default class HomePage extends React.Component {
+	componentWillMount() {
+		store.dispatch(fetchEventAndStreams());
+	}
+
 	render() {
 		const {pitcher, streams, events, currentEvent, currentStream} = this.props;
 
@@ -18,7 +22,7 @@ export default class HomePage extends React.Component {
 				<EventInfo event={event}></EventInfo>
 				<hr style={{opacity:0.3}}></hr>
 				<Description></Description>
-				<StreamsList streams={streams} currentStream={currentStream} eventId={currentEvent}></StreamsList>
+				<StreamsList streams={streams}></StreamsList>
 			</div>;
 		} else {
 			return <div>No current events!</div>;

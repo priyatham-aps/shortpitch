@@ -3,13 +3,14 @@ import HomePage from "./homepage";
 import PublishView from "./publish_view";
 import SubscribeView from "./subscribe_view";
 import Login from "./login";
-import { fetchEventAndStreams, startPlaying } from "../actions/actions";
+import { fetchEventAndStreams } from "../actions/actions";
 import store from "../store/store";
 import * as views from "./views";
 
 export default class App extends React.Component {
-	componentWillMount() {
-		store.dispatch(fetchEventAndStreams());
+	constructor() {
+		super();
+		console.log("Constructing app!");
 	}
 
 	render() {
@@ -22,7 +23,7 @@ export default class App extends React.Component {
 			case views.SUBSCRIBE_VIEW:
 				const event = events && events.length && currentEvent ? events.find(e => e.id === currentEvent) : {};
 				const stream = streams && streams.length && currentStream ? streams.find(s => s.id === currentStream) : {};
-				return <SubscribeView stream={stream} event={event} currentStream={currentStream} comments={comments}></SubscribeView>;
+				return <SubscribeView stream={stream} event={event} comments={comments}></SubscribeView>;
 				break;
 			case views.LOGIN_VIEW:
 				return <Login></Login>;
@@ -31,5 +32,13 @@ export default class App extends React.Component {
 				return <HomePage {...this.props.data}></HomePage>;
 				break;
 		}
+	}
+
+	componentWillMount() {
+		console.log("Mounting app!");
+	}
+
+	componentWillUnmount() {
+		console.log("Unmounting app!");
 	}
 }

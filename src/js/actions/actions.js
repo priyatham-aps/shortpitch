@@ -1,6 +1,6 @@
 import * as api from "../api/api"
 import * as actiontypes from "./types";
-import {LOGIN_VIEW} from '../components/views'
+import { LOGIN_VIEW, SUBSCRIBE_VIEW } from '../components/views'
 import * as audio from "./audio";
 
 export const setPitcher = (id) => {
@@ -118,8 +118,6 @@ export const fetchEventAndStreams = () => {
 /***************************/
 export const stopPitching = (sId, eId) => {
 	return dispatch => {
-		console.log(sId);
-		console.log(eId);
 		audio.stopStreaming(sId, eId);
 		dispatch(removePitcher(sId));
 	}
@@ -128,13 +126,20 @@ export const stopPitching = (sId, eId) => {
 export const startPlaying = (sId, eId) => {
 	return dispatch => {
 		audio.startPlaying(sId, eId);
-		dispatch(setCurrentStream(sId));
+		// dispatch(setCurrentStream(sId));
 	}
 }
 
 export const stopPlaying = (sId, eId) => {
 	return dispatch => {
 		audio.stopPlaying(sId, eId);
-		dispatch(removeCurrentStream(sId));
+		// dispatch(removeCurrentStream(sId));
+	}
+}
+
+export const setSubscribeView = (id) => {
+	return dispatch => {
+		dispatch(setCurrentView(SUBSCRIBE_VIEW));
+		dispatch(setCurrentStream(id));
 	}
 }
