@@ -13,16 +13,16 @@ export default class App extends React.Component {
 	}
 
 	render() {
-		const {pitcher, events, streams, currentEvent, currentStream, currentView} = this.props.data;
+		const {pitcher, events, streams, comments, currentEvent, currentStream, currentView} = this.props.data;
 
 		switch (currentView) {
 			case views.PUBLISH_VIEW:
-				return <PublishView streamId={pitcher} eventId={currentEvent}></PublishView>;
+				return <PublishView streamId={pitcher} eventId={currentEvent} comments={comments}></PublishView>;
 				break;
 			case views.SUBSCRIBE_VIEW:
 				const event = events && events.length && currentEvent ? events.find(e => e.id === currentEvent) : {};
 				const stream = streams && streams.length && currentStream ? streams.find(s => s.id === currentStream) : {};
-				return <SubscribeView stream={stream} event={event} currentStream={currentStream}></SubscribeView>;
+				return <SubscribeView stream={stream} event={event} currentStream={currentStream} comments={comments}></SubscribeView>;
 				break;
 			case views.LOGIN_VIEW:
 				return <Login></Login>;

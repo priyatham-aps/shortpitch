@@ -13,7 +13,7 @@ export default class ChatView extends React.Component {
 
 	render() {
 		const {comments} = this.props;
-		const cmtEls = comments.map((c) => <li>{c.username} : {c.text}</li>);
+		const cmtEls = comments.map((c, i) => <li key={i}>{c.username} : {c.text}</li>);
 		return (
 				<div className="chat-container">
 					<div className="chat _window">
@@ -65,6 +65,10 @@ export default class ChatView extends React.Component {
 		if (this.state.comment) {
 			this.props.sendComment(this.state.comment);
 		}
+
+		this.setState({
+			comment: ""
+		});
 	}
 }
 

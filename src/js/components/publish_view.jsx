@@ -25,9 +25,9 @@ export default class PublishView extends React.Component {
 }
 
 PublishView.propTypes = {
-	streamId: React.PropTypes.string,
-	eventId: React.PropTypes.string,
-	comments: React.PropTypes.array
+	streamId: React.PropTypes.string.isRequired,
+	eventId: React.PropTypes.string.isRequired,
+	comments: React.PropTypes.array.isRequired
 }
 
 PublishView.defaultProps = {
