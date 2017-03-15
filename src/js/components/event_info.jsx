@@ -10,7 +10,7 @@ export default class EventInfo extends React.Component {
 
 	render() {
 		const {event,eventInfo} = this.props;
-		let score,scoreDiv,oversDiv,flag1,flag2,flag1_img,flag2_img
+		let score,scoreDiv,oversDiv,flag1,flag2,flag1_img,flag2_img,batsman1,batsman2,prevInnScoreDiv,prevInnOversDiv
 		if(eventInfo){
 			if(eventInfo.MatchInfo){
 				flag1 = eventInfo.MatchInfo.Team[0].SName
@@ -19,34 +19,52 @@ export default class EventInfo extends React.Component {
 				flag2_img = <img className="sp-flags" src={"/assets/img/flags/"+flag2+".png"}/>
 				score = eventInfo.MatchInfo.Score;
 				scoreDiv = <div className="currentScore">{score.BattingTeam.Innings[0].Runs}/{score.BattingTeam.Innings[0].Wickets}</div>
+				batsman1 = <div className="batsmen">{score.Batsmen[0].SName} &nbsp; {score.Batsmen[0].Runs}</div>
+				batsman2 = <div className="batsmen">{score.Batsmen[1].SName} &nbsp; {score.Batsmen[1].Runs}</div>
+				//batsman1 = <div className="batsmen">{score.Batsmen.SName} &nbsp; {score.Batsmen[0].Runs}</div>
 				if(score){
 					scoreDiv = <div className="currentScore">{score.BattingTeam.Innings[0].Runs}/{score.BattingTeam.Innings[0].Wickets}</div>
 					oversDiv = <div className="currentOvers">{score.BattingTeam.Innings[0].Overs} Overs</div>
+					if(score.BowlingTeam.Innings){
+						prevInnScoreDiv = <div className="prevScore">{score.BowlingTeam.Innings[0].Runs}/{score.BowlingTeam.Innings[0].Wickets}</div>
+						prevInnOversDiv = <div className="prevOvers">{score.BowlingTeam.Innings[0].Overs} Overs</div>
+					}
+
 				}
 			}
 		}
 		if(eventInfo && eventInfo.MatchInfo && eventInfo.MatchInfo.MatchState){
 				status = eventInfo.MatchInfo.MatchState.Status
 		}
-		return <div className="sp-score-parent">
-				<div className="sp-score-child">
-					<span>
-						<div className="sp-fl flag-parent">
-							{flag1_img}
-							<div className="sp-flag-names ">{flag1}</div>
+		return <div>
+					<div className="sp-score-parent">
+						<div className="sp-score-child">
+							<span>
+								<div className="sp-fl flag-parent">
+									{flag1_img}
+									<div className="sp-flag-names ">{flag1}</div>
+									{batsman1}
+									{batsman2}
+								</div>
+								<div className="sp-fl sp-main-score">
+									{scoreDiv}
+									{oversDiv}
+
+							   	</div>
+							   	<div className="sp-fl flag-parent">
+							   		{flag2_img}
+							   		<div className="sp-flag-names">{flag2}</div>
+							   		{prevInnScoreDiv}
+							   		{prevInnOversDiv}
+							   		
+							   	</div>
+						 	</span>
 						</div>
-						<div className="sp-fl sp-main-score">
-							{scoreDiv}
-							{oversDiv}
-					   	</div>
-					   	<div className="sp-fl flag-parent">
-					   		{flag2_img}
-					   		<div className="sp-flag-names">{flag2}</div>
-					   		
-					   	</div>
-				 	</span>
-				</div>
-			   </div>
+				    </div>
+				    <br/>
+				    <br/>
+				    <div className="matchStatus">{status}</div>
+			  	</div>
 
 	}
 }
