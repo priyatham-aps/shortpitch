@@ -1,0 +1,61 @@
+.sp-slat{
+  min-height:90px;
+  height:90px;
+  border-radius:6px;
+  background-color:@slat-background-color;
+  margin:10px;
+  padding:0px;
+  color:@font-color;
+  line-height: 1.42857;
+  .sp-play-pause{
+  	border-right: solid 1px #ddd;
+  	border-radius:6px 0 0 6px;
+  	height:100%;
+  	float:left;
+  	background-color:rgba(154,211,34,1);
+  	.stream-toggle {
+  		position: relative;
+	    top: 50%;
+	    text-align:center;
+	    cursor:pointer;
+	    transform: translateY(-50%);
+	    display: block;
+	    margin: 0 auto;
+	    color: white;
+    	background: none;
+    	border:none;
+
+  	}
+  }
+  
+  .sp-meta-container{
+  	height:100%;
+  	padding:10px;
+  	.sp-img-container{
+  		@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+  			.sp-user-profile{
+  				margin-left:10px;
+  			}
+  		}
+  		.sp-user-profile{
+  		  background-repeat: no-repeat;
+		  background-position: center center;
+		  background-size: cover;
+		  display: inline-block;
+		  border-radius: 50%;
+		  width:60px;
+		  height:60px;
+		}
+		h6{
+		  	width:80px;
+		  	margin:0px;
+		}
+
+  	}
+  	.subscriber_count{
+  		font-size: 11px;
+	    text-align: center;
+	    padding: 15px;
+  	}
+  }
+}

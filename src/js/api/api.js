@@ -17,6 +17,15 @@ export const createStream = (eId) => {
 			return promise
 		});
 }
+export const fetchEventInfo = (eId) => {
+	const url = `/api/cricbuzz/${eId}`;
+	const init = {
+		method: GET
+	};
+
+	return fetch(url, init)
+	.then(response => response.json());
+}
 
 export const fetchStreams = (eId) => {
 	const url = `/api/event/${eId}/stream`;

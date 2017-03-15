@@ -13,8 +13,10 @@ export default class StreamableBtn extends React.Component {
 	render() {
 		if (this.props.streamId) {
 			return <button className="btn btn-danger margin-10px pitchbtn" onClick={()=>this.stopStream()}>Stop pitching &nbsp;&nbsp;<span><i className="fa fa-microphone-slash"></i></span></button>;
+			
 		} else {
-			return <button className="btn btn-warning margin-10px pitchbtn" onClick={()=>this.startStream()}>Start pitching &nbsp;&nbsp;<span><i className="fa fa-microphone"></i></span></button>;
+			//return <button className="btn btn-warning margin-10px pitchbtn" onClick={()=>this.startStream()}>Start pitching &nbsp;&nbsp;<span><i className="fa fa-microphone"></i></span></button>;
+			return <a className="streamable_btn" onClick={()=>this.startStream()}><img src="/assets/img/recording.svg"/></a>
 		}
 	}
 

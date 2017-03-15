@@ -43,6 +43,15 @@ const currentEvent = (state="", action) => {
 			return state;
 	}
 }
+const eventInfo = (state={}, action) => {
+	switch (action.type) {
+		case actiontypes.RECEIVE_EVENT_INFO:
+			return action.eventInfo
+		default:
+			return state;
+	}
+}
+
 
 const currentStream = (state="", action) => {
 	switch (action.type) {
@@ -84,6 +93,7 @@ const comments = (state=[], action) => {
 const reducer = combineReducers({
 	pitcher,
 	events,
+	eventInfo,
 	streams,
 	comments,
 	currentEvent,

@@ -31,6 +31,13 @@ export const receiveEvents = (events) => {
 	}
 }
 
+export const receiveEventInfo = (eventInfo) => {
+	return {
+		type: actiontypes.RECEIVE_EVENT_INFO,
+		eventInfo
+	}
+}
+
 export const selectCurrentEvent = (eventId) => {
 	return {
 		type: actiontypes.SET_CURRENT_EVENT,
@@ -88,6 +95,12 @@ export const getStreams = (eId) => {
 	return dispatch => {
 		return api.fetchStreams(eId)
 		.then(json => dispatch(receiveStreams(json.data)))
+	}
+}
+export const getEventInfo = (eId) => {
+	return dispatch => {
+		return api.fetchEventInfo(eId)
+		.then(json => dispatch(receiveEventInfo(json.data)))
 	}
 }
 

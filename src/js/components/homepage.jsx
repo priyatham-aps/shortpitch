@@ -12,18 +12,34 @@ export default class HomePage extends React.Component {
 	}
 
 	render() {
-		const {pitcher, streams, events, currentEvent, currentStream} = this.props;
+		const {pitcher, streams, events,eventInfo, currentEvent, currentStream} = this.props;
+
 
 		const event = events && events.length && currentEvent ? events.find(e => e.id === currentEvent) : null;
 
 		if (event) {
 			return <div>
-				<button className="btn btn-success margin-10px pitchbtn" onClick={()=>this.startPitching()}>Start pitching!</button>
-				<EventInfo event={event}></EventInfo>
-				<hr style={{opacity:0.3}}></hr>
-				<Description></Description>
-				<StreamsList streams={streams}></StreamsList>
-			</div>;
+						<div className="col-md-12 col-xs-12">
+							<div className="col-md-4 col-xs-12 streamer-wrapper">
+								<a className="streamable_btn" onClick={()=>this.startPitching()}>
+									<img src="/assets/img/recording.svg"/>
+								</a>
+								<div className="stream-prompt">Start your Recording</div>
+							</div>
+							<div className="col-md-4 col-xs-12">
+								<EventInfo event={event} eventInfo={eventInfo}></EventInfo>
+							</div>
+						</div>
+						<div className="col-md-12 col-xs-12">
+							<hr style={{opacity:0.3}}></hr>
+						</div>
+						<div className="col-md-12 col-xs-12">
+							<Description></Description>
+						</div>
+						<div className="col-md-12 col-xs-12">
+							<StreamsList streams={streams}></StreamsList>
+						</div>
+					</div>;
 		} else {
 			return <div>No current events!</div>;
 		}
@@ -36,6 +52,9 @@ export default class HomePage extends React.Component {
 
 class Description extends React.Component {
 	render() {
-		return <div className="commentaryMessage">Live Cricket Commentary from people around you</div>;
+		return <div>
+					<div className="commentaryMessage">Live cricket commentary from </div>
+					<div className="commentaryMessage">people around you</div>
+				</div>
 	}
 }
