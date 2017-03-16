@@ -5,7 +5,8 @@ import {getEventInfo} from "../actions/actions"
 
 export default class EventInfo extends React.Component {
 	componentDidMount() {
-		store.dispatch(getEventInfo(this.props.event.id));
+	 	 store.dispatch(getEventInfo(this.props.event.id));
+	 	 window.setInterval(()=>store.dispatch(getEventInfo(this.props.event.id)),30000);
 	}
 
 	render() {
@@ -13,11 +14,12 @@ export default class EventInfo extends React.Component {
 		let score,scoreDiv,oversDiv,flag1,flag2,flag1_img,flag2_img,batsman1,batsman2,prevInnScoreDiv,prevInnOversDiv
 		if(eventInfo){
 			if(eventInfo.MatchInfo){
-				flag1 = eventInfo.MatchInfo.Team[0].SName
-				flag2 = eventInfo.MatchInfo.Team[1].SName
+				score = eventInfo.MatchInfo.Score;
+				flag1 = score.BattingTeam.SName
+				flag2 = score.BowlingTeam.SName
 				flag1_img = <img className="sp-flags" src={"assets/img/flags/"+flag1+".png"}/>
 				flag2_img = <img className="sp-flags" src={"/assets/img/flags/"+flag2+".png"}/>
-				score = eventInfo.MatchInfo.Score;
+				
 				scoreDiv = <div className="currentScore">{score.BattingTeam.Innings[0].Runs}/{score.BattingTeam.Innings[0].Wickets}</div>
 				batsman1 = <div className="batsmen">{score.Batsmen[0].SName} &nbsp; {score.Batsmen[0].Runs}</div>
 				batsman2 = <div className="batsmen">{score.Batsmen[1].SName} &nbsp; {score.Batsmen[1].Runs}</div>

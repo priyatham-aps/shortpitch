@@ -4,7 +4,7 @@ import ChatView from "./chat_view";
 import EventInfo from "./event_info";
 import store from "../store/store";
 import {sendComment} from "../actions/socket";
-import { startPlaying, stopPlaying } from "../actions/actions";
+import { startPlaying, stopPlaying,getEventInfo} from "../actions/actions";
 
 export default class SubscribeView extends React.Component {
 	constructor() {
@@ -21,16 +21,20 @@ export default class SubscribeView extends React.Component {
 	}
 
 	render() {
-		const {stream, event, comments} = this.props;
+		const {stream,event,eventInfo,comments} = this.props;
 		return <div>
-			<ChatView comments={comments} sendComment={this.sendComment}></ChatView>
-			<EventInfo event={event}></EventInfo>
-			<SubscribeCard
-				stream={stream}
-				isPlaying={this.state.isPlaying}
-				play={() => this.playStream()}
-				stop={() => this.stopStream()}>
-			</SubscribeCard>
+			<div className="col-md-6">
+				<ChatView comments={comments} sendComment={this.sendComment}></ChatView>
+			</div>
+			<div className="col-md-6">
+				<EventInfo event={event} eventInfo={eventInfo}></EventInfo>
+				<SubscribeCard
+					stream={stream}
+					isPlaying={this.state.isPlaying}
+					play={() => this.playStream()}
+					stop={() => this.stopStream()}>
+				</SubscribeCard>
+			</div>
 		</div>
 	}
 
