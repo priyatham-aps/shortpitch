@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import store from "../store/store"
 import PlayableCard from "./playable_card"
+import Link from "./link"
 import { setSubscribeView } from "../actions/actions";
 
 export default class StreamsList extends React.Component {
@@ -9,11 +10,14 @@ export default class StreamsList extends React.Component {
 		const {streams} = this.props;
 		let players
 		if(streams) {
-			players = streams.map((s, i) => <PlayableCard
-				key={i}
-				stream={s}
-				play={() => this.playStream(s.id)}>
-			</PlayableCard>);
+			players = streams.map((s, i) => <Link path={`subscribe/${s.id}`}>
+					<PlayableCard
+						key={i}
+						stream={s}
+						play={() => this.playStream(s.id)}>
+					</PlayableCard>
+				</Link>
+			);
 		}
 
 		return <div>

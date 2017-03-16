@@ -97,6 +97,13 @@ export const setStreamInfo = (status, count) => {
 	}
 }
 
+export const setCurrentPath = (path) => {
+	return {
+		type: actiontypes.SET_CURRENT_PATH,
+		path
+	}
+}
+
 /***************************/
 // Action Thunks
 /***************************/

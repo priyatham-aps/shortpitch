@@ -2,18 +2,14 @@ import React from "react";
 import StreamableBtn from "./streamable_btn";
 import StreamsList from "./streams_list";
 import EventInfo from "./event_info";
+import Link from "./link"
 import store from "../store/store";
 import { setCurrentView, fetchEventAndStreams } from "../actions/actions";
 import {PUBLISH_VIEW} from "./views";
 
 export default class HomePage extends React.Component {
-	componentWillMount() {
-		store.dispatch(fetchEventAndStreams());
-	}
-
 	render() {
 		const {pitcher, streams, events,eventInfo, currentEvent, currentStream} = this.props;
-
 
 		const event = events && events.length && currentEvent ? events.find(e => e.id === currentEvent) : null;
 
@@ -21,9 +17,9 @@ export default class HomePage extends React.Component {
 			return <div>
 						<div className="col-md-12 col-xs-12">
 							<div className="col-md-4 col-xs-12 streamer-wrapper homepage-stream-wrapper">
-								<a className="streamable_btn" onClick={()=>this.startPitching()}>
-									<img src="/assets/img/record.svg"/>
-								</a>
+								<Link path="/publish">
+									<img className="streamable_btn" src="/assets/img/record.svg" onClick={()=>this.startPitching()}/>
+								</Link>
 								<div className="stream-prompt">Start your Recording</div>
 							</div>
 							<div className="col-md-4 col-xs-12">

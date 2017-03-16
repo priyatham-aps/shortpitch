@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 import * as actiontypes from "../actions/types"
+import { parsePath } from "./utils";
 
 const pitcher = (state = "", action) => {
 	switch(action.type) {
@@ -103,6 +104,15 @@ const streamInfo = (state={}, action) => {
 	}
 }
 
+const currentPath = (state={}, action) => {
+	switch (action.type) {
+		case actiontypes.SET_CURRENT_PATH:
+			return parsePath(action.path);
+		default:
+			return state;
+	}
+}
+
 const reducer = combineReducers({
 	pitcher,
 	events,
@@ -112,7 +122,8 @@ const reducer = combineReducers({
 	comments,
 	currentEvent,
 	currentStream,
-	currentView
+	currentView,
+	currentPath
 });
 
 export default reducer;

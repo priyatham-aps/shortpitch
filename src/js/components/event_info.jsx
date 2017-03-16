@@ -33,6 +33,7 @@ export default class EventInfo extends React.Component {
 				}
 			}
 		}
+
 		if(this.props.showstatus){
 			if(eventInfo && eventInfo.MatchInfo && eventInfo.MatchInfo.MatchState){
 					status = <div className="matchStatus">{eventInfo.MatchInfo.MatchState.Status}</div>
@@ -58,7 +59,7 @@ export default class EventInfo extends React.Component {
 							   		<div className="sp-flag-names">{flag2}</div>
 							   		{prevInnScoreDiv}
 							   		{prevInnOversDiv}
-							   		
+
 							   	</div>
 						 	</span>
 						</div>

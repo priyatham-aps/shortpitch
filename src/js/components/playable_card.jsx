@@ -3,13 +3,6 @@ import CardInfo from "./card_info";
 
 export default class PlayableCard extends React.Component {
 	render() {
-		// let button
-		// if (this.props.isPlaying) {
-		// 	button = <div className="stream-toggle margin-10px" onClick={()=>this.props.stop()}><i className="fa fa-2x fa-pause"></i></div>;
-		// } else {
-		// 	button =  <div className="stream-toggle  margin-10px" onClick={()=>this.props.play()}><i className="fa fa-2x fa-play"></i></div>;
-		// }
-
 		return (
 			<div className="col-md-4 col-xs-12">
 				<div className="sp-slat">
@@ -27,8 +20,7 @@ export default class PlayableCard extends React.Component {
 }
 
 PlayableCard.propTypes = {
-	stream: React.PropTypes.object.isRequired,
-	play: React.PropTypes.func.isRequired
+	stream: React.PropTypes.object.isRequired
 }
 
 PlayableCard.defaultProps = {

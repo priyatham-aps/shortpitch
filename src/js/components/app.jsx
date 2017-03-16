@@ -9,23 +9,37 @@ import * as views from "./views";
 
 export default class App extends React.Component {
 	render() {
-		const {pitcher, events,eventInfo, streams, comments, currentEvent, currentStream, currentView} = this.props.data;
+		const {pitcher, events, eventInfo, streams, comments, currentEvent, currentStream, currentPath} = this.props.data;
 
-		switch (currentView) {
-			case views.PUBLISH_VIEW:
+		switch (currentPath.key) {
+			case views.PUBLISH_VIEW_KEY:
 				return <PublishView streamId={pitcher} eventId={currentEvent} comments={comments}></PublishView>;
 				break;
-			case views.SUBSCRIBE_VIEW:
+			case views.SUBSCRIBE_VIEW_KEY:
+				const currentStream = currentPath.param;
 				const event = events && events.length && currentEvent ? events.find(e => e.id === currentEvent) : {};
 				const stream = streams && streams.length && currentStream ? streams.find(s => s.id === currentStream) : {};
 				return <SubscribeView stream={stream} eventInfo={eventInfo} event={event} comments={comments}></SubscribeView>;
 				break;
-			case views.LOGIN_VIEW:
+			case views.LOGIN_VIEW_KEY:
 				return <Login></Login>;
 				break;
 			default:
 				return <HomePage {...this.props.data}></HomePage>;
 				break;
+		}
+	}
+
+	componentDidMount() {
+		console.log("componentDidMount");
+		store.dispatch(fetchEventAndStreams());
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		console.log("componentDidUpdate");
+		if (this.props.data.currentPath !== prevProps.data.currentPath && this.props.data.currentPath.key === "") {
+			console.log("fetching events in update");
+			store.dispatch(fetchEventAndStreams());
 		}
 	}
 }
