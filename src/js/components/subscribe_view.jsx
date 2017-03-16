@@ -35,7 +35,7 @@ export default class SubscribeView extends React.Component {
 						</div>
 						<div className="streamer-wrapper subscribe-stream-wrapper">
 							<a className="streamable_btn" onClick={()=>this.startPitching()}>
-								<img src="/assets/img/recording.svg"/>
+								<img src="/assets/img/record.svg"/>
 							</a>
 							<div className="stream-prompt">Start your Recording</div>
 						</div>
