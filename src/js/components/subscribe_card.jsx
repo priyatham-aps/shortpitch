@@ -11,7 +11,6 @@ export default class SubscribeCard extends React.Component {
 		}
 
 		return (
-			<div className="col-md-4 col-xs-12">
 				<div className="sp-slat">
 							<div className="sp-play-pause col-md-2 col-xs-3">
 								{button}
@@ -21,7 +20,7 @@ export default class SubscribeCard extends React.Component {
 							</div>
 
 				</div>
-			</div>
+			
 		)
 	}
 }

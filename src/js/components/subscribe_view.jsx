@@ -4,7 +4,8 @@ import ChatView from "./chat_view";
 import EventInfo from "./event_info";
 import store from "../store/store";
 import {sendComment} from "../actions/socket";
-import { startPlaying, stopPlaying,getEventInfo} from "../actions/actions";
+import { startPlaying, stopPlaying,getEventInfo,setCurrentView} from "../actions/actions";
+import {PUBLISH_VIEW} from "./views";
 
 export default class SubscribeView extends React.Component {
 	constructor() {
@@ -23,17 +24,29 @@ export default class SubscribeView extends React.Component {
 	render() {
 		const {stream,event,eventInfo,comments} = this.props;
 		return <div>
-			<div className="col-md-6">
-				<ChatView comments={comments} sendComment={this.sendComment}></ChatView>
-			</div>
-			<div className="col-md-6">
-				<EventInfo event={event} eventInfo={eventInfo}></EventInfo>
-				<SubscribeCard
-					stream={stream}
-					isPlaying={this.state.isPlaying}
-					play={() => this.playStream()}
-					stop={() => this.stopStream()}>
-				</SubscribeCard>
+			<div className="subscribeview-parent">
+				<div className="col-md-6">
+					<ChatView comments={comments} sendComment={this.sendComment}></ChatView>
+				</div>
+				<div className="col-md-6">
+					<div className="col-md-9 subscribe-left-wrapper col-xs-12">
+						<div className="subscribe-eventinfo-wrapper">
+							<EventInfo textclass="white" showstatus={false} event={event} eventInfo={eventInfo}></EventInfo>
+						</div>
+						<div className="streamer-wrapper subscribe-stream-wrapper">
+							<a className="streamable_btn" onClick={()=>this.startPitching()}>
+								<img src="/assets/img/recording.svg"/>
+							</a>
+							<div className="stream-prompt">Start your Recording</div>
+						</div>
+						<SubscribeCard
+							stream={stream}
+							isPlaying={this.state.isPlaying}
+							play={() => this.playStream()}
+							stop={() => this.stopStream()}>
+						</SubscribeCard>
+					</div>
+				</div>
 			</div>
 		</div>
 	}
@@ -45,7 +58,9 @@ export default class SubscribeView extends React.Component {
 			isPlaying: false
 		});
 	}
-
+	startPitching() {
+		store.dispatch(setCurrentView(PUBLISH_VIEW));
+	}
 	playStream() {
 		store.dispatch(startPlaying(this.props.stream.id, this.props.event.id));
 

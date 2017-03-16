@@ -20,14 +20,14 @@ export default class HomePage extends React.Component {
 		if (event) {
 			return <div>
 						<div className="col-md-12 col-xs-12">
-							<div className="col-md-4 col-xs-12 streamer-wrapper">
+							<div className="col-md-4 col-xs-12 streamer-wrapper homepage-stream-wrapper">
 								<a className="streamable_btn" onClick={()=>this.startPitching()}>
 									<img src="/assets/img/recording.svg"/>
 								</a>
 								<div className="stream-prompt">Start your Recording</div>
 							</div>
 							<div className="col-md-4 col-xs-12">
-								<EventInfo event={event} eventInfo={eventInfo}></EventInfo>
+								<EventInfo textclass="dark" showstatus={true} event={event} eventInfo={eventInfo}></EventInfo>
 							</div>
 						</div>
 						<div className="col-md-12 col-xs-12">

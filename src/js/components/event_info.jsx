@@ -11,7 +11,7 @@ export default class EventInfo extends React.Component {
 
 	render() {
 		const {event,eventInfo} = this.props;
-		let score,scoreDiv,oversDiv,flag1,flag2,flag1_img,flag2_img,batsman1,batsman2,prevInnScoreDiv,prevInnOversDiv
+		let score,scoreDiv,oversDiv,flag1,flag2,flag1_img,flag2_img,batsman1,batsman2,prevInnScoreDiv,prevInnOversDiv,status
 		if(eventInfo){
 			if(eventInfo.MatchInfo){
 				score = eventInfo.MatchInfo.Score;
@@ -19,14 +19,12 @@ export default class EventInfo extends React.Component {
 				flag2 = score.BowlingTeam.SName
 				flag1_img = <img className="sp-flags" src={"assets/img/flags/"+flag1+".png"}/>
 				flag2_img = <img className="sp-flags" src={"/assets/img/flags/"+flag2+".png"}/>
-				
-				scoreDiv = <div className="currentScore">{score.BattingTeam.Innings[0].Runs}/{score.BattingTeam.Innings[0].Wickets}</div>
 				batsman1 = <div className="batsmen">{score.Batsmen[0].SName} &nbsp; {score.Batsmen[0].Runs}</div>
 				batsman2 = <div className="batsmen">{score.Batsmen[1].SName} &nbsp; {score.Batsmen[1].Runs}</div>
 				//batsman1 = <div className="batsmen">{score.Batsmen.SName} &nbsp; {score.Batsmen[0].Runs}</div>
 				if(score){
-					scoreDiv = <div className="currentScore">{score.BattingTeam.Innings[0].Runs}/{score.BattingTeam.Innings[0].Wickets}</div>
-					oversDiv = <div className="currentOvers">{score.BattingTeam.Innings[0].Overs} Overs</div>
+					scoreDiv = <div className={"currentScore "+ this.props.textclass}>{score.BattingTeam.Innings[0].Runs}/{score.BattingTeam.Innings[0].Wickets}</div>
+					oversDiv = <div className={"currentOvers "+ this.props.textclass}>{score.BattingTeam.Innings[0].Overs} Overs</div>
 					if(score.BowlingTeam.Innings){
 						prevInnScoreDiv = <div className="prevScore">{score.BowlingTeam.Innings[0].Runs}/{score.BowlingTeam.Innings[0].Wickets}</div>
 						prevInnOversDiv = <div className="prevOvers">{score.BowlingTeam.Innings[0].Overs} Overs</div>
@@ -35,8 +33,10 @@ export default class EventInfo extends React.Component {
 				}
 			}
 		}
-		if(eventInfo && eventInfo.MatchInfo && eventInfo.MatchInfo.MatchState){
-				status = eventInfo.MatchInfo.MatchState.Status
+		if(this.props.showstatus){
+			if(eventInfo && eventInfo.MatchInfo && eventInfo.MatchInfo.MatchState){
+					status = <div className="matchStatus">{eventInfo.MatchInfo.MatchState.Status}</div>
+			}
 		}
 		return <div>
 					<div className="sp-score-parent">
@@ -65,7 +65,7 @@ export default class EventInfo extends React.Component {
 				    </div>
 				    <br/>
 				    <br/>
-				    <div className="matchStatus">{status}</div>
+				    {status}
 			  	</div>
 
 	}
