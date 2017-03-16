@@ -9,45 +9,35 @@ export default class ChatView extends React.Component {
 
 		this.handleChange = this.handleChange.bind(this);
 		this.sendComment = this.sendComment.bind(this);
+		this.handleEnterKey = this.handleEnterKey.bind(this);
 	}
 
 	render() {
 		const {comments} = this.props;
-		const cmtEls = comments.map((c, i) => <li key={i}>{c.username} : {c.text}</li>);
+		const cmtEls = comments.map((c, i) => <li key={i}><strong>{c.username}</strong> : {c.text}</li>);
 		return (
 				<div className="chat-container">
-					<div className="chat _window">
+					<div className="chat_window">
 						<div className="top_menu">
-							<div className="buttons">
-								<div className="button close"></div>
-							</div>
-							<div className="title">Chat</div>
+							<div className="title">Live Chat</div>
 						</div>
 						<ul className="messages">
 							{cmtEls}
 						</ul>
 						<div className="bottom_wrapper clearfix">
 							<div className="message_input_wrapper">
-								<input
+								<input onKeyUp={this.handleEnterKey} onChange={this.handleChange}
 									className="message_input"
-									placeholder="Type your message here..."
-									value={this.state.comment}
-									onChange={this.handleChange}
+									placeholder="Type your message here..." value={this.state.comment}
+									
 								/>
 							</div>
-							<div className="send_message" onClick={this.sendComment}>
-								<div className="icon"></div>
-								<div className="text">Send</div>
+							<div className="col-md-1 send_message" onClick={this.sendComment}>
+								<div className="icon">
+									<img src="/assets/img/send.svg"></img>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div className="message_template">
-						<li className="message">
-							<div className="avatar"></div>
-							<div className="text_wrapper">
-								<div className="text"></div>
-							</div>
-						</li>
 					</div>
 				</div>
 		)
@@ -59,13 +49,26 @@ export default class ChatView extends React.Component {
 		});
 	}
 
+	handleEnterKey(e) {
+		if (e.key == "Enter"){
+			this.sendCommentWithoutEvent()
+		}
+	}
+	
 	sendComment(e) {
 		e.preventDefault();
-
 		if (this.state.comment) {
 			this.props.sendComment(this.state.comment);
 		}
 
+		this.setState({
+			comment: ""
+		});
+	}
+	sendCommentWithoutEvent() {
+		if (this.state.comment) {
+			this.props.sendComment(this.state.comment);
+		}
 		this.setState({
 			comment: ""
 		});

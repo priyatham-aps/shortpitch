@@ -25,7 +25,7 @@ export default class SubscribeView extends React.Component {
 		const {stream,event,eventInfo,comments} = this.props;
 		return <div>
 			<div className="subscribeview-parent">
-				<div className="col-md-6">
+				<div className="col-md-4 chat-parent">
 					<ChatView comments={comments} sendComment={this.sendComment}></ChatView>
 				</div>
 				<div className="col-md-6">
