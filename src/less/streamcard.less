@@ -32,30 +32,41 @@
   	height:100%;
   	padding:10px;
   	.sp-img-container{
-  		@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
-  			.sp-user-profile{
-  				margin-left:10px;
-  			}
-  		}
-  		.sp-user-profile{
-  		  background-repeat: no-repeat;
-		  background-position: center center;
-		  background-size: cover;
-		  display: inline-block;
-		  border-radius: 50%;
-		  width:60px;
-		  height:60px;
-		}
-		h6{
-		  	width:80px;
-		  	margin:0px;
-		}
-
+    		@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+    			.sp-user-profile{
+    				margin-left:10px;
+    			}
+    		}
+    		.sp-user-profile{
+    		  background-repeat: no-repeat;
+    		  background-position: center center;
+    		  background-size: cover;
+    		  display: inline-block;
+    		  border-radius: 50%;
+    		  width:60px;
+    		  height:60px;
+  		  }
+        .username{
+    		  	width:80px;
+    		  	margin:0px;
+            font-family: AvenirNext-Medium;
+            font-size: 9px;
+            color: #4A4A4A;
+    		}
   	}
+    .sp-soundwave{
+      img{
+        max-width:100%;
+        min-width:100%;
+        margin-top: 20px;
+      }
+    }
   	.subscriber_count{
   		font-size: 11px;
 	    text-align: center;
-	    padding: 15px;
+      font-family: Helvetica;
+      color: #4A4A4A;
+	    padding: 15px 0px 0px 0px;
   	}
   }
 }

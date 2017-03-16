@@ -16,7 +16,7 @@ export default class StreamableBtn extends React.Component {
 			
 		} else {
 			//return <button className="btn btn-warning margin-10px pitchbtn" onClick={()=>this.startStream()}>Start pitching &nbsp;&nbsp;<span><i className="fa fa-microphone"></i></span></button>;
-			return <a className="streamable_btn" onClick={()=>this.startStream()}><img src="/assets/img/recording.svg"/></a>
+			return <a className="streamable_btn" onClick={()=>this.startStream()}><img src="/assets/img/record.svg"/></a>
 		}
 	}
 

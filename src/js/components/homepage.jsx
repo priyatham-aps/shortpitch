@@ -22,7 +22,7 @@ export default class HomePage extends React.Component {
 						<div className="col-md-12 col-xs-12">
 							<div className="col-md-4 col-xs-12 streamer-wrapper homepage-stream-wrapper">
 								<a className="streamable_btn" onClick={()=>this.startPitching()}>
-									<img src="/assets/img/recording.svg"/>
+									<img src="/assets/img/record.svg"/>
 								</a>
 								<div className="stream-prompt">Start your Recording</div>
 							</div>
