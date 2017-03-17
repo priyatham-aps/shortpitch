@@ -18,7 +18,15 @@ export default class SubscribeView extends React.Component {
 	}
 
 	componentDidMount() {
-		this.playStream();
+		if (this.props.stream.id) {
+			this.playStream();
+		}
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (this.props.stream !== prevProps.stream && this.props.stream.id) {
+			this.playStream();
+		}
 	}
 
 	render() {
@@ -58,10 +66,13 @@ export default class SubscribeView extends React.Component {
 			isPlaying: false
 		});
 	}
+
 	startPitching() {
 		store.dispatch(setCurrentView(PUBLISH_VIEW));
 	}
+
 	playStream() {
+		console.log("streamid " + this.props.stream.id);
 		store.dispatch(startPlaying(this.props.stream.id, this.props.event.id));
 
 		this.setState({

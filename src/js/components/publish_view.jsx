@@ -19,7 +19,15 @@ export default class PublishView extends React.Component {
 	}
 
 	componentDidMount() {
-		this.startStream();
+		if (this.props.eventId) {
+			this.startStream();
+		}
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (this.props.eventId !== prevProps.eventId && this.props.eventId) {
+			this.startStream();
+		}
 	}
 
 	render() {
