@@ -18,7 +18,7 @@ export default class HomePage extends React.Component {
 						<div className="col-md-12 col-xs-12">
 							<div className="col-md-4 col-xs-12 streamer-wrapper homepage-stream-wrapper">
 								<Link path="/publish">
-									<img className="streamable_btn" src="/assets/img/record.svg" onClick={()=>this.startPitching()}/>
+									<img className="streamable_btn" src="/assets/img/record.svg"/>
 								</Link>
 								<div className="stream-prompt">Start your Recording</div>
 							</div>
@@ -39,10 +39,6 @@ export default class HomePage extends React.Component {
 		} else {
 			return <div>No current events!</div>;
 		}
-	}
-
-	startPitching() {
-		store.dispatch(setCurrentView(PUBLISH_VIEW));
 	}
 }
 

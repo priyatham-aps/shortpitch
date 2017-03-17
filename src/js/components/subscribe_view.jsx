@@ -2,9 +2,11 @@ import React from "react";
 import SubscribeCard from "./subscribe_card";
 import ChatView from "./chat_view";
 import EventInfo from "./event_info";
+import Share from "./share";
+import Link from "./link"
 import store from "../store/store";
-import {sendComment} from "../actions/socket";
-import { startPlaying, stopPlaying,getEventInfo,setCurrentView} from "../actions/actions";
+import { sendComment } from "../actions/socket";
+import { startPlaying, stopPlaying, getEventInfo, setCurrentView} from "../actions/actions";
 import {PUBLISH_VIEW} from "./views";
 
 export default class SubscribeView extends React.Component {
@@ -42,9 +44,9 @@ export default class SubscribeView extends React.Component {
 							<EventInfo textclass="white" showstatus={false} event={event} eventInfo={eventInfo}></EventInfo>
 						</div>
 						<div className="streamer-wrapper subscribe-stream-wrapper">
-							<a className="streamable_btn" onClick={()=>this.startPitching()}>
-								<img src="/assets/img/record.svg"/>
-							</a>
+							<Link path="/publish">
+								<img className="streamable_btn" src="/assets/img/record.svg"/>
+							</Link>
 							<div className="stream-prompt">Start your Recording</div>
 						</div>
 						<SubscribeCard
@@ -53,6 +55,7 @@ export default class SubscribeView extends React.Component {
 							play={() => this.playStream()}
 							stop={() => this.stopStream()}>
 						</SubscribeCard>
+						<Share></Share>
 					</div>
 				</div>
 			</div>
@@ -65,10 +68,6 @@ export default class SubscribeView extends React.Component {
 		this.setState({
 			isPlaying: false
 		});
-	}
-
-	startPitching() {
-		store.dispatch(setCurrentView(PUBLISH_VIEW));
 	}
 
 	playStream() {
