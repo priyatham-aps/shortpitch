@@ -71,6 +71,10 @@ gulp.task("vendor", function() {
 	.pipe(watch("_vendor/**/*"))
 	.pipe(gulp.dest("dist/vendor"));
 });
+gulp.task("fonts", function() {
+	return gulp.src("src/less/fonts/**/*")
+	.pipe(gulp.dest("dist/css/fonts/"));
+});
 
 gulp.task("link_jspm", function() {
 	return vfs.src(['config.js', 'jspm_packages'], {followSymlinks: false})
@@ -102,4 +106,4 @@ gulp.task("connect", function() {
 	});
 });
 
-gulp.task("default", ["html","img", "less", "link_jspm", "js", "jsx", "fbs", "vendor", "connect"]);
+gulp.task("default", ["html","img", "less", "link_jspm", "js", "jsx", "fbs", "vendor","fonts","connect"]);
