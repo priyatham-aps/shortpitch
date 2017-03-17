@@ -1,36 +1,46 @@
 import React from "react";
 import store from "../store/store";
-import {getEventInfo} from "../actions/actions"
-
+import {getEventInfo} from "../actions/actions";
 
 export default class EventInfo extends React.Component {
 	componentDidMount() {
-	 	 store.dispatch(getEventInfo(this.props.event.id));
-	 	 window.setInterval(()=>store.dispatch(getEventInfo(this.props.event.id)),30000);
+		if (this.props.event && this.props.event.id) {
+			store.dispatch(getEventInfo(this.props.event.id));
+			this._intervalId = window.setInterval(()=>store.dispatch(getEventInfo(this.props.event.id)),30000);
+		}
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (this.props.event !== prevProps.event && this.props.event && this.props.event.id) {
+			if (this._intervalId) {
+				window.clearInterval(this._intervalId);
+			}
+
+			store.dispatch(getEventInfo(this.props.event.id));
+			this._intervalId = window.setInterval(()=>store.dispatch(getEventInfo(this.props.event.id)),30000);
+		}
 	}
 
 	render() {
 		const {event,eventInfo} = this.props;
 		let score,scoreDiv,oversDiv,flag1,flag2,flag1_img,flag2_img,batsman1,batsman2,prevInnScoreDiv,prevInnOversDiv,status
-		if(eventInfo){
-			if(eventInfo.MatchInfo){
-				score = eventInfo.MatchInfo.Score;
-				flag1 = score.BattingTeam.SName
-				flag2 = score.BowlingTeam.SName
-				flag1_img = <img className="sp-flags" src={"assets/img/flags/"+flag1+".png"}/>
-				flag2_img = <img className="sp-flags" src={"/assets/img/flags/"+flag2+".png"}/>
-				batsman1 = <div className="batsmen">{score.Batsmen[0].SName} &nbsp; {score.Batsmen[0].Runs}</div>
-				batsman2 = <div className="batsmen">{score.Batsmen[1].SName} &nbsp; {score.Batsmen[1].Runs}</div>
-				//batsman1 = <div className="batsmen">{score.Batsmen.SName} &nbsp; {score.Batsmen[0].Runs}</div>
-				if(score){
-					scoreDiv = <div className={"currentScore "+ this.props.textclass}>{score.BattingTeam.Innings[0].Runs}/{score.BattingTeam.Innings[0].Wickets}</div>
-					oversDiv = <div className={"currentOvers "+ this.props.textclass}>{score.BattingTeam.Innings[0].Overs} Overs</div>
-					if(score.BowlingTeam.Innings){
-						prevInnScoreDiv = <div className="prevScore">{score.BowlingTeam.Innings[0].Runs}/{score.BowlingTeam.Innings[0].Wickets}</div>
-						prevInnOversDiv = <div className="prevOvers">{score.BowlingTeam.Innings[0].Overs} Overs</div>
-					}
-
+		if(eventInfo && eventInfo.MatchInfo) {
+			score = eventInfo.MatchInfo.Score;
+			flag1 = score.BattingTeam.SName
+			flag2 = score.BowlingTeam.SName
+			flag1_img = <img className="sp-flags" src={"assets/img/flags/"+flag1+".png"}/>
+			flag2_img = <img className="sp-flags" src={"/assets/img/flags/"+flag2+".png"}/>
+			batsman1 = <div className="batsmen">{score.Batsmen[0].SName} &nbsp; {score.Batsmen[0].Runs}</div>
+			batsman2 = <div className="batsmen">{score.Batsmen[1].SName} &nbsp; {score.Batsmen[1].Runs}</div>
+			//batsman1 = <div className="batsmen">{score.Batsmen.SName} &nbsp; {score.Batsmen[0].Runs}</div>
+			if(score){
+				scoreDiv = <div className={"currentScore "+ this.props.textclass}>{score.BattingTeam.Innings[0].Runs}/{score.BattingTeam.Innings[0].Wickets}</div>
+				oversDiv = <div className={"currentOvers "+ this.props.textclass}>{score.BattingTeam.Innings[0].Overs} Overs</div>
+				if(score.BowlingTeam.Innings){
+					prevInnScoreDiv = <div className="prevScore">{score.BowlingTeam.Innings[0].Runs}/{score.BowlingTeam.Innings[0].Wickets}</div>
+					prevInnOversDiv = <div className="prevOvers">{score.BowlingTeam.Innings[0].Overs} Overs</div>
 				}
+
 			}
 		}
 

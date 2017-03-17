@@ -6,7 +6,7 @@ import Share from "./share";
 import Link from "./link"
 import store from "../store/store";
 import { sendComment } from "../actions/socket";
-import { startPlaying, stopPlaying, getEventInfo, setCurrentView} from "../actions/actions";
+import { startPlaying, stopPlaying, setCurrentView} from "../actions/actions";
 import {PUBLISH_VIEW} from "./views";
 
 export default class SubscribeView extends React.Component {
