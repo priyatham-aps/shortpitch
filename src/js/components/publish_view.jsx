@@ -2,6 +2,7 @@ import React from "react";
 import StreamableBtn from "./streamable_btn"
 import ChatView from "./chat_view";
 import EventInfo from "./event_info";
+import LiveCount from "./live_count";
 import {sendComment} from "../actions/socket";
 import {startPitching, stopPitching,getEventInfo,setCurrentView} from "../actions/actions";
 import store from "../store/store"
@@ -43,8 +44,11 @@ export default class PublishView extends React.Component {
 						<div className="subscribe-eventinfo-wrapper">
 							<EventInfo textclass="white" showstatus={false} event={event} eventInfo={eventInfo}></EventInfo>
 						</div>
+						<LiveCount isStreaming={this.state.isStreaming}></LiveCount>
 						<div className="streamer-wrapper subscribe-stream-wrapper">
-							<StreamableBtn isStreaming={this.state.isStreaming} start={this.startStream} stop={this.stopStream}></StreamableBtn>
+							<div className="publish-recording-icons">
+								<StreamableBtn isStreaming={this.state.isStreaming} start={this.startStream} stop={this.stopStream}></StreamableBtn>
+							</div>
 						</div>
 					</div>
 				</div>
