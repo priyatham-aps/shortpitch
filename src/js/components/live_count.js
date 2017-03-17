@@ -5,7 +5,7 @@ export default class LiveCount extends React.Component {
 		if (this.props.isStreaming) {
 			return <div className="live-count">
 						<img src="/assets/img/recording.svg"></img>
-						<div className="live-count-text"> You are live now!</div>
+						<div className="live-count-text"> You are live now.</div>
 					</div>
 		} else {
 			return <div></div>
