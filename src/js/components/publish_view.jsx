@@ -3,6 +3,7 @@ import StreamableBtn from "./streamable_btn"
 import ChatView from "./chat_view";
 import EventInfo from "./event_info";
 import LiveCount from "./live_count";
+import Share from "./share";
 import {sendComment} from "../actions/socket";
 import {startPitching, stopPitching,getEventInfo,setCurrentView} from "../actions/actions";
 import store from "../store/store"
@@ -34,6 +35,11 @@ export default class PublishView extends React.Component {
 
 	render() {
 		const {event,eventInfo,comments} = this.props;
+		let shareUrl = window.location.origin;
+		if (this.state.isStreaming) {
+			shareUrl = `${window.location.origin}/subscribe/${this.props.streamId}`
+		}
+
 		return <div>
 			<div className="subscribeview-parent">
 				<div className="col-md-4 chat-parent">
@@ -50,6 +56,7 @@ export default class PublishView extends React.Component {
 								<StreamableBtn isStreaming={this.state.isStreaming} start={this.startStream} stop={this.stopStream}></StreamableBtn>
 							</div>
 						</div>
+						<Share url={shareUrl}></Share>
 					</div>
 				</div>
 			</div>
@@ -57,7 +64,6 @@ export default class PublishView extends React.Component {
 	}
 
 	stopStream() {
-		console.log("stopping stream")
 		store.dispatch(stopPitching(this.props.streamId, this.props.eventId));
 		this.setState({
 			isStreaming: false
@@ -65,7 +71,6 @@ export default class PublishView extends React.Component {
 	}
 
 	startStream() {
-		console.log("starting stream");
 		store.dispatch(startPitching(this.props.eventId));
 		this.setState({
 			isStreaming: true

@@ -181,6 +181,9 @@ class ControlSocket {
 	_initSocket() {
 		this.socket = new WebSocket(this.url);
 		this.socket.binaryType = "arraybuffer";
+		this.socket.onclose = (e) => {
+			this.socket = null;
+		}
 	}
 
 	_closeSocket() {

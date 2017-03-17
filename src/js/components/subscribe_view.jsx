@@ -33,6 +33,7 @@ export default class SubscribeView extends React.Component {
 
 	render() {
 		const {stream,event,eventInfo,comments} = this.props;
+		const shareUrl = window.location.href;
 		return <div>
 			<div className="subscribeview-parent">
 				<div className="col-md-4 chat-parent">
@@ -59,7 +60,7 @@ export default class SubscribeView extends React.Component {
 								</SubscribeCard>
 							</div>
 							<div className="col-md-2">
-								<Share></Share>
+								<Share url={shareUrl}></Share>
 							</div>
 						</div>
 					</div>

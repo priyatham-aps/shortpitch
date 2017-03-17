@@ -8,20 +8,29 @@ const TwitterIcon = generateShareIcon('twitter');
 
 export default class Share extends React.Component {
 	render() {
-		const shareUrl = window.location.href;
 		const title = "Shortpitch!";
 
 		return <div>
 			<FacebookShareButton
-				url={shareUrl}
-				title={title}>
+				url={this.props.url}
+				title={title}
+				className="padding-vertical-5px">
 					<FacebookIcon size={32} round />
 			</FacebookShareButton>
 			<TwitterShareButton
-				url={shareUrl}
-				title={title}>
+				url={this.props.url}
+				title={title}
+				className="padding-vertical-5px">
 					<TwitterIcon size={32} round />
 			</TwitterShareButton>
 		</div>
 	}
+}
+
+Share.propTypes = {
+	url: React.PropTypes.string
+}
+
+Share.defaultProps = {
+	url: window.location.href
 }
