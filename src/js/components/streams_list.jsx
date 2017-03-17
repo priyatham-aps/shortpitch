@@ -27,7 +27,7 @@ export default class StreamsList extends React.Component {
 }
 
 StreamsList.propTypes = {
-	streams: React.PropTypes.arrayOf(React.PropTypes.object).isRequired
+	streams: React.PropTypes.arrayOf(React.PropTypes.object)
 }
 
 StreamsList.defaultProps = {
