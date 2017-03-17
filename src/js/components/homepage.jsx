@@ -20,7 +20,7 @@ export default class HomePage extends React.Component {
 								<Link path="/publish">
 									<img className="streamable_btn" src="/assets/img/record.svg"/>
 								</Link>
-								<div className="stream-prompt">Start your Recording</div>
+								<div className="stream-prompt">Start Pitching Live!</div>
 							</div>
 							<div className="col-md-4 col-xs-12">
 								<EventInfo textclass="dark" showstatus={true} event={event} eventInfo={eventInfo}></EventInfo>

@@ -1,8 +1,9 @@
 import React from "react";
 import StreamableBtn from "./streamable_btn"
 import ChatView from "./chat_view";
+import EventInfo from "./event_info";
 import {sendComment} from "../actions/socket";
-import {startPitching, stopPitching} from "../actions/actions";
+import {startPitching, stopPitching,getEventInfo,setCurrentView} from "../actions/actions";
 import store from "../store/store"
 
 export default class PublishView extends React.Component {
@@ -31,11 +32,24 @@ export default class PublishView extends React.Component {
 	}
 
 	render() {
-		const {comments} = this.props;
+		const {event,eventInfo,comments} = this.props;
 		return <div>
-			<StreamableBtn isStreaming={this.state.isStreaming} start={this.startStream} stop={this.stopStream}></StreamableBtn>
-			<ChatView comments={comments} sendComment={this.sendComment}></ChatView>
-		</div>;
+			<div className="subscribeview-parent">
+				<div className="col-md-4 chat-parent">
+						<ChatView comments={comments} sendComment={this.sendComment}></ChatView>
+				</div>
+				<div className="col-md-6">
+					<div className="col-md-9 subscribe-left-wrapper col-xs-12">
+						<div className="subscribe-eventinfo-wrapper">
+							<EventInfo textclass="white" showstatus={false} event={event} eventInfo={eventInfo}></EventInfo>
+						</div>
+						<div className="streamer-wrapper subscribe-stream-wrapper">
+							<StreamableBtn isStreaming={this.state.isStreaming} start={this.startStream} stop={this.stopStream}></StreamableBtn>
+						</div>
+					</div>
+				</div>
+			</div>
+			</div>;
 	}
 
 	stopStream() {

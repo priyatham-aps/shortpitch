@@ -24,7 +24,7 @@ export default class Login extends React.Component {
                         window.clearInterval(pollTimer);
                         var url =   facebookLoginWindow.document.URL;
                         facebookLoginWindow.close();
-                        window.location.href="/"
+                        window.location.href="/publish"
                     }
                 } catch(e) {
                 }

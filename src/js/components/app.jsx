@@ -10,14 +10,13 @@ import * as views from "./views";
 export default class App extends React.Component {
 	render() {
 		const {pitcher, events, eventInfo, streams, comments, currentEvent, currentStream, currentPath} = this.props.data;
-
+		const event = events && events.length && currentEvent ? events.find(e => e.id === currentEvent) : {};
 		switch (currentPath.key) {
 			case views.PUBLISH_VIEW_KEY:
-				return <PublishView streamId={pitcher} eventId={currentEvent} comments={comments}></PublishView>;
+				return <PublishView streamId={pitcher} event={event} eventInfo={eventInfo} eventId={currentEvent} comments={comments}></PublishView>;
 				break;
 			case views.SUBSCRIBE_VIEW_KEY:
 				const currentStream = currentPath.param;
-				const event = events && events.length && currentEvent ? events.find(e => e.id === currentEvent) : {};
 				const stream = streams && streams.length && currentStream ? streams.find(s => s.id === currentStream) : {};
 				return <SubscribeView stream={stream} eventInfo={eventInfo} event={event} comments={comments}></SubscribeView>;
 				break;
