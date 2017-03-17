@@ -43,6 +43,7 @@ const currentEvent = (state="", action) => {
 			return state;
 	}
 }
+
 const eventInfo = (state={}, action) => {
 	switch (action.type) {
 		case actiontypes.RECEIVE_EVENT_INFO:
@@ -51,7 +52,6 @@ const eventInfo = (state={}, action) => {
 			return state;
 	}
 }
-
 
 const currentStream = (state="", action) => {
 	switch (action.type) {
@@ -90,11 +90,25 @@ const comments = (state=[], action) => {
 	}
 }
 
+const streamInfo = (state={}, action) => {
+	switch (action.type) {
+		case actiontypes.SET_STREAM_INFO:
+			return action.payload;
+		case actiontypes.SET_STREAM_STATUS:
+			return Object.assign({}, state, {status: action.status});
+		case actiontypes.SET_STREAM_COUNT:
+			return Object.assign({}, state, {count: action.count});
+		default:
+			return state;
+	}
+}
+
 const reducer = combineReducers({
 	pitcher,
 	events,
 	eventInfo,
 	streams,
+	streamInfo,
 	comments,
 	currentEvent,
 	currentStream,

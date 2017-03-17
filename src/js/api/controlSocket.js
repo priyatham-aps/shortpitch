@@ -2,7 +2,7 @@ import * as Interpretor from "./interpretor";
 import {flatbuffers} from "flatbuffers";
 import * as message from ".././fbs/stream"
 import store from "../store/store";
-import { addComment } from "../actions/actions";
+import { addComment, setStreamInfo } from "../actions/actions";
 
 class ControlSocket {
 	constructor() {
@@ -60,39 +60,41 @@ class ControlSocket {
 			this.socket.onmessage = null;
 		}
 
-		this._sendStreamSubscribeMsg(sId, eId)
-		.then(() => {
-			this.handleSubscribe(audioCallback);
-		});
+		this._sendStreamSubscribeMsg(sId, eId, audioCallback)
 	}
 
 	unsubscribe(sId, eId) {
 		this._sendStreamUnsubscribeMsg(sId, eId);
-		this.handleSubscribe(null);
+		this.socket.onmessage = this.handleSubscribe.bind(this, null)
 	}
 
-	handleSubscribe(audioCallback) {
-		this.socket.onmessage = (e) => {
-			const buf = new flatbuffers.ByteBuffer(new Uint8Array(e.data));
-			const msg = message.StreamMessage.getRootAsStreamMessage(buf);
-			switch (msg.messageType()) {
-				case message.Message.Frame:
-					const frame = msg.message(new message.Frame());
-					if (audioCallback) {
-						audioCallback(frame);
-					}
-					break;
-				case message.Message.Comment:
-					const commentMsg = msg.message(new message.Comment());
-					const cmt = {
-						username: commentMsg.userName(),
-						text: commentMsg.text()
-					}
-					store.dispatch(addComment(cmt));
-					break;
-				default:
-					console.error(`Unhandled message type in subscribe: ${msg.messageType()}`);
-			}
+	handleSubscribe(audioCallback, e) {
+		const buf = new flatbuffers.ByteBuffer(new Uint8Array(e.data));
+		const msg = message.StreamMessage.getRootAsStreamMessage(buf);
+		switch (msg.messageType()) {
+			case message.Message.Frame:
+				console.log("handling frame");
+				const frame = msg.message(new message.Frame());
+				if (audioCallback) {
+					audioCallback(frame);
+				}
+				break;
+			case message.Message.Comment:
+				console.log("handling comment");
+				const commentMsg = msg.message(new message.Comment());
+				const cmt = {
+					username: commentMsg.userName(),
+					text: commentMsg.text()
+				}
+				store.dispatch(addComment(cmt));
+				break;
+			case message.Message.Status:
+				console.log("handling status");
+				const statusMsg = msg.message(new message.Status());
+				store.dispatch(setStreamInfo(statusMsg.status(), statusMsg.subscribeCount()));
+				break;
+			default:
+				console.error(`Unhandled message type in subscribe: ${msg.messageType()}`);
 		}
 	}
 
@@ -137,7 +139,7 @@ class ControlSocket {
 		this._send(msg);
 	}
 
-	_sendStreamSubscribeMsg(sId, eId) {
+	_sendStreamSubscribeMsg(sId, eId, audioCallback) {
 		return new Promise((resolve, reject) => {
 			this.socket.onmessage = (e) => {
 				var buf = new flatbuffers.ByteBuffer(new Uint8Array(e.data));
@@ -148,14 +150,16 @@ class ControlSocket {
 
 					if (response.status() === message.ResponseStatus.OK) {
 						resolve(response.status());
+						this.socket.onmessage = this.handleSubscribe.bind(this, audioCallback);
 					} else {
 						reject(response.status());
+						this.socket.onmessage = null;
 					}
 				} else {
 					console.error(`Unhandled message type in StreamSubscribe response: ${msg.messageType()}`);
+					this.socket.onmessage = null;
 				}
 
-				this.socket.onmessage = null;
 			}
 
 			const msg = Interpretor.getSubscribeMessage(sId, eId);

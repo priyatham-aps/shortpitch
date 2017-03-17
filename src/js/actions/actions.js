@@ -73,6 +73,30 @@ export const addComment = (comment) => {
 	}
 }
 
+export const setStreamStatus = (status) => {
+	return {
+		type: actiontypes.SET_STREAM_STATUS,
+		status
+	}
+}
+
+export const setStreamCount = (count) => {
+	return {
+		type: actiontypes.SET_STREAM_COUNT,
+		count
+	}
+}
+
+export const setStreamInfo = (status, count) => {
+	return {
+		type: actiontypes.SET_STREAM_INFO,
+		payload: {
+			status,
+			count
+		}
+	}
+}
+
 /***************************/
 // Action Thunks
 /***************************/
