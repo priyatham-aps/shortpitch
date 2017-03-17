@@ -73,14 +73,12 @@ class ControlSocket {
 		const msg = message.StreamMessage.getRootAsStreamMessage(buf);
 		switch (msg.messageType()) {
 			case message.Message.Frame:
-				console.log("handling frame");
 				const frame = msg.message(new message.Frame());
 				if (audioCallback) {
 					audioCallback(frame);
 				}
 				break;
 			case message.Message.Comment:
-				console.log("handling comment");
 				const commentMsg = msg.message(new message.Comment());
 				const cmt = {
 					username: commentMsg.userName(),
@@ -89,9 +87,12 @@ class ControlSocket {
 				store.dispatch(addComment(cmt));
 				break;
 			case message.Message.Status:
-				console.log("handling status");
 				const statusMsg = msg.message(new message.Status());
 				store.dispatch(setStreamInfo(statusMsg.status(), statusMsg.subscribeCount()));
+				break;
+			case message.Message.Stop:
+				const stopMsg = msg.message(new message.Stop());
+				// store.dispatch(setStreamInfo(statusMsg.status(), statusMsg.subscribeCount()));
 				break;
 			default:
 				console.error(`Unhandled message type in subscribe: ${msg.messageType()}`);

@@ -30,12 +30,10 @@ export default class App extends React.Component {
 	}
 
 	componentDidMount() {
-		console.log("componentDidMount");
 		store.dispatch(fetchEventAndStreams());
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		console.log("componentDidUpdate");
 		if (this.props.data.currentPath !== prevProps.data.currentPath && this.props.data.currentPath.key === "") {
 			console.log("fetching events in update");
 			store.dispatch(fetchEventAndStreams());

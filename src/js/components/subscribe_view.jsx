@@ -49,13 +49,19 @@ export default class SubscribeView extends React.Component {
 							</Link>
 							<div className="stream-prompt">Start your Recording</div>
 						</div>
-						<SubscribeCard
-							stream={stream}
-							isPlaying={this.state.isPlaying}
-							play={() => this.playStream()}
-							stop={() => this.stopStream()}>
-						</SubscribeCard>
-						<Share></Share>
+						<div className="row">
+							<div className="col-md-10">
+								<SubscribeCard
+									stream={stream}
+									isPlaying={this.state.isPlaying}
+									play={() => this.playStream()}
+									stop={() => this.stopStream()}>
+								</SubscribeCard>
+							</div>
+							<div className="col-md-2">
+								<Share></Share>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
