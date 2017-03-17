@@ -132,7 +132,7 @@ export const fetchEventAndStreams = () => {
 export const stopPitching = (sId, eId) => {
 	return dispatch => {
 		audio.stopStreaming(sId, eId);
-		dispatch(removePitcher(sId));
+		// dispatch(removePitcher(sId));
 	}
 }
 

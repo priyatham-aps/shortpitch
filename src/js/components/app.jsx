@@ -8,11 +8,6 @@ import store from "../store/store";
 import * as views from "./views";
 
 export default class App extends React.Component {
-	constructor() {
-		super();
-		console.log("Constructing app!");
-	}
-
 	render() {
 		const {pitcher, events,eventInfo, streams, comments, currentEvent, currentStream, currentView} = this.props.data;
 
@@ -32,13 +27,5 @@ export default class App extends React.Component {
 				return <HomePage {...this.props.data}></HomePage>;
 				break;
 		}
-	}
-
-	componentWillMount() {
-		console.log("Mounting app!");
-	}
-
-	componentWillUnmount() {
-		console.log("Unmounting app!");
 	}
 }
