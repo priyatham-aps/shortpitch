@@ -10,9 +10,8 @@ export default class StreamsList extends React.Component {
 		const {streams} = this.props;
 		let players
 		if(streams) {
-			players = streams.map((s, i) => <Link path={`subscribe/${s.id}`}>
+			players = streams.map((s, i) => <Link key={i} path={`subscribe/${s.id}`}>
 					<PlayableCard
-						key={i}
 						stream={s}
 						play={() => this.playStream(s.id)}>
 					</PlayableCard>
