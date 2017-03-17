@@ -1,4 +1,5 @@
 import React from "react";
+import { updatePath } from "../actions/nondispatch";
 
 export default class Link extends React.Component {
 	constructor() {
@@ -13,8 +14,7 @@ export default class Link extends React.Component {
 
 	onClick(e) {
 		e.preventDefault();
-		window.history.pushState(null, null, this.props.path);
-		window.dispatchEvent(new window.PopStateEvent('popstate'));
+		updatePath(this.props.path);
 	};
 }
 

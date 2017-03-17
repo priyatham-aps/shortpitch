@@ -2,6 +2,7 @@ import * as api from "../api/api"
 import * as actiontypes from "./types";
 import { LOGIN_VIEW, SUBSCRIBE_VIEW } from '../components/views'
 import * as audio from "./audio";
+import { updatePath } from "./nondispatch";
 
 export const setPitcher = (id) => {
 	return {
@@ -117,7 +118,8 @@ export const startPitching = (eId) => {
 		})
 		.catch(error => {
 			console.error(error);
-			dispatch(setCurrentView(LOGIN_VIEW))
+			// dispatch(setCurrentView(LOGIN_VIEW))
+			updatePath("login");
 		})
 	}
 }

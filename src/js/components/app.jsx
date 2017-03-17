@@ -35,7 +35,6 @@ export default class App extends React.Component {
 
 	componentDidUpdate(prevProps, prevState) {
 		if (this.props.data.currentPath !== prevProps.data.currentPath && this.props.data.currentPath.key === "") {
-			console.log("fetching events in update");
 			store.dispatch(fetchEventAndStreams());
 		}
 	}
