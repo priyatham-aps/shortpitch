@@ -71,9 +71,23 @@ gulp.task("vendor", function() {
 	.pipe(watch("_vendor/**/*"))
 	.pipe(gulp.dest("dist/vendor"));
 });
+
 gulp.task("fonts", function() {
 	return gulp.src("src/less/fonts/**/*")
+	.pipe(watch("src/less/fonts/**/*"))
 	.pipe(gulp.dest("dist/css/fonts/"));
+});
+
+gulp.task("jspm", function() {
+	return gulp.src("jspm_packages/**/*")
+	.pipe(watch("jspm_packages/**/*"))
+	.pipe(gulp.dest("dist/jspm_packages"));
+});
+
+gulp.task("jspm_config", function() {
+	return gulp.src("config.js")
+	.pipe(watch("config.js"))
+	.pipe(gulp.dest("dist"));
 });
 
 gulp.task("link_jspm", function() {
@@ -85,6 +99,7 @@ gulp.task("connect", function() {
 	return connect.server({
 		root: ["dist/"],
 		port: 9001,
+		fallback: "dist/index.html",
 		middleware: function (connect, opt) {
 			return[
 				proxy('/api', {
@@ -106,4 +121,4 @@ gulp.task("connect", function() {
 	});
 });
 
-gulp.task("default", ["html","img", "less", "link_jspm", "js", "jsx", "fbs", "vendor","fonts","connect"]);
+gulp.task("default", ["html","img", "less", "jspm", "jspm_config", "js", "jsx", "fbs", "vendor", "fonts", "connect"]);
