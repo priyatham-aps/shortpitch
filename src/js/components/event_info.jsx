@@ -28,7 +28,7 @@ export default class EventInfo extends React.Component {
 			score = eventInfo.MatchInfo.Score;
 			flag1 = score.BattingTeam.SName
 			flag2 = score.BowlingTeam.SName
-			flag1_img = <img className="sp-flags" src={"assets/img/flags/"+flag1+".png"}/>
+			flag1_img = <img className="sp-flags" src={"/assets/img/flags/"+flag1+".png"}/>
 			flag2_img = <img className="sp-flags" src={"/assets/img/flags/"+flag2+".png"}/>
 			batsman1 = <div className="batsmen">{score.Batsmen[0].SName} &nbsp; {score.Batsmen[0].Runs}</div>
 			batsman2 = <div className="batsmen">{score.Batsmen[1].SName} &nbsp; {score.Batsmen[1].Runs}</div>
