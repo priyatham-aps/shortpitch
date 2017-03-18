@@ -2,7 +2,7 @@ import * as Interpretor from "./interpretor";
 import {flatbuffers} from "flatbuffers";
 import * as message from ".././fbs/stream"
 import store from "../store/store";
-import { addComment, setStreamInfo } from "../actions/actions";
+import { addComment, setStreamInfo, setStreamActiveCount } from "../actions/actions";
 import Long from "long"
 
 class ControlSocket {
@@ -42,6 +42,11 @@ class ControlSocket {
 					text: commentMsg.text()
 				}
 				store.dispatch(addComment(cmt));
+				break;
+			case message.Message.ActiveListeners:
+				const actCntMsg = msg.message(new message.ActiveListeners());
+				const act = actCntMsg.activeListeners();
+				store.dispatch(setStreamActiveCount(act));
 				break;
 			default:
 				console.error(`Unhandled message type in publish: ${msg.messageType()}`);
@@ -95,6 +100,11 @@ class ControlSocket {
 			case message.Message.Stop:
 				const stopMsg = msg.message(new message.Stop());
 				// store.dispatch(setStreamInfo(statusMsg.status(), statusMsg.subscribeCount()));
+				break;
+			case message.Message.ActiveListeners:
+				const actCntMsg = msg.message(new message.ActiveListeners());
+				const act = actCntMsg.activeListeners();
+				store.dispatch(setStreamActiveCount(act));
 				break;
 			default:
 				console.error(`Unhandled message type in subscribe: ${msg.messageType()}`);

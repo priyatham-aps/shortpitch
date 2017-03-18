@@ -56,6 +56,7 @@ export default class SubscribeView extends React.Component {
 					<div className="col-md-10">
 						<SubscribeCard
 							stream={stream}
+							streamInfo={this.props.streamInfo}
 							isPlaying={this.state.isPlaying}
 							play={() => this.playStream()}
 							stop={() => this.stopStream()}>

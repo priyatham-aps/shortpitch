@@ -8,8 +8,14 @@ export default class ChatView extends React.Component {
 		};
 
 		this.handleChange = this.handleChange.bind(this);
-		this.sendComment = this.sendComment.bind(this);
+		this.handleSend = this.handleSend.bind(this);
 		this.handleEnterKey = this.handleEnterKey.bind(this);
+	}
+
+	componentDidUpdate(prevProps) {
+		if (this.props.comments !== prevProps.comments) {
+			this.scrollTop();
+		}
 	}
 
 	render() {
@@ -21,7 +27,7 @@ export default class ChatView extends React.Component {
 						<div className="top_menu">
 							<div className="title">Live Chat</div>
 						</div>
-						<ul className="messages">
+						<ul className="messages" ref={(ul) => this.ul = ul}>
 							{cmtEls}
 						</ul>
 						<div className="bottom_wrapper clearfix">
@@ -29,10 +35,10 @@ export default class ChatView extends React.Component {
 								<input onKeyUp={this.handleEnterKey} onChange={this.handleChange}
 									className="message_input"
 									placeholder="Type your message here..." value={this.state.comment}
-									
+
 								/>
 							</div>
-							<div className="col-md-1 send_message" onClick={this.sendComment}>
+							<div className="col-md-1 send_message" onClick={this.handleSend}>
 								<div className="icon">
 									<img src="/assets/img/send.svg"></img>
 								</div>
@@ -51,27 +57,26 @@ export default class ChatView extends React.Component {
 
 	handleEnterKey(e) {
 		if (e.key == "Enter"){
-			this.sendCommentWithoutEvent()
+			this.sendComment()
 		}
 	}
-	
-	sendComment(e) {
-		e.preventDefault();
-		if (this.state.comment) {
-			this.props.sendComment(this.state.comment);
-		}
 
-		this.setState({
-			comment: ""
-		});
+	handleSend(e) {
+		e.preventDefault();
+		this.sendComment();
 	}
-	sendCommentWithoutEvent() {
+
+	sendComment() {
 		if (this.state.comment) {
 			this.props.sendComment(this.state.comment);
 		}
 		this.setState({
 			comment: ""
 		});
+	}
+
+	scrollTop() {
+		this.ul.scrollTop = this.ul.scrollHeight;
 	}
 }
 

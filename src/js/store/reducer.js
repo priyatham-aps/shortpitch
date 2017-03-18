@@ -99,6 +99,8 @@ const streamInfo = (state={}, action) => {
 			return Object.assign({}, state, {status: action.status});
 		case actiontypes.SET_STREAM_COUNT:
 			return Object.assign({}, state, {count: action.count});
+		case actiontypes.SET_STREAM_ACTIVE_COUNT:
+			return Object.assign({}, state, {activeCount: action.count});
 		default:
 			return state;
 	}

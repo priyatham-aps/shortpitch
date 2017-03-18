@@ -23,14 +23,13 @@ export default class SubscribeCard extends React.Component {
 						</div>
 					</div>
 					<div className="col-md-9 sp-meta-container clickable">
-						<CardInfo stream={this.props.stream}></CardInfo>
+						<CardInfo stream={this.props.stream} streamInfo={this.props.streamInfo}></CardInfo>
 					</div>
 				</div>
 		)
 	}
 
 	onClick(e) {
-		console.log("onClick");
 		e.preventDefault();
 		if (this.props.isPlaying) {
 			this.props.stop();
@@ -39,12 +38,7 @@ export default class SubscribeCard extends React.Component {
 		}
 	}
 
-	onTouchStart(e) {
-		console.log("onTouchStart");
-	}
-
 	onTouchEnd(e) {
-		console.log("onTouchEnd");
 		e.preventDefault();
 		if (this.props.isPlaying) {
 			this.props.stop();

@@ -88,13 +88,28 @@ export const setStreamCount = (count) => {
 	}
 }
 
-export const setStreamInfo = (status, count) => {
+export const setStreamActiveCount = (count) => {
+	return {
+		type: actiontypes.SET_STREAM_ACTIVE_COUNT,
+		count
+	}
+}
+
+export const setStreamInfo = (status, count, activeCount) => {
 	return {
 		type: actiontypes.SET_STREAM_INFO,
 		payload: {
 			status,
-			count
+			count,
+			activeCount
 		}
+	}
+}
+
+export const removeStreamInfo = () => {
+	return {
+		type: actiontypes.SET_STREAM_INFO,
+		payload: {}
 	}
 }
 
@@ -166,6 +181,7 @@ export const stopPitching = (sId, eId) => {
 	return dispatch => {
 		audio.stopStreaming(sId, eId);
 		// dispatch(removePitcher(sId));
+		dispatch(removeStreamInfo());
 	}
 }
 

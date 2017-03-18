@@ -58,7 +58,7 @@ export default class PublishView extends React.Component {
 						<StreamableBtn isStreaming={this.state.isStreaming} start={this.startStream} stop={this.stopStream}></StreamableBtn>
 					</div>
 				</div>
-				<LiveCount isStreaming={this.state.isStreaming}></LiveCount>
+				<LiveCount isStreaming={this.state.isStreaming} streamInfo={this.props.streamInfo}></LiveCount>
 				{shareEl}
 			</div>
 		</div>;
@@ -87,11 +87,13 @@ export default class PublishView extends React.Component {
 PublishView.propTypes = {
 	streamId: React.PropTypes.string,
 	eventId: React.PropTypes.string,
-	comments: React.PropTypes.array
+	comments: React.PropTypes.array,
+	streamInfo: React.PropTypes.object
 }
 
 PublishView.defaultProps = {
 	streamId: "",
 	eventId: "",
-	comments: []
+	comments: [],
+	streamInfo: {}
 }

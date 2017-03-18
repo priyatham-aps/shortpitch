@@ -3,7 +3,7 @@ import React from "react";
 export default class CardInfo extends React.Component {
 	render() {
 		const user = this.props.stream.user || {};
-		const subscriber_count = this.props.stream.subscriber_count || 0;
+		const actCount = this.props.streamInfo.activeCount || this.props.stream.active_listeners || 0;
 		const backgroundImageLoc = "url('//graph.facebook.com/"+user.fbid+"/picture?type=large')"
 
 		return <div className="row">
@@ -15,7 +15,7 @@ export default class CardInfo extends React.Component {
 				<img src="/assets/img/soundwave.png"></img>
 			</div>
 			<div className="col-xs-2 subscriber_count">
-				{subscriber_count}
+				{actCount}
 				<p>Listeners</p>
 			</div>
 			<div className="col-xs-1"></div>
@@ -24,9 +24,11 @@ export default class CardInfo extends React.Component {
 }
 
 CardInfo.propTypes = {
-	stream: React.PropTypes.object.isRequired
+	stream: React.PropTypes.object.isRequired,
+	streamInfo: React.PropTypes.object
 }
 
 CardInfo.defaultProps = {
-	stream: {}
+	stream: {},
+	streamInfo: {}
 }

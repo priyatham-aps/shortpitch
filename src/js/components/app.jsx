@@ -21,23 +21,32 @@ export default class App extends React.Component {
 	}
 
 	getMainContent() {
-		const {pitcher, events, eventInfo, streams, comments, currentEvent, currentStream, currentPath} = this.props.data;
+		const {pitcher, events, eventInfo, streams, comments, currentEvent, currentStream, currentPath, streamInfo} = this.props.data;
 		const event = events && events.length && currentEvent ? events.find(e => e.id === currentEvent) : {};
 		switch (currentPath.key) {
 			case views.PUBLISH_VIEW_KEY:
-				return <PublishView streamId={pitcher} event={event} eventInfo={eventInfo} eventId={currentEvent} comments={comments}></PublishView>;
-				break;
+				return <PublishView
+					streamId={pitcher}
+					event={event}
+					eventInfo={eventInfo}
+					eventId={currentEvent}
+					comments={comments}
+					streamInfo={streamInfo}>
+				</PublishView>;
 			case views.SUBSCRIBE_VIEW_KEY:
 				const currentStream = currentPath.param;
 				const stream = streams && streams.length && currentStream ? streams.find(s => s.id === currentStream) : {};
-				return <SubscribeView stream={stream} eventInfo={eventInfo} event={event} comments={comments}></SubscribeView>;
-				break;
+				return <SubscribeView
+					stream={stream}
+					eventInfo={eventInfo}
+					event={event}
+					comments={comments}
+					streamInfo={streamInfo}>
+				</SubscribeView>;
 			case views.LOGIN_VIEW_KEY:
 				return <Login></Login>;
-				break;
 			default:
 				return <HomePage {...this.props.data}></HomePage>;
-				break;
 		}
 	}
 
