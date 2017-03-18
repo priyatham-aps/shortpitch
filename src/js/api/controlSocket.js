@@ -3,6 +3,7 @@ import {flatbuffers} from "flatbuffers";
 import * as message from ".././fbs/stream"
 import store from "../store/store";
 import { addComment, setStreamInfo } from "../actions/actions";
+import Long from "long"
 
 class ControlSocket {
 	constructor() {
@@ -73,6 +74,7 @@ class ControlSocket {
 		const msg = message.StreamMessage.getRootAsStreamMessage(buf);
 		switch (msg.messageType()) {
 			case message.Message.Frame:
+				// printMsgLag(msg);
 				const frame = msg.message(new message.Frame());
 				if (audioCallback) {
 					audioCallback(frame);
@@ -206,6 +208,14 @@ class ControlSocket {
 			console.error('Socket is in CLOSED state');
 		}
 	}
+}
+
+const printMsgLag = (msg) => {
+	const ts = msg.timestamp();
+	const tsLong = new Long(ts.low, ts.high);
+	// console.log("tsLong", tsLong.toNumber());
+	// console.log("Date", new Date().getTime());
+	console.log(new Date().getTime() - tsLong.toNumber());
 }
 
 const cs = new ControlSocket();

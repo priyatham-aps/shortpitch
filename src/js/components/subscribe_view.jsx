@@ -40,39 +40,33 @@ export default class SubscribeView extends React.Component {
 	render() {
 		const {stream,event,eventInfo,comments} = this.props;
 		const shareUrl = window.location.href;
-		return <div>
-			<div className="subscribeview-parent">
-				<div className="col-md-4 chat-parent">
-					<ChatView comments={comments} sendComment={this.sendComment}></ChatView>
+		return <div className="row">
+			<div className="col-md-4 col-md-offset-1 chat-parent">
+				<ChatView comments={comments} sendComment={this.sendComment}></ChatView>
+			</div>
+			<div className="col-md-5 col-md-offset-1">
+				<EventInfo textclass="white" showstatus={false} event={event} eventInfo={eventInfo}></EventInfo>
+				<div className="streamer-wrapper subscribe-streamer-wrapper">
+					<Link path="/publish">
+						<img className="streamable_btn" src="/assets/img/record.svg"/>
+					</Link>
+					<div className="stream-prompt">Start your Recording</div>
 				</div>
-				<div className="col-md-6">
-					<div className="col-md-9 subscribe-left-wrapper col-xs-12">
-						<div className="subscribe-eventinfo-wrapper">
-							<EventInfo textclass="white" showstatus={false} event={event} eventInfo={eventInfo}></EventInfo>
-						</div>
-						<div className="streamer-wrapper subscribe-stream-wrapper">
-							<Link path="/publish">
-								<img className="streamable_btn" src="/assets/img/record.svg"/>
-							</Link>
-							<div className="stream-prompt">Start your Recording</div>
-						</div>
-						<div className="row">
-							<div className="col-md-10">
-								<SubscribeCard
-									stream={stream}
-									isPlaying={this.state.isPlaying}
-									play={() => this.playStream()}
-									stop={() => this.stopStream()}>
-								</SubscribeCard>
-							</div>
-							<div className="col-md-2">
-								<Share url={shareUrl}></Share>
-							</div>
-						</div>
+				<div className="row">
+					<div className="col-md-10">
+						<SubscribeCard
+							stream={stream}
+							isPlaying={this.state.isPlaying}
+							play={() => this.playStream()}
+							stop={() => this.stopStream()}>
+						</SubscribeCard>
+					</div>
+					<div className="col-md-2">
+						<Share url={shareUrl}></Share>
 					</div>
 				</div>
 			</div>
-		</div>
+		</div>;
 	}
 
 	stopStream() {

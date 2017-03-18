@@ -4,82 +4,85 @@
     color: #FFFFFF;
     letter-spacing: 0;
     text-align:center;
-    margin-top:168px;
+    margin-top:10px;
 }
 .sp-score-parent{
   width:500px;
-  
   .sp-score-child{
     margin-bottom:10px;
   }
-  .sp-main-score{
-    margin:0 60px;
-    width:110px;
-    text-align:center;
+}
+
+.sp-main-score{
+  // margin:0 60px;
+  // width:110px;
+  text-align:center;
+}
+
+.flag-parent {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+
+  .sp-flags{
+    max-width: 100px;
+    min-width:100px;
+    max-height: 70px;
+    min-height:70px;
+    margin-bottom:5px;
   }
-  .currentScore{
-    //font-family: AvenirNext-Regular;
-    font-family: AvenirNext-Regular,Avenir-Book;
-    font-size: 56px;
-    letter-spacing: -2px;
-    line-height:70px;
-    &.dark{
-      color: #4A4A4A;
-    }
-    &.white{
-      color: #FFF;
-    }
+  .batsmen{
+    font-family: AvenirNext-DemiBold,Avenir-Book;
+    font-size: 13px;
+    color: #FFFFFF;
+    letter-spacing: 0;
   }
-  .currentOvers{
-    font-family: Avenir-Medium;
+  .prevScore{
+    font-family: AvenirNext-Bold,Avenir-Roman;
     font-size: 17px;
-    color: #4A4A4A;
-    line-height: 34px;
-    &.dark{
-      color: #4A4A4A;
-    }
-    &.white{
-      color: #FFF;
-    }
-    
+    color: #FFFFFF;
+    letter-spacing: 0;
+    text-align:center
   }
-  .flag-parent {
-    .sp-flags{
-      max-width: 100px;
-      min-width:100px;
-      max-height: 70px;
-      min-height:70px;
-      margin-bottom:5px;
-    }
-    .batsmen{
-      font-family: AvenirNext-DemiBold,Avenir-Book;
-      font-size: 13px;
-      color: #FFFFFF;
-      letter-spacing: 0;
-    }
-    .prevScore{
-      font-family: AvenirNext-Bold,Avenir-Roman;
-      font-size: 17px;
-      color: #FFFFFF;
-      letter-spacing: 0;
-      text-align:center
-    }
-    .prevOvers{
-      font-family: AvenirNext-DemiBold,Avenir-Book;
-      font-size: 13px;
-      color: #FFFFFF;
-      letter-spacing: 0;
-      line-height:12px;
-      text-align:center
-    }
-    .sp-flag-names{
-      max-width: 100px;
-      min-width:100px;
-      text-align:center;
-      font-family: Helvetica-Bold;
-      font-size: 15px;
-      color: #4A4A4A;
-      margin-bottom:5px;
-    }
+  .prevOvers{
+    font-family: AvenirNext-DemiBold,Avenir-Book;
+    font-size: 13px;
+    color: #FFFFFF;
+    letter-spacing: 0;
+    line-height:12px;
+    text-align:center
+  }
+  .sp-flag-names{
+    text-align:center;
+    font-family: Helvetica-Bold;
+    font-size: 15px;
+    color: #4A4A4A;
+    margin-bottom:5px;
+  }
+}
+
+.currentScore{
+  //font-family: AvenirNext-Regular;
+  font-family: AvenirNext-Regular,Avenir-Book;
+  font-size: 56px;
+  letter-spacing: -2px;
+  line-height:70px;
+  &.dark{
+    color: #4A4A4A;
+  }
+  &.white{
+    color: #FFF;
+  }
+}
+.currentOvers{
+  font-family: Avenir-Medium;
+  font-size: 17px;
+  color: #4A4A4A;
+  line-height: 34px;
+  &.dark{
+    color: #4A4A4A;
+  }
+  &.white{
+    color: #FFF;
   }
 }

@@ -55,34 +55,27 @@ export default class EventInfo extends React.Component {
 			}
 		}
 		return <div>
-					<div className="sp-score-parent">
-						<div className="sp-score-child">
-							<span>
-								<div className="sp-fl flag-parent">
-									{flag1_img}
-									<div className="sp-flag-names ">{flag1}</div>
-									{batsman1}
-									{batsman2}
-								</div>
-								<div className="sp-fl sp-main-score">
-									{scoreDiv}
-									{oversDiv}
-
-							   	</div>
-							   	<div className="sp-fl flag-parent">
-							   		{flag2_img}
-							   		<div className="sp-flag-names">{flag2}</div>
-							   		{prevInnScoreDiv}
-							   		{prevInnOversDiv}
-
-							   	</div>
-						 	</span>
-						</div>
-				    </div>
-				    <br/>
-				    <br/>
-				    {status}
-			  	</div>
+			<div className="row">
+				<div className="col-xs-4 flag-parent">
+					{flag1_img}
+					<div className="sp-flag-names ">{flag1}</div>
+					{batsman1}
+					{batsman2}
+				</div>
+				<div className="col-xs-4 sp-main-score">
+					{scoreDiv}
+					{oversDiv}
+				</div>
+				<div className="col-xs-4 flag-parent">
+					{flag2_img}
+					<div className="clearfix"></div>
+					<div className="sp-flag-names">{flag2}</div>
+					{prevInnScoreDiv}
+					{prevInnOversDiv}
+				</div>
+			</div>
+			{status}
+		</div>
 
 	}
 }

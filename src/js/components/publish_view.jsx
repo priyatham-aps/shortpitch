@@ -47,27 +47,21 @@ export default class PublishView extends React.Component {
 			shareEl = <Share url={shareUrl} horizontal={true}></Share>
 		}
 
-		return <div>
-			<div className="subscribeview-parent">
-				<div className="col-md-4 chat-parent">
-						<ChatView comments={comments} sendComment={this.sendComment}></ChatView>
-				</div>
-				<div className="col-md-6">
-					<div className="col-md-9 subscribe-left-wrapper col-xs-12">
-						<div className="subscribe-eventinfo-wrapper">
-							<EventInfo textclass="white" showstatus={false} event={event} eventInfo={eventInfo}></EventInfo>
-						</div>
-						<div className="streamer-wrapper subscribe-stream-wrapper">
-							<div className="publish-recording-icons">
-								<StreamableBtn isStreaming={this.state.isStreaming} start={this.startStream} stop={this.stopStream}></StreamableBtn>
-							</div>
-						</div>
-						<LiveCount isStreaming={this.state.isStreaming}></LiveCount>
-						{shareEl}
+		return <div className="row">
+			<div className="col-md-4 col-md-offset-1 chat-parent">
+					<ChatView comments={comments} sendComment={this.sendComment}></ChatView>
+			</div>
+			<div className="col-md-5 col-md-offset-1">
+				<EventInfo textclass="white" showstatus={false} event={event} eventInfo={eventInfo}></EventInfo>
+				<div className="streamer-wrapper publish-streamer-wrapper">
+					<div className="publish-recording-icons">
+						<StreamableBtn isStreaming={this.state.isStreaming} start={this.startStream} stop={this.stopStream}></StreamableBtn>
 					</div>
 				</div>
+				<LiveCount isStreaming={this.state.isStreaming}></LiveCount>
+				{shareEl}
 			</div>
-			</div>;
+		</div>;
 	}
 
 	stopStream() {

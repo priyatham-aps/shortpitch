@@ -6,19 +6,19 @@ export default class CardInfo extends React.Component {
 		const subscriber_count = this.props.stream.subscriber_count || 0;
 		const backgroundImageLoc = "url('//graph.facebook.com/"+user.fbid+"/picture?type=large')"
 
-		return <div>
-			<div className="col-md-3 sp-img-container" >
+		return <div className="row">
+			<div className="col-xs-3 sp-img-container" >
 				<div className="sp-user-profile " style={{backgroundImage:backgroundImageLoc}}></div>
 				<div className="username">{user.nickname}</div>
 			</div>
-			<div className="col-md-6 sp-soundwave">
+			<div className="col-xs-6 sp-soundwave">
 				<img src="/assets/img/soundwave.png"></img>
 			</div>
-			<div className="col-md-2 subscriber_count">
+			<div className="col-xs-2 subscriber_count">
 				{subscriber_count}
 				<p>Listeners</p>
 			</div>
-			<div className="col-md-1"></div>
+			<div className="col-xs-1"></div>
 		</div>;
 	}
 }

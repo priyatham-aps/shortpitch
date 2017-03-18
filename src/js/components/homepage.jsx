@@ -16,14 +16,16 @@ export default class HomePage extends React.Component {
 		if (event) {
 			return <div>
 						<div className="col-md-12 col-xs-12">
-							<div className="col-md-4 col-xs-12 streamer-wrapper homepage-stream-wrapper">
-								<Link path="/publish">
-									<img className="streamable_btn" src="/assets/img/record.svg"/>
-								</Link>
-								<div className="stream-prompt">Start Pitching Live!</div>
-							</div>
-							<div className="col-md-4 col-xs-12">
-								<EventInfo textclass="dark" showstatus={true} event={event} eventInfo={eventInfo}></EventInfo>
+							<div className="row">
+								<div className="col-md-3 col-xs-12 streamer-wrapper">
+									<Link path="/publish">
+										<img className="streamable_btn" src="/assets/img/record.svg"/>
+									</Link>
+									<div className="stream-prompt">Start Pitching Live!</div>
+								</div>
+								<div className="col-md-6 col-xs-12">
+									<EventInfo textclass="dark" showstatus={true} event={event} eventInfo={eventInfo}></EventInfo>
+								</div>
 							</div>
 						</div>
 						<div className="col-md-12 col-xs-12">
