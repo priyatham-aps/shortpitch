@@ -33,11 +33,18 @@ export default class PublishView extends React.Component {
 		}
 	}
 
+	componentWillUnmount() {
+		if (this.state.isStreaming) {
+			this.stopStream();
+		}
+	}
+
 	render() {
 		const {event,eventInfo,comments} = this.props;
-		let shareUrl = window.location.origin;
+		let shareEl;
 		if (this.state.isStreaming) {
-			shareUrl = `${window.location.origin}/subscribe/${this.props.streamId}`
+			const shareUrl = `${window.location.origin}/subscribe/${this.props.streamId}`
+			shareEl = <Share url={shareUrl} horizontal={true}></Share>
 		}
 
 		return <div>
@@ -50,13 +57,13 @@ export default class PublishView extends React.Component {
 						<div className="subscribe-eventinfo-wrapper">
 							<EventInfo textclass="white" showstatus={false} event={event} eventInfo={eventInfo}></EventInfo>
 						</div>
-						<LiveCount isStreaming={this.state.isStreaming}></LiveCount>
 						<div className="streamer-wrapper subscribe-stream-wrapper">
 							<div className="publish-recording-icons">
 								<StreamableBtn isStreaming={this.state.isStreaming} start={this.startStream} stop={this.stopStream}></StreamableBtn>
 							</div>
 						</div>
-						<Share url={shareUrl}></Share>
+						<LiveCount isStreaming={this.state.isStreaming}></LiveCount>
+						{shareEl}
 					</div>
 				</div>
 			</div>

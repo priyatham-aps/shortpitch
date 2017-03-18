@@ -41,7 +41,7 @@ gulp.task("img", function() {
 
 gulp.task("less", function() {
 	return gulp.src("src/less/app.less")
-	.pipe(watch("src/less/app.less"))
+	.pipe(watch("src/less/**/*.less"))
 	.pipe(sourcemaps.init())
 	.pipe(less({
 		paths: [

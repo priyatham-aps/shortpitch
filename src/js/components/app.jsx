@@ -1,4 +1,5 @@
 import React from "react";
+import Header from "./header";
 import HomePage from "./homepage";
 import PublishView from "./publish_view";
 import SubscribeView from "./subscribe_view";
@@ -9,6 +10,17 @@ import * as views from "./views";
 
 export default class App extends React.Component {
 	render() {
+		const {currentPath} = this.props.data;
+		const showClose = currentPath.key === views.PUBLISH_VIEW_KEY || currentPath.key === views.SUBSCRIBE_VIEW_KEY;
+		const mainContent = this.getMainContent();
+
+		return <div>
+			<Header showClose={showClose}></Header>
+			{mainContent}
+		</div>;
+	}
+
+	getMainContent() {
 		const {pitcher, events, eventInfo, streams, comments, currentEvent, currentStream, currentPath} = this.props.data;
 		const event = events && events.length && currentEvent ? events.find(e => e.id === currentEvent) : {};
 		switch (currentPath.key) {

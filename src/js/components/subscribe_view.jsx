@@ -31,6 +31,12 @@ export default class SubscribeView extends React.Component {
 		}
 	}
 
+	componentWillUnmount() {
+		if (this.state.isPlaying) {
+			this.stopStream();
+		}
+	}
+
 	render() {
 		const {stream,event,eventInfo,comments} = this.props;
 		const shareUrl = window.location.href;
