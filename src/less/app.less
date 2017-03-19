@@ -11,7 +11,7 @@
 
 @font-color: #000;
 @slat-background-color: white;
-
+@screen-md-min: 992px;
 
 /*************/
 .margin-10px {
@@ -69,6 +69,12 @@ body{
 .clickable {
 	cursor: hand;
 	cursor: pointer;
+}
+
+@media (min-width: @screen-md-min) {
+	.home-streamer-wrapper {
+		margin-top: 40px;
+	}
 }
 .streamer-wrapper{
   color:white;

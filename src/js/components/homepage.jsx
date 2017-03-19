@@ -17,7 +17,7 @@ export default class HomePage extends React.Component {
 			return <div>
 						<div className="col-md-12 col-xs-12">
 							<div className="row">
-								<div className="col-md-3 col-xs-12 streamer-wrapper">
+								<div className="col-md-3 col-xs-12 streamer-wrapper home-streamer-wrapper">
 									<Link path="/publish">
 										<img className="streamable_btn" src="/assets/img/record.svg"/>
 									</Link>
