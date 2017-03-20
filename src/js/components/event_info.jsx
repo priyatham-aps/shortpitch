@@ -30,8 +30,13 @@ export default class EventInfo extends React.Component {
 			flag2 = score.BowlingTeam.SName
 			flag1_img = <img className="sp-flags" src={"/assets/img/flags/"+flag1+".png"}/>
 			flag2_img = <img className="sp-flags" src={"/assets/img/flags/"+flag2+".png"}/>
-			batsman1 = <div className="batsmen">{score.Batsmen[0].SName} &nbsp; {score.Batsmen[0].Runs}</div>
-			batsman2 = <div className="batsmen">{score.Batsmen[1].SName} &nbsp; {score.Batsmen[1].Runs}</div>
+			if(score.Batsmen.length<1){
+				batsman1 = <div className="batsmen">{score.Batsmen[0].SName} &nbsp; {score.Batsmen[0].Runs}</div>
+			}
+			if(score.Batsmen.length>1){
+				batsman1 = <div className="batsmen">{score.Batsmen[0].SName} &nbsp; {score.Batsmen[0].Runs}</div>
+				batsman2 = <div className="batsmen">{score.Batsmen[1].SName} &nbsp; {score.Batsmen[1].Runs}</div>
+			}
 			//batsman1 = <div className="batsmen">{score.Batsmen.SName} &nbsp; {score.Batsmen[0].Runs}</div>
 			if(score){
 				scoreDiv = <div className={"currentScore "+ this.props.textclass}>{score.BattingTeam.Innings[0].Runs}/{score.BattingTeam.Innings[0].Wickets}</div>
