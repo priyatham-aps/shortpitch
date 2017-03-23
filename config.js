@@ -17,6 +17,7 @@ System.config({
     "redux": "npm:redux@3.6.0",
     "redux-actions": "npm:redux-actions@1.2.2",
     "redux-thunk": "npm:redux-thunk@2.2.0",
+    "whatwg-fetch": "npm:whatwg-fetch@2.0.3",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.4.1"
     },

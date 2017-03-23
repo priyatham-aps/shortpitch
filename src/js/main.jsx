@@ -1,3 +1,6 @@
+//Globals - start
+import "whatwg-fetch";
+//Globals - end
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./components/app";
