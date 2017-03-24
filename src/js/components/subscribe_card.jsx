@@ -10,16 +10,16 @@ export default class SubscribeCard extends React.Component {
 	}
 
 	render() {
-		let btnClass = "fa-play";
+		let btnImgSrc = "/assets/img/play.png";
 		if (this.props.isPlaying) {
-			btnClass = "fa-pause"
+			btnImgSrc = "/assets/img/pause.svg";
 		}
 
 		return (
 				<div className="sp-slat" onClick={this.onClick} onTouchEnd={this.onTouchEnd} onTouchStart={(e) => this.onTouchStart(e)}>
 					<div className="sp-play-pause col-md-2 col-xs-3">
 						<div className="stream-toggle margin-10px">
-							<i className={`fa fa-2x ${btnClass}`}></i>
+							<img className="play-pause-icons" src={btnImgSrc}/>
 						</div>
 					</div>
 					<div className="col-md-9 sp-meta-container clickable">
