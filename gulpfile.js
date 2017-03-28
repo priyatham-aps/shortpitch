@@ -122,3 +122,5 @@ gulp.task("connect", function() {
 });
 
 gulp.task("default", ["html","img", "less", "jspm", "jspm_config", "js", "jsx", "fbs", "vendor", "fonts", "connect"]);
+// run below command to generate bundle.js and include in index.html
+//  jspm bundle dist/js/main dist/bundle.js --minify
