@@ -87,8 +87,9 @@ export default class SubscribeView extends React.Component {
 		});
 	}
 
-	sendComment(cmt) {
-		sendComment(this.props.stream.id, this.props.event.id, "anon", cmt);
+	sendComment(usr,cmt) {
+		var username = usr? usr:"anon"
+		sendComment(this.props.stream.id, this.props.event.id,username,cmt);
 	}
 }
 

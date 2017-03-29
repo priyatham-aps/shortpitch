@@ -16,7 +16,7 @@ class Streamer {
 
 		this.config = {};
 		this.config.codec = this.config.codec || defaultConfig.codec;
-		this.sampler = new Resampler(AudioContext.sampleRate, this.config.codec.sampleRate, 1, this.config.codec.bufferSize);
+		this.sampler = new Resampler(48000, this.config.codec.sampleRate, 1, this.config.codec.bufferSize);
 		this.encoder = new OpusEncoder(this.config.codec.sampleRate, this.config.codec.channels, this.config.codec.app, this.config.codec.frameDuration);
 	}
 
@@ -25,38 +25,6 @@ class Streamer {
 		.then((status) => {
 			this._makeStream(streamId, eventId, onError);
 		});
-
-		// const socketUrl = "ws://"+location.host+"/stream/ws/publish/"+streamId;
-		//
-		// this.socket = new WebSocket(socketUrl);
-		//
-		// this._makeStream(streamId, eventId, onError);
-
-		// const _onclose = ControlSocket.getOnClose();
-		// const _onclose = this.socket.onclose;
-		// this.socket.onClose = () => {
-		// ControlSocket.setOnClose = () => {
-		// 	if (_onclose) {
-		// 		_onclose();
-		// 	}
-		// 	if (this.audioInput) {
-		// 		this.audioInput.disconnect();
-		// 		this.audioInput = null;
-		// 	}
-		// 	if (this.gainNode) {
-		// 		this.gainNode.disconnect();
-		// 		this.gainNode = null;
-		// 	}
-		// 	if (this.recorder) {
-		// 		this.recorder.disconnect();
-		// 		this.recorder = null;
-		// 	}
-		// 	if (this.stream){
-		// 		this.stream.getTracks()[0].stop();
-		// 	}
-		//
-		// 	console.log('Disconnected from server');
-		// };
 	}
 
 	stop(streamId, eventId) {

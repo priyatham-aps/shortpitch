@@ -78,9 +78,10 @@ export default class PublishView extends React.Component {
 		});
 	}
 
-	sendComment(cmt) {
+	sendComment(usr,cmt) {
 		const {streamId, eventId} = this.props;
-		sendComment(streamId, eventId, "anon", cmt);
+		var username = usr? usr:"anon"
+		sendComment(streamId, eventId,username,cmt);
 	}
 }
 

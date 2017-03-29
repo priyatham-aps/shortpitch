@@ -4,12 +4,14 @@ export default class ChatView extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			comment: ""
+			comment: "",
+			username:""
 		};
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSend = this.handleSend.bind(this);
 		this.handleEnterKey = this.handleEnterKey.bind(this);
+		this.handleUserNameChange = this.handleUserNameChange.bind(this);
 	}
 
 	componentDidUpdate(prevProps) {
@@ -26,6 +28,14 @@ export default class ChatView extends React.Component {
 					<div className="chat_window">
 						<div className="top_menu">
 							<div className="title">Live Chat</div>
+							<div className="message_input_wrapper">
+								<div className="title">Username: </div>
+								<input onChange={this.handleUserNameChange}
+										className="message_input"
+										placeholder="" value={this.state.username}
+
+									/>
+							</div>
 						</div>
 						<ul className="messages" ref={(ul) => this.ul = ul}>
 							{cmtEls}
@@ -34,7 +44,7 @@ export default class ChatView extends React.Component {
 							<div className="message_input_wrapper">
 								<input onKeyUp={this.handleEnterKey} onChange={this.handleChange}
 									className="message_input"
-									placeholder="Type your message here..." value={this.state.comment}
+									placeholder="Type @@username# to set your username" value={this.state.comment}
 
 								/>
 							</div>
@@ -50,9 +60,14 @@ export default class ChatView extends React.Component {
 	}
 
 	handleChange(e) {
-		this.setState({
-			comment: e.target.value
-		});
+			this.setState({
+				comment: e.target.value
+			});
+	}
+	handleUserNameChange(e) {
+			this.setState({
+				username: e.target.value
+			});
 	}
 
 	handleEnterKey(e) {
@@ -68,7 +83,7 @@ export default class ChatView extends React.Component {
 
 	sendComment() {
 		if (this.state.comment) {
-			this.props.sendComment(this.state.comment);
+			this.props.sendComment(this.state.username,this.state.comment);
 		}
 		this.setState({
 			comment: ""

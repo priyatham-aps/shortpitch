@@ -9,7 +9,7 @@ class Player {
 		this.config = config || {};
 		this.config.codec = this.config.codec || defaultConfig.codec;
 		this.silence = new Float32Array(this.config.codec.bufferSize);
-		this.sampler = new Resampler(this.config.codec.sampleRate, AudioContext.sampleRate, 1, this.config.codec.bufferSize);
+		this.sampler = new Resampler(this.config.codec.sampleRate, 48000, 1, this.config.codec.bufferSize);
 		// Opus Decoding
 		this.decoder =  new OpusDecoder(this.config.codec.sampleRate, this.config.codec.channels);
 		this.scriptNode = AudioContext.createScriptProcessor(this.config.codec.bufferSize, 1, 1);
@@ -17,9 +17,6 @@ class Player {
 	}
 
 	start(streamId, eventId) {
-		// const socketUrl = "ws://"+location.host+"/stream/ws/subscribe/"+streamId;
-		// this.socket = new WebSocket(socketUrl);
-
 		this.audioQueue = new AudioQueue(this.sampler);
 
 		this.scriptNode.onaudioprocess = (e) => {
@@ -70,14 +67,6 @@ class Player {
 		this.scriptNode.disconnect();
 		this.gainNode.disconnect();
 		ControlSocket.unsubscribe(streamId, eventId)
-		// if(this.socket){
-		// 	if (!this.parentSocket) {
-		// 		this.socket.close();
-		// 		this.socket=null;
-		// 	} else {
-		// 		this.socket.onmessage = this.parentOnmessage;
-		// 	}
-		// }
 	}
 }
 
