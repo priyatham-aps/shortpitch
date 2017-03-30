@@ -5,7 +5,8 @@ export default class ChatView extends React.Component {
 		super();
 		this.state = {
 			comment: "",
-			username:""
+			username:"",
+			usernameassigned:false
 		};
 
 		this.handleChange = this.handleChange.bind(this);
@@ -22,7 +23,12 @@ export default class ChatView extends React.Component {
 
 	render() {
 		const {comments} = this.props;
+		let placeholdertext = "Join the chat now"
 		const cmtEls = comments.map((c, i) => <li key={i}><strong>{c.username}</strong> : {c.text}</li>);
+		if(!this.state.usernameassigned){
+			placeholdertext= "Please set a username to join chat."
+
+		}
 		return (
 				<div className="chat-container">
 					<div className="chat_window">
@@ -32,7 +38,7 @@ export default class ChatView extends React.Component {
 								<div className="title">Username: </div>
 								<input onChange={this.handleUserNameChange}
 										className="message_input"
-										placeholder="" value={this.state.username}
+										placeholder="set username here" value={this.state.username}
 
 									/>
 							</div>
@@ -42,9 +48,9 @@ export default class ChatView extends React.Component {
 						</ul>
 						<div className="bottom_wrapper clearfix">
 							<div className="message_input_wrapper">
-								<input onKeyUp={this.handleEnterKey} onChange={this.handleChange}
+								<input disabled={!this.state.usernameassigned} onKeyUp={this.handleEnterKey} onChange={this.handleChange}
 									className="message_input"
-									placeholder="Type @@username# to set your username" value={this.state.comment}
+									placeholder={placeholdertext} value={this.state.comment}
 
 								/>
 							</div>
@@ -65,9 +71,11 @@ export default class ChatView extends React.Component {
 			});
 	}
 	handleUserNameChange(e) {
-			this.setState({
-				username: e.target.value
-			});
+				this.setState({
+					username: e.target.value,
+					usernameassigned:(e.target.value.length>0)
+				});
+			
 	}
 
 	handleEnterKey(e) {
@@ -82,7 +90,8 @@ export default class ChatView extends React.Component {
 	}
 
 	sendComment() {
-		if (this.state.comment) {
+
+		if (this.state.username && this.state.comment) {
 			this.props.sendComment(this.state.username,this.state.comment);
 		}
 		this.setState({

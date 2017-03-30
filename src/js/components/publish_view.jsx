@@ -41,10 +41,13 @@ export default class PublishView extends React.Component {
 
 	render() {
 		const {event,eventInfo,comments} = this.props;
-		let shareEl;
+		let shareEl,streamURL;
 		if (this.state.isStreaming) {
 			const shareUrl = `${window.location.origin}/subscribe/${this.props.streamId}`
 			shareEl = <Share url={shareUrl} horizontal={true}></Share>
+			streamURL = <div className="live-count">
+							<div className="live-count-text">{`pitching at https://shortpitch.live/subscribe/${this.props.streamId}`}</div>
+						</div>
 		}
 
 		return <div className="row">
