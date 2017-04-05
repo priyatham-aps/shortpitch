@@ -5,7 +5,7 @@ import EventInfo from "./event_info";
 import Link from "./link"
 import store from "../store/store";
 import { setCurrentView, fetchEventAndStreams } from "../actions/actions";
-import {PUBLISH_VIEW} from "./views";
+import {PUBLISH_VIEW_KEY} from "./views";
 
 export default class HomePage extends React.Component {
 	render() {
@@ -18,7 +18,7 @@ export default class HomePage extends React.Component {
 						<div className="col-md-12 col-xs-12">
 							<div className="row">
 								<div className="col-md-3 col-xs-12 streamer-wrapper home-streamer-wrapper">
-									<Link path="/publish">
+									<Link path={`/${PUBLISH_VIEW_KEY}`}>
 										<img className="streamable_btn" src="/assets/img/record.svg"/>
 									</Link>
 									<div className="stream-prompt">Start Pitching Live!</div>

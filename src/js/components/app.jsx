@@ -34,8 +34,8 @@ export default class App extends React.Component {
 					streamInfo={streamInfo}>
 				</PublishView>;
 			case views.SUBSCRIBE_VIEW_KEY:
-				const currentStream = currentPath.param;
-				const stream = streams && streams.length && currentStream ? streams.find(s => s.id === currentStream) : {};
+				const currentStreamer = currentPath.param;
+				const stream = streams && streams.length && currentStreamer ? streams.find(s => s.user.id === currentStreamer) : {};
 				return <SubscribeView
 					stream={stream}
 					eventInfo={eventInfo}

@@ -7,6 +7,7 @@ import Share from "./share";
 import {sendComment} from "../actions/socket";
 import {startPitching, stopPitching,getEventInfo,setCurrentView} from "../actions/actions";
 import store from "../store/store"
+import {SUBSCRIBE_VIEW_KEY} from "./views";
 
 export default class PublishView extends React.Component {
 	constructor() {
@@ -43,7 +44,7 @@ export default class PublishView extends React.Component {
 		const {event,eventInfo,comments} = this.props;
 		let shareEl,streamURL;
 		if (this.state.isStreaming) {
-			const shareUrl = `${window.location.origin}/subscribe/${this.props.streamId}`
+			const shareUrl = `${window.location.origin}/${SUBSCRIBE_VIEW_KEY}/${this.props.streamId}`
 			shareEl = <Share url={shareUrl} horizontal={true}></Share>
 			streamURL = <div className="live-count">
 							<div className="live-count-text">{`pitching at https://shortpitch.live/subscribe/${this.props.streamId}`}</div>

@@ -4,16 +4,17 @@ import store from "../store/store"
 import PlayableCard from "./playable_card"
 import Link from "./link"
 import { setSubscribeView } from "../actions/actions";
+import {SUBSCRIBE_VIEW_KEY} from "./views";
 
 export default class StreamsList extends React.Component {
 	render() {
 		const {streams} = this.props;
 		let players
 		if(streams) {
-			players = streams.map((s, i) => <Link key={i} path={`subscribe/${s.id}`}>
+			players = streams.map((s, i) => <Link key={i} path={`${SUBSCRIBE_VIEW_KEY}/${s.user.id}`}>
 					<PlayableCard
 						stream={s}
-						play={() => this.playStream(s.id)}>
+						play={() => this.playStream(s)}>
 					</PlayableCard>
 				</Link>
 			);
@@ -24,8 +25,8 @@ export default class StreamsList extends React.Component {
 		</div>;
 	}
 
-	playStream(sId) {
-		store.dispatch(setSubscribeView(sId));
+	playStream(s) {
+		store.dispatch(setSubscribeView(s));
 	}
 }
 

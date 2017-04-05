@@ -53,10 +53,10 @@ export const setCurrentView = (currentView) => {
 	}
 }
 
-export const setCurrentStream = (streamId) => {
+export const setCurrentStream = (stream) => {
 	return {
 		type: actiontypes.SET_CURRENT_STREAM,
-		streamId
+		stream
 	}
 }
 
@@ -199,9 +199,9 @@ export const stopPlaying = (sId, eId) => {
 	}
 }
 
-export const setSubscribeView = (id) => {
+export const setSubscribeView = (s) => {
 	return dispatch => {
 		dispatch(setCurrentView(SUBSCRIBE_VIEW));
-		dispatch(setCurrentStream(id));
+		dispatch(setCurrentStream(s));
 	}
 }

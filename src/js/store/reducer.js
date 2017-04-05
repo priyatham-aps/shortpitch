@@ -57,7 +57,7 @@ const eventInfo = (state={}, action) => {
 const currentStream = (state="", action) => {
 	switch (action.type) {
 		case actiontypes.SET_CURRENT_STREAM:
-			return action.streamId;
+			return action.stream;
 		case actiontypes.STOP_CURRENT_STREAM:
 			if (state === action.streamId) {
 				return "";

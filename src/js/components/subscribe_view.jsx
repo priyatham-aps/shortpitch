@@ -7,7 +7,7 @@ import Link from "./link"
 import store from "../store/store";
 import { sendComment } from "../actions/socket";
 import { startPlaying, stopPlaying, setCurrentView} from "../actions/actions";
-import {PUBLISH_VIEW} from "./views";
+import {PUBLISH_VIEW_KEY} from "./views";
 
 export default class SubscribeView extends React.Component {
 	constructor() {
@@ -47,7 +47,7 @@ export default class SubscribeView extends React.Component {
 			<div className="col-md-5 col-md-offset-1">
 				<EventInfo textclass="white" showstatus={false} event={event} eventInfo={eventInfo}></EventInfo>
 				<div className="streamer-wrapper subscribe-streamer-wrapper">
-					<Link path="/publish">
+					<Link path={`/${PUBLISH_VIEW_KEY}`}>
 						<img className="streamable_btn" src="/assets/img/record.svg"/>
 					</Link>
 					<div className="stream-prompt">Start your Recording</div>

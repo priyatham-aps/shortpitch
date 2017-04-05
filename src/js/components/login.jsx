@@ -1,7 +1,9 @@
 import React from "react";
+import {PUBLISH_VIEW} from "./views";
+
 let facebookLoginWindow
 export default class Login extends React.Component {
-	
+
 	render() {
 		return <div className="sp-login">
 					<button className="btn btn-primary" onClick={()=>this.login()}>Login with Facebook</button>
@@ -17,19 +19,19 @@ export default class Login extends React.Component {
 		if (window.focus) {
 	        facebookLoginWindow.focus();
 	    }
-		var pollTimer   =   window.setInterval(function() { 
+		var pollTimer   =   window.setInterval(function() {
                 try {
-                    
+
                     if (facebookLoginWindow.document.URL.indexOf('close') != -1) {
                         window.clearInterval(pollTimer);
-                        var url =   facebookLoginWindow.document.URL;
+                        var url = facebookLoginWindow.document.URL;
                         facebookLoginWindow.close();
-                        window.location.href="/publish"
+                        window.location.href=`/${PUBLISH_VIEW_KEY}`
                     }
                 } catch(e) {
                 }
        }, 100);
 	}
-	
+
 
 }
