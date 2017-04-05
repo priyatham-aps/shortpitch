@@ -4,6 +4,6 @@ export const defaultConfig = {
 		channels: 1,
 		app: 2048,
 		frameDuration: 20,
-		bufferSize: 1024
+		bufferSize: 4096
 	}
 };

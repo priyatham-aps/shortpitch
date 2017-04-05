@@ -71,9 +71,12 @@ export default class EventInfo extends React.Component {
 						{batsman2}
 					</div>;
 				}
+				if (score.BattingTeam.Innings){
+					scoreDiv = <div className={"currentScore "+ this.props.textclass}>{score.BattingTeam.Innings[0].Runs}/{score.BattingTeam.Innings[0].Wickets}</div>
+					oversDiv = <div className={"currentOvers "+ this.props.textclass}>{score.BattingTeam.Innings[0].Overs} Overs</div>
+				}
 
-				scoreDiv = <div className={"currentScore "+ this.props.textclass}>{score.BattingTeam.Innings[0].Runs}/{score.BattingTeam.Innings[0].Wickets}</div>
-				oversDiv = <div className={"currentOvers "+ this.props.textclass}>{score.BattingTeam.Innings[0].Overs} Overs</div>
+				
 			}
 		}
 
