@@ -42,13 +42,10 @@ export default class PublishView extends React.Component {
 
 	render() {
 		const {event,eventInfo,comments} = this.props;
-		let shareEl,streamURL;
-		if (this.state.isStreaming) {
-			const shareUrl = `${window.location.origin}/${SUBSCRIBE_VIEW_KEY}/${this.props.streamId}`
+		let shareEl;
+		if (this.state.isStreaming && this.props.stream && this.props.stream.user && this.props.stream.user.id) {
+			const shareUrl = `${window.location.origin}/${SUBSCRIBE_VIEW_KEY}/${this.props.stream.user.id}`
 			shareEl = <Share url={shareUrl} horizontal={true}></Share>
-			streamURL = <div className="live-count">
-							<div className="live-count-text">{`pitching at https://shortpitch.live/subscribe/${this.props.streamId}`}</div>
-						</div>
 		}
 
 		return <div className="row">
@@ -69,7 +66,7 @@ export default class PublishView extends React.Component {
 	}
 
 	stopStream() {
-		store.dispatch(stopPitching(this.props.streamId, this.props.eventId));
+		store.dispatch(stopPitching(this.props.stream.id, this.props.eventId));
 		this.setState({
 			isStreaming: false
 		});
@@ -83,21 +80,21 @@ export default class PublishView extends React.Component {
 	}
 
 	sendComment(usr,cmt) {
-		const {streamId, eventId} = this.props;
+		const {stream, eventId} = this.props;
 		var username = usr? usr:"anon"
-		sendComment(streamId, eventId,username,cmt);
+		sendComment(stream.id, eventId,username,cmt);
 	}
 }
 
 PublishView.propTypes = {
-	streamId: React.PropTypes.string,
+	stream: React.PropTypes.object,
 	eventId: React.PropTypes.string,
 	comments: React.PropTypes.array,
 	streamInfo: React.PropTypes.object
 }
 
 PublishView.defaultProps = {
-	streamId: "",
+	stream: {},
 	eventId: "",
 	comments: [],
 	streamInfo: {}

@@ -2,16 +2,16 @@ import { combineReducers } from "redux";
 import * as actiontypes from "../actions/types"
 import { parsePath } from "./utils";
 
-const pitcher = (state = "", action) => {
+const pitcher = (state = {}, action) => {
 	switch(action.type) {
 		case actiontypes.SET_PITCHER:
-			return action.id
+			return action.stream
 		case actiontypes.REMOVE_PITCHER:
-			if (state === action.id) {
+			if (state.id === action.id) {
 				return "";
 			}
 			// TODO: Remove
-			console.error(`Trying to stop stream ${state}, but sent ${action.id}`);
+			console.error(`Trying to stop stream ${state.id}, but sent ${action.id}`);
 			return state;
 		default:
 			return state

@@ -26,7 +26,7 @@ export default class App extends React.Component {
 		switch (currentPath.key) {
 			case views.PUBLISH_VIEW_KEY:
 				return <PublishView
-					streamId={pitcher}
+					stream={pitcher}
 					event={event}
 					eventInfo={eventInfo}
 					eventId={currentEvent}

@@ -4,10 +4,10 @@ import { LOGIN_VIEW, SUBSCRIBE_VIEW } from '../components/views'
 import * as audio from "./audio";
 import { updatePath } from "./nondispatch";
 
-export const setPitcher = (id) => {
+export const setPitcher = (stream) => {
 	return {
 		type: actiontypes.SET_PITCHER,
-		id
+		stream
 	}
 }
 
@@ -128,7 +128,7 @@ export const startPitching = (eId) => {
 	return dispatch => {
 		return api.createStream(eId)
 		.then(json => {
-			dispatch(setPitcher(json.id));
+			dispatch(setPitcher(json));
 			audio.startStreaming(json.id, eId);
 		})
 		.catch(error => {
