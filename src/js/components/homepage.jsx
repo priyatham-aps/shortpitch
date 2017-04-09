@@ -21,7 +21,7 @@ export default class HomePage extends React.Component {
 									<Link path={`/${PUBLISH_VIEW_KEY}`}>
 										<img className="streamable_btn" src="/assets/img/record.svg"/>
 									</Link>
-									<div className="stream-prompt">Start Pitching Live!</div>
+									<div className="stream-prompt hidden-xs">Start Pitching Live!</div>
 								</div>
 								<div className="col-md-6 col-xs-12">
 									<EventInfo textclass="dark" showstatus={true} event={event} eventInfo={eventInfo}></EventInfo>
@@ -31,7 +31,7 @@ export default class HomePage extends React.Component {
 						<div className="col-md-12 col-xs-12">
 							<hr style={{opacity:0.3}}></hr>
 						</div>
-						<div className="col-md-12 col-xs-12">
+						<div className="col-md-12 col-xs-12 hidden-xs">
 							<Description></Description>
 						</div>
 						<div className="col-md-12 col-xs-12">

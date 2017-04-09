@@ -11,7 +11,7 @@ export default class CardInfo extends React.Component {
 				<div className="sp-user-profile " style={{backgroundImage:backgroundImageLoc}}></div>
 				<div className="username">{user.nickname}</div>
 			</div>
-			<div className="col-xs-6 sp-soundwave">
+			<div className="col-md-6 col-xs-3 sp-soundwave">
 				<img src="/assets/img/soundwave.png"></img>
 			</div>
 			<div className="col-xs-2 subscriber_count">

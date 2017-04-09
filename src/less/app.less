@@ -79,7 +79,6 @@ body{
 .streamer-wrapper{
   color:white;
   text-align:center;
-
   &.publish-streamer-wrapper{
 	  margin: 20px 0px;
   }
@@ -98,6 +97,16 @@ body{
     min-width:100px;
     max-height:100px;
     min-height:100px;
+    @media only screen and (max-width: 768px){
+      position:fixed;
+      max-width:60px;
+      min-width:60px;
+      max-height:60px;
+      min-height:60px;
+      bottom:40px;
+      right:10px;
+      z-index:2000;
+    }
   }
 }
 .commentaryMessage {

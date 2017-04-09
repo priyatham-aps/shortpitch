@@ -50,7 +50,7 @@ export default class SubscribeView extends React.Component {
 					<Link path={`/${PUBLISH_VIEW_KEY}`}>
 						<img className="streamable_btn" src="/assets/img/record.svg"/>
 					</Link>
-					<div className="stream-prompt">Start your Recording</div>
+					<div className="stream-prompt hidden-xs">Start your Recording</div>
 				</div>
 				<div className="row">
 					<div className="col-md-10">

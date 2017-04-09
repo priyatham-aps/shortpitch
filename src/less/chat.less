@@ -4,9 +4,12 @@
 }
 .chat_window {
   height: 600px;
+  margin-bottom:10px;
+  @media only screen and (max-width: 768px){
+        height: 300px;
+  }
   border-radius: 8px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-  overflow: hidden;
 }
 
 .top_menu {
@@ -18,6 +21,9 @@
     opacity: 0.43;
     font-family: Avenir-Medium;
     font-size: 15px;
+    @media only screen and (max-width: 768px){
+        font-size:11px;
+      }
     color: #4A4A4A;
     letter-spacing: 0;
     display:inline-block;
@@ -26,6 +32,9 @@
       float:right;
       font-family: Avenir-Medium;
       font-size: 15px;
+      @media only screen and (max-width: 768px){
+        font-size:11px;
+      }
       color: #4A4A4A;
       letter-spacing: 0;
       display:inline-block;
