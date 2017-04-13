@@ -74,6 +74,12 @@ export const addComment = (comment) => {
 	}
 }
 
+export const removeComments = () => {
+	return {
+		type: actiontypes.REMOVE_COMMENTS
+	}
+}
+
 export const setStreamStatus = (status) => {
 	return {
 		type: actiontypes.SET_STREAM_STATUS,
@@ -95,13 +101,12 @@ export const setStreamActiveCount = (count) => {
 	}
 }
 
-export const setStreamInfo = (status, count, activeCount) => {
+export const setStreamInfo = (status, count) => {
 	return {
 		type: actiontypes.SET_STREAM_INFO,
 		payload: {
 			status,
-			count,
-			activeCount
+			count
 		}
 	}
 }
@@ -117,6 +122,13 @@ export const setCurrentPath = (path) => {
 	return {
 		type: actiontypes.SET_CURRENT_PATH,
 		path
+	}
+}
+
+export const setUserName = (userName) => {
+	return {
+		type: actiontypes.SET_USERNAME,
+		userName
 	}
 }
 
@@ -182,6 +194,7 @@ export const stopPitching = (sId, eId) => {
 		audio.stopStreaming(sId, eId);
 		// dispatch(removePitcher(sId));
 		dispatch(removeStreamInfo());
+		dispatch(removeComments());
 	}
 }
 
@@ -195,6 +208,7 @@ export const startPlaying = (sId, eId) => {
 export const stopPlaying = (sId, eId) => {
 	return dispatch => {
 		audio.stopPlaying(sId, eId);
+		dispatch(removeComments());
 		// dispatch(removeCurrentStream(sId));
 	}
 }

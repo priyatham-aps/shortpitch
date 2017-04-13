@@ -50,7 +50,7 @@ export default class PublishView extends React.Component {
 
 		return <div className="row">
 			<div className="col-md-4 col-md-offset-1 chat-parent">
-					<ChatView comments={comments} sendComment={this.sendComment}></ChatView>
+					<ChatView comments={comments} sendComment={this.sendComment} userName={this.props.userName}></ChatView>
 			</div>
 			<div className="col-md-5 col-md-offset-1">
 				<EventInfo textclass="white" showstatus={false} event={event} eventInfo={eventInfo}></EventInfo>
@@ -59,7 +59,7 @@ export default class PublishView extends React.Component {
 						<StreamableBtn isStreaming={this.state.isStreaming} start={this.startStream} stop={this.stopStream}></StreamableBtn>
 					</div>
 				</div>
-				<LiveCount isStreaming={this.state.isStreaming} streamInfo={this.props.streamInfo}></LiveCount>
+				<LiveCount isStreaming={this.state.isStreaming} activeListeners={this.props.streamInfo.activeCount}></LiveCount>
 				{shareEl}
 			</div>
 		</div>;
@@ -90,12 +90,14 @@ PublishView.propTypes = {
 	stream: React.PropTypes.object,
 	eventId: React.PropTypes.string,
 	comments: React.PropTypes.array,
-	streamInfo: React.PropTypes.object
+	streamInfo: React.PropTypes.object,
+	userName: React.PropTypes.string
 }
 
 PublishView.defaultProps = {
 	stream: {},
 	eventId: "",
 	comments: [],
-	streamInfo: {}
+	streamInfo: {},
+	userName: ""
 }

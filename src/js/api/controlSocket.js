@@ -199,6 +199,8 @@ class ControlSocket {
 	}
 
 	_closeSocket() {
+		console.log("_closeSocket");
+		this.socket.onclose = null;
 		this.socket.close();
 		this.socket = null;
 	}

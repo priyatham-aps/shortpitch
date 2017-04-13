@@ -21,7 +21,7 @@ export default class App extends React.Component {
 	}
 
 	getMainContent() {
-		const {pitcher, events, eventInfo, streams, comments, currentEvent, currentStream, currentPath, streamInfo} = this.props.data;
+		const {pitcher, events, eventInfo, streams, comments, currentEvent, currentStream, currentPath, streamInfo, userName} = this.props.data;
 		const event = events && events.length && currentEvent ? events.find(e => e.id === currentEvent) : {};
 		switch (currentPath.key) {
 			case views.PUBLISH_VIEW_KEY:
@@ -31,7 +31,8 @@ export default class App extends React.Component {
 					eventInfo={eventInfo}
 					eventId={currentEvent}
 					comments={comments}
-					streamInfo={streamInfo}>
+					streamInfo={streamInfo}
+					userName={userName}>
 				</PublishView>;
 			case views.SUBSCRIBE_VIEW_KEY:
 				const currentStreamer = currentPath.param;
@@ -41,7 +42,8 @@ export default class App extends React.Component {
 					eventInfo={eventInfo}
 					event={event}
 					comments={comments}
-					streamInfo={streamInfo}>
+					streamInfo={streamInfo}
+					userName={userName}>
 				</SubscribeView>;
 			case views.LOGIN_VIEW_KEY:
 				return <Login></Login>;

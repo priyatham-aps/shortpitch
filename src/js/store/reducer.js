@@ -86,6 +86,8 @@ const comments = (state=[], action) => {
 				...state,
 				action.comment
 			];
+		case actiontypes.REMOVE_COMMENTS:
+			return [];
 		default:
 			return state;
 	}
@@ -115,6 +117,15 @@ const currentPath = (state={}, action) => {
 	}
 }
 
+const userName = (state="", action) => {
+	switch (action.type) {
+		case actiontypes.SET_USERNAME:
+			return action.userName
+		default:
+			return state;
+	}
+}
+
 const reducer = combineReducers({
 	pitcher,
 	events,
@@ -125,7 +136,8 @@ const reducer = combineReducers({
 	currentEvent,
 	currentStream,
 	currentView,
-	currentPath
+	currentPath,
+	userName
 });
 
 export default reducer;

@@ -1,19 +1,31 @@
 import React from "react";
+import {setUserName} from "../actions/actions";
+import store from "../store/store"
 
 export default class ChatView extends React.Component {
 	constructor() {
 		super();
 		this.state = {
 			comment: "",
-			username:"",
-			usernameassigned:false
+			uncolor: this.getRandomColor()
 		};
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSend = this.handleSend.bind(this);
 		this.handleEnterKey = this.handleEnterKey.bind(this);
 		this.handleUserNameChange = this.handleUserNameChange.bind(this);
+		this.handleUserNameEnter = this.handleUserNameEnter.bind(this);
 	}
+
+	getRandomColor() {
+	    let letters = '0123456789ABCDEF';
+	    let color = '#';
+	    for (let i = 0; i < 6; i++ ) {
+	        color += letters[Math.floor(Math.random() * 16)];
+	    }
+	    return color;
+	}
+
 
 	componentDidUpdate(prevProps) {
 		if (this.props.comments !== prevProps.comments) {
@@ -23,11 +35,10 @@ export default class ChatView extends React.Component {
 
 	render() {
 		const {comments} = this.props;
-		let placeholdertext = "Join the chat now"
-		const cmtEls = comments.map((c, i) => <li key={i}><strong>{c.username}</strong> : {c.text}</li>);
-		if(!this.state.usernameassigned){
+		let placeholdertext = "Chat here"
+		const cmtEls = comments.map((c, i) => <li key={i}><span style={{color: `${this.state.uncolor}`}}>{c.username}</span> : {c.text}</li>);
+		if(this.props.userName === "") {
 			placeholdertext= "Please set a username to join chat."
-
 		}
 		return (
 				<div className="chat-container">
@@ -36,11 +47,11 @@ export default class ChatView extends React.Component {
 							<div className="title">Live Chat</div>
 							<div className="message_input_wrapper">
 								<div className="title">Username: </div>
-								<input onChange={this.handleUserNameChange}
-										className="message_input"
-										placeholder="set username here" value={this.state.username}
-
-									/>
+								<input value={this.props.userName}
+									onChange={this.handleUserNameChange}
+									onKeyUp={this.handleUserNameEnter}
+									className="message_input"
+								/>
 							</div>
 						</div>
 						<ul className="messages" ref={(ul) => this.ul = ul}>
@@ -48,10 +59,13 @@ export default class ChatView extends React.Component {
 						</ul>
 						<div className="bottom_wrapper clearfix">
 							<div className="message_input_wrapper">
-								<input disabled={!this.state.usernameassigned} onKeyUp={this.handleEnterKey} onChange={this.handleChange}
+								<input disabled={this.props.userName === ""}
+									onKeyUp={this.handleEnterKey}
+									onChange={this.handleChange}
 									className="message_input"
-									placeholder={placeholdertext} value={this.state.comment}
-
+									placeholder={placeholdertext}
+									value={this.state.comment}
+									ref={(input) => this.cmtinput = input}
 								/>
 							</div>
 							<div className="col-md-1 send_message" onClick={this.handleSend}>
@@ -66,16 +80,19 @@ export default class ChatView extends React.Component {
 	}
 
 	handleChange(e) {
-			this.setState({
-				comment: e.target.value
-			});
+		this.setState({
+			comment: e.target.value
+		});
 	}
+
 	handleUserNameChange(e) {
-				this.setState({
-					username: e.target.value,
-					usernameassigned:(e.target.value.length>0)
-				});
-			
+		store.dispatch(setUserName(e.target.value));
+	}
+
+	handleUserNameEnter(e) {
+		if (e.key == "Enter") {
+			this.cmtinput.focus();
+		}
 	}
 
 	handleEnterKey(e) {
@@ -90,13 +107,12 @@ export default class ChatView extends React.Component {
 	}
 
 	sendComment() {
-
-		if (this.state.username && this.state.comment) {
-			this.props.sendComment(this.state.username,this.state.comment);
+		if (this.state.comment) {
+			this.props.sendComment(this.props.userName, this.state.comment);
+			this.setState({
+				comment: ""
+			});
 		}
-		this.setState({
-			comment: ""
-		});
 	}
 
 	scrollTop() {
@@ -106,9 +122,11 @@ export default class ChatView extends React.Component {
 
 ChatView.propTypes = {
 	comments: React.PropTypes.array.isRequired,
-	sendComment: React.PropTypes.func.isRequired
+	sendComment: React.PropTypes.func.isRequired,
+	userName: React.PropTypes.string
 }
 
 ChatView.defaultProps = {
-	comments: []
+	comments: [],
+	userName: ""
 }

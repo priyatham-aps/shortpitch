@@ -42,7 +42,7 @@ export default class SubscribeView extends React.Component {
 		const shareUrl = window.location.href;
 		return <div className="row">
 			<div className="col-md-4 col-md-offset-1 chat-parent">
-				<ChatView comments={comments} sendComment={this.sendComment}></ChatView>
+				<ChatView comments={comments} sendComment={this.sendComment} userName={this.props.userName}></ChatView>
 			</div>
 			<div className="col-md-5 col-md-offset-1">
 				<EventInfo textclass="white" showstatus={false} event={event} eventInfo={eventInfo}></EventInfo>
@@ -96,11 +96,13 @@ export default class SubscribeView extends React.Component {
 SubscribeView.propTypes = {
 	stream: React.PropTypes.object.isRequired,
 	event: React.PropTypes.object.isRequired,
-	comments: React.PropTypes.array.isRequired
+	comments: React.PropTypes.array.isRequired,
+	userName: React.PropTypes.string
 }
 
 SubscribeView.defaultProps = {
 	stream: {},
 	event: {},
-	comments: []
+	comments: [],
+	userName: ""
 }

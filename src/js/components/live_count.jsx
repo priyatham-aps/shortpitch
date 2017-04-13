@@ -2,7 +2,7 @@ import React from "react";
 
 export default class LiveCount extends React.Component {
 	render() {
-		const count = this.props.streamInfo.activeCount ? this.props.streamInfo.activeCount : 0;
+		const count = this.props.activeListeners || 0;
 		if (this.props.isStreaming) {
 			return <div className="live-count">
 						<img src="/assets/img/recording.svg"></img>
@@ -16,10 +16,10 @@ export default class LiveCount extends React.Component {
 
 LiveCount.propTypes = {
 	isStreaming: React.PropTypes.bool,
-	streamInfo: React.PropTypes.object
+	activeListeners: React.PropTypes.number
 }
 
 LiveCount.defaultProps = {
 	isStreaming: true,
-	streamInfo: {}
+	activeListeners: 0
 }

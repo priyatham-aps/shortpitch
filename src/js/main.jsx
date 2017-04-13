@@ -6,6 +6,7 @@ import ReactDOM from "react-dom";
 import App from "./components/app";
 import store from "./store/store";
 import { setCurrentPath } from "./actions/actions";
+import ControlSocket from "./api/controlSocket";
 
 const render = () => ReactDOM.render(
 	<App data={store.getState()}/>,
@@ -16,6 +17,11 @@ const render = () => ReactDOM.render(
 	window.addEventListener("popstate", (e) => {
 		store.dispatch(setCurrentPath(window.location.pathname));
 	})
+
+	window.onbeforeunload = function() {
+		console.log("onbeforeunload");
+		ControlSocket._closeSocket();
+	};
 })();
 
 render();
