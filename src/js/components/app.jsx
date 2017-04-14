@@ -12,7 +12,7 @@ export default class App extends React.Component {
 	render() {
 		const {currentPath} = this.props.data;
 		const showClose = currentPath.key === views.PUBLISH_VIEW_KEY || currentPath.key === views.SUBSCRIBE_VIEW_KEY;
-		const mainContent = this.getMainContent();
+		const mainContent = this.getMainContent(this.props);
 
 		return <div>
 			<Header showClose={showClose}></Header>
@@ -20,8 +20,8 @@ export default class App extends React.Component {
 		</div>;
 	}
 
-	getMainContent() {
-		const {pitcher, events, eventInfo, streams, comments, currentEvent, currentStream, currentPath, streamInfo, userName} = this.props.data;
+	getMainContent(props) {
+		const {pitcher, events, eventInfo, streams, comments, currentEvent, currentStream, currentPath, streamInfo, userName} = props.data;
 		const event = events && events.length && currentEvent ? events.find(e => e.id === currentEvent) : {};
 		switch (currentPath.key) {
 			case views.PUBLISH_VIEW_KEY:
@@ -48,7 +48,7 @@ export default class App extends React.Component {
 			case views.LOGIN_VIEW_KEY:
 				return <Login></Login>;
 			default:
-				return <HomePage {...this.props.data}></HomePage>;
+				return <HomePage {...props.data}></HomePage>;
 		}
 	}
 

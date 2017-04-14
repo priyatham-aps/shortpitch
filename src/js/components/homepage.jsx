@@ -4,7 +4,7 @@ import StreamsList from "./streams_list";
 import EventInfo from "./event_info";
 import Link from "./link"
 import store from "../store/store";
-import { setCurrentView, fetchEventAndStreams } from "../actions/actions";
+import { fetchEventAndStreams } from "../actions/actions";
 import {PUBLISH_VIEW_KEY} from "./views";
 
 export default class HomePage extends React.Component {

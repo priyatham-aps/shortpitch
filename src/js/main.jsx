@@ -19,8 +19,7 @@ const render = () => ReactDOM.render(
 	})
 
 	window.onbeforeunload = function() {
-		console.log("onbeforeunload");
-		ControlSocket._closeSocket();
+		ControlSocket.close();
 	};
 })();
 

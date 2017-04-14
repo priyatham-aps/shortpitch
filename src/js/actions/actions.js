@@ -1,22 +1,5 @@
 import * as api from "../api/api"
 import * as actiontypes from "./types";
-import { LOGIN_VIEW, SUBSCRIBE_VIEW } from '../components/views'
-import * as audio from "./audio";
-import { updatePath } from "./nondispatch";
-
-export const setPitcher = (stream) => {
-	return {
-		type: actiontypes.SET_PITCHER,
-		stream
-	}
-}
-
-export const removePitcher = (id) => {
-	return {
-		type: actiontypes.REMOVE_PITCHER,
-		id
-	}
-}
 
 export const receiveStreams = (streams) => {
 	return {
@@ -46,75 +29,10 @@ export const selectCurrentEvent = (eventId) => {
 	}
 }
 
-export const setCurrentView = (currentView) => {
-	return {
-		type: actiontypes.SET_CURRENT_VIEW,
-		currentView
-	}
-}
-
-export const setCurrentStream = (stream) => {
-	return {
-		type: actiontypes.SET_CURRENT_STREAM,
-		stream
-	}
-}
-
-export const removeCurrentStream = (streamId) => {
-	return {
-		type: actiontypes.STOP_CURRENT_STREAM,
-		streamId
-	}
-}
-
-export const addComment = (comment) => {
-	return {
-		type: actiontypes.ADD_COMMENT,
-		comment
-	}
-}
-
-export const removeComments = () => {
-	return {
-		type: actiontypes.REMOVE_COMMENTS
-	}
-}
-
-export const setStreamStatus = (status) => {
-	return {
-		type: actiontypes.SET_STREAM_STATUS,
-		status
-	}
-}
-
-export const setStreamCount = (count) => {
-	return {
-		type: actiontypes.SET_STREAM_COUNT,
-		count
-	}
-}
-
 export const setStreamActiveCount = (count) => {
 	return {
 		type: actiontypes.SET_STREAM_ACTIVE_COUNT,
 		count
-	}
-}
-
-export const setStreamInfo = (status, count) => {
-	return {
-		type: actiontypes.SET_STREAM_INFO,
-		payload: {
-			status,
-			count
-		}
-	}
-}
-
-export const removeStreamInfo = () => {
-	return {
-		type: actiontypes.SET_STREAM_INFO,
-		payload: {}
 	}
 }
 
@@ -125,31 +43,9 @@ export const setCurrentPath = (path) => {
 	}
 }
 
-export const setUserName = (userName) => {
-	return {
-		type: actiontypes.SET_USERNAME,
-		userName
-	}
-}
-
 /***************************/
 // Action Thunks
 /***************************/
-
-export const startPitching = (eId) => {
-	return dispatch => {
-		return api.createStream(eId)
-		.then(json => {
-			dispatch(setPitcher(json));
-			audio.startStreaming(json.id, eId);
-		})
-		.catch(error => {
-			console.error(error);
-			// dispatch(setCurrentView(LOGIN_VIEW))
-			updatePath("login");
-		})
-	}
-}
 
 export const getStreams = (eId) => {
 	return dispatch => {
@@ -183,39 +79,5 @@ export const fetchEventAndStreams = () => {
 				dispatch(getStreams(getState().currentEvent));
 			}
 		});
-	}
-}
-
-/***************************/
-// Impure Actions
-/***************************/
-export const stopPitching = (sId, eId) => {
-	return dispatch => {
-		audio.stopStreaming(sId, eId);
-		// dispatch(removePitcher(sId));
-		dispatch(removeStreamInfo());
-		dispatch(removeComments());
-	}
-}
-
-export const startPlaying = (sId, eId) => {
-	return dispatch => {
-		audio.startPlaying(sId, eId);
-		// dispatch(setCurrentStream(sId));
-	}
-}
-
-export const stopPlaying = (sId, eId) => {
-	return dispatch => {
-		audio.stopPlaying(sId, eId);
-		dispatch(removeComments());
-		// dispatch(removeCurrentStream(sId));
-	}
-}
-
-export const setSubscribeView = (s) => {
-	return dispatch => {
-		dispatch(setCurrentView(SUBSCRIBE_VIEW));
-		dispatch(setCurrentStream(s));
 	}
 }

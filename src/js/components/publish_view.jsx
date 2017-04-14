@@ -5,7 +5,8 @@ import EventInfo from "./event_info";
 import LiveCount from "./live_count";
 import Share from "./share";
 import {sendComment} from "../actions/socket";
-import {startPitching, stopPitching,getEventInfo,setCurrentView} from "../actions/actions";
+import {getEventInfo} from "../actions/actions";
+import {startPitching, stopPitching} from "../actions/publish";
 import store from "../store/store"
 import {SUBSCRIBE_VIEW_KEY} from "./views";
 

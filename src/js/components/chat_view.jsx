@@ -1,5 +1,5 @@
 import React from "react";
-import {setUserName} from "../actions/actions";
+import {setUserName} from "../actions/chat";
 import store from "../store/store"
 
 export default class ChatView extends React.Component {
@@ -18,7 +18,7 @@ export default class ChatView extends React.Component {
 	}
 
 	getRandomColor() {
-	    let letters = '0123456789ABCDEF';
+	    const letters = '0123456789ABCDEF';
 	    let color = '#';
 	    for (let i = 0; i < 6; i++ ) {
 	        color += letters[Math.floor(Math.random() * 16)];

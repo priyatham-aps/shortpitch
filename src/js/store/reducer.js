@@ -7,12 +7,7 @@ const pitcher = (state = {}, action) => {
 		case actiontypes.SET_PITCHER:
 			return action.stream
 		case actiontypes.REMOVE_PITCHER:
-			if (state.id === action.id) {
-				return "";
-			}
-			// TODO: Remove
-			console.error(`Trying to stop stream ${state.id}, but sent ${action.id}`);
-			return state;
+			return {};
 		default:
 			return state
 	}
@@ -54,31 +49,6 @@ const eventInfo = (state={}, action) => {
 	}
 }
 
-const currentStream = (state="", action) => {
-	switch (action.type) {
-		case actiontypes.SET_CURRENT_STREAM:
-			return action.stream;
-		case actiontypes.STOP_CURRENT_STREAM:
-			if (state === action.streamId) {
-				return "";
-			}
-			// TODO: Remove
-			console.error(`Trying to stop stream ${state}, but sent ${action.streamId}`);
-			return state;
-		default:
-			return state;
-	}
-}
-
-const currentView = (state="", action) => {
-	switch (action.type) {
-		case actiontypes.SET_CURRENT_VIEW:
-			return action.currentView;
-		default:
-			return state;
-	}
-}
-
 const comments = (state=[], action) => {
 	switch (action.type) {
 		case actiontypes.ADD_COMMENT:
@@ -97,10 +67,6 @@ const streamInfo = (state={}, action) => {
 	switch (action.type) {
 		case actiontypes.SET_STREAM_INFO:
 			return action.payload;
-		case actiontypes.SET_STREAM_STATUS:
-			return Object.assign({}, state, {status: action.status});
-		case actiontypes.SET_STREAM_COUNT:
-			return Object.assign({}, state, {count: action.count});
 		case actiontypes.SET_STREAM_ACTIVE_COUNT:
 			return Object.assign({}, state, {activeCount: action.count});
 		default:
@@ -134,8 +100,6 @@ const reducer = combineReducers({
 	streamInfo,
 	comments,
 	currentEvent,
-	currentStream,
-	currentView,
 	currentPath,
 	userName
 });

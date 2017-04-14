@@ -2,8 +2,12 @@ import * as Interpretor from "./interpretor";
 import {flatbuffers} from "flatbuffers";
 import * as message from ".././fbs/stream"
 import store from "../store/store";
-import { addComment, setStreamInfo, setStreamActiveCount } from "../actions/actions";
+import { setStreamActiveCount } from "../actions/actions";
+import { addComment } from "../actions/chat";
+import { setStreamInfo } from "../actions/subscribe";
 import Long from "long"
+
+const SOCKET_CLOSE_CODE_NORMAL = 1000
 
 class ControlSocket {
 	constructor() {
@@ -115,6 +119,14 @@ class ControlSocket {
 		this._sendStreamCommentMsg(sId, eId, username, comment);
 	}
 
+	close() {
+		if (this.socket) {
+			this.socket.onclose = null;
+			this.socket.close(SOCKET_CLOSE_CODE_NORMAL);
+			this.socket = null;
+		}
+	}
+
 	_sendStreamBroadcastMsg(sId, eId) {
 		return new Promise((resolve, reject) => {
 			this.socket.onmessage = (e) => {
@@ -172,7 +184,6 @@ class ControlSocket {
 					console.error(`Unhandled message type in StreamSubscribe response: ${msg.messageType()}`);
 					this.socket.onmessage = null;
 				}
-
 			}
 
 			const msg = Interpretor.getSubscribeMessage(sId, eId);
@@ -196,13 +207,6 @@ class ControlSocket {
 		this.socket.onclose = (e) => {
 			this.socket = null;
 		}
-	}
-
-	_closeSocket() {
-		console.log("_closeSocket");
-		this.socket.onclose = null;
-		this.socket.close();
-		this.socket = null;
 	}
 
 	_send(packet) {
