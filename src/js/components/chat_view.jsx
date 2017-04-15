@@ -26,6 +26,13 @@ export default class ChatView extends React.Component {
 	    return color;
 	}
 
+	componentDidMount() {
+		if (this.props.userName === "") {
+			this.userNameInput.focus();
+		} else {
+			this.cmtinput.focus();
+		}
+	}
 
 	componentDidUpdate(prevProps) {
 		if (this.props.comments !== prevProps.comments) {
@@ -51,6 +58,7 @@ export default class ChatView extends React.Component {
 									onChange={this.handleUserNameChange}
 									onKeyUp={this.handleUserNameEnter}
 									className="message_input"
+									ref={(input) => this.userNameInput = input}
 								/>
 							</div>
 						</div>
